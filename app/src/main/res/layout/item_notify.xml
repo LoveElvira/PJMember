@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="-4dp"
+    android:paddingLeft="@dimen/size_12"
+    android:paddingRight="@dimen/size_12">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/item_notify__time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_12"
+            android:background="@drawable/bg_rectangle_blue_radius_10"
+            android:gravity="center"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingLeft="@dimen/size_15"
+            android:paddingRight="@dimen/size_15"
+            android:paddingTop="@dimen/size_5"
+            android:text="08-12 01:34 普陀区"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_13" />
+
+        <ImageView
+            android:id="@+id/item_notify__dot"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_20"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/weather_notify_blue" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="-4dp"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue_365DFE"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="vertical"
+            android:layout_marginLeft="@dimen/size_12"
+            android:layout_marginRight="@dimen/size_12"
+            android:layout_marginTop="@dimen/size_20"
+            android:layout_marginBottom="@dimen/size_20"
+            android:padding="@dimen/size_12">
+
+            <TextView
+                android:id="@+id/item_notify__warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="雷电橙色预警"
+                android:textColor="@color/gray_888888"
+                android:textSize="@dimen/text_14" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_10"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/item_notify__content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:text="01:34普陀区发布雷电橙色预警，预计今天下午将有2个小时强降雨，并伴有雷电橙色预警。"
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/gray_ADADAD"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

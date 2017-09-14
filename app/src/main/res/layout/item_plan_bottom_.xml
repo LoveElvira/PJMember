@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_plan_bottom__parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/size_12"
+    android:layout_marginRight="@dimen/size_12"
+    android:layout_marginTop="@dimen/size_10"
+    android:background="@drawable/bg_rectangle_white_radius_3"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/size_5"
+    android:paddingLeft="@dimen/size_15"
+    android:paddingRight="@dimen/size_15"
+    android:paddingTop="@dimen/size_15">
+
+    <TextView
+        android:id="@+id/item_plan_bottom__time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="安全交底内容："
+        android:textColor="@color/blue"
+        android:textSize="@dimen/text_15" />
+
+    <TextView
+        android:id="@+id/item_plan_bottom__address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:lineSpacingMultiplier="1.2"
+        android:text="1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器"
+        android:textSize="@dimen/text_13" />
+
+    <TextView
+        android:id="@+id/item_plan_bottom__address_"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingMultiplier="1.2"
+        android:text="1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器"
+        android:textSize="@dimen/text_13"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/item_plan_bottom__look_more"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/size_10"
+        android:text="查看更多"
+        android:textSize="@dimen/text_13" />
+
+</LinearLayout>
+

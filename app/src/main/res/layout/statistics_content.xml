@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/size_15"
+        android:paddingRight="@dimen/size_15">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size_15">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="实时现场人数"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/statistics_content__people_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="563"
+                    android:textColor="@color/blue_365DFE"
+                    android:textSize="@dimen/text_17" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/size_1"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/size_15"
+                android:layout_marginTop="@dimen/size_15"
+                android:alpha="0.5"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/size_15">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="实时在建项目"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/statistics_content__project_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_5"
+                    android:text="128"
+                    android:textColor="@color/blue_365DFE"
+                    android:textSize="@dimen/text_17" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/statistics_content__project_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_200" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_pink_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今日在建项目"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/statistics_content__people_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_200" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_light_blue_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今日现场人数"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/statistics_content__accident_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_200" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_blue_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="本月突发事故"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/statistics_content__price_pie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_blue_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/size_30"
+                    android:text="养护费用"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/statistics_content__price_maintain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1,000,000.00"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_pink_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/size_30"
+                    android:text="人员费用"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/statistics_content__price_people"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2,000,000.00"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_light_blue_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/size_30"
+                    android:text="维修费用"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+                <TextView
+                    android:id="@+id/statistics_content__price_repair"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1,000,000.00"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

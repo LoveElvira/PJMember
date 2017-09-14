@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.humming.pjmember.activity.takephoto.AddDefectActivity">
+
+    <include layout="@layout/common_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/base_toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size_12">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="缺陷图片"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/activity_add_defect__listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="设施名称"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <LinearLayout
+                    android:id="@+id/activity_add_defect__name_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5">
+
+                    <TextView
+                        android:id="@+id/activity_add_defect__name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="请添加设施名称"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_15"
+                        android:src="@mipmap/right_arrow" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="通知主管"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <LinearLayout
+                    android:id="@+id/activity_add_defect__director_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5">
+
+                    <TextView
+                        android:id="@+id/activity_add_defect__director"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="请选择维修主管"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_15"
+                        android:src="@mipmap/right_arrow" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="维修时间"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <EditText
+                    android:id="@+id/activity_add_defect__time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="2017-09-10 11:11"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="缺陷描述"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <EditText
+                    android:id="@+id/activity_add_defect__content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入缺陷描述"
+                    android:lineSpacingMultiplier="1.2"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="位置描述"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <LinearLayout
+                    android:id="@+id/activity_add_defect__address_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5">
+
+                    <TextView
+                        android:id="@+id/activity_add_defect__address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/size_5"
+                        android:layout_weight="1"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="请选择地理位置"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_15"
+                        android:src="@mipmap/address" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="详细地址（选填）"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <EditText
+                    android:id="@+id/activity_add_defect__address_des"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请添加详细地址"
+                    android:lineSpacingMultiplier="1.2"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/activity_add_defect__submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_30"
+                    android:layout_marginLeft="@dimen/size_25"
+                    android:layout_marginRight="@dimen/size_25"
+                    android:layout_marginTop="@dimen/size_50"
+                    android:background="@drawable/border_gray_radius_3"
+                    android:gravity="center"
+                    android:padding="@dimen/size_12"
+                    android:text="提交缺陷"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/popupwindow_photo" />
+
+</android.support.design.widget.CoordinatorLayout>

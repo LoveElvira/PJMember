@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_add_address__parent"
+    android:layout_width="@dimen/size_80"
+    android:layout_height="@dimen/size_80"
+    android:background="@drawable/border_gray_radius_3"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:lineSpacingMultiplier="1.2"
+        android:text="添加\n位置"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_13" />
+
+    <ImageView
+        android:id="@+id/item_add_address__image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</RelativeLayout>

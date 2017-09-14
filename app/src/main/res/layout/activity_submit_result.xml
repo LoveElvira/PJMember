@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.humming.pjmember.activity.takephoto.DefectResultActivity">
+
+    <include layout="@layout/common_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/base_toolbar" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/size_12">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="处理结果"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+
+            <EditText
+                android:id="@+id/activity_defect_result__edit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_100"
+                android:layout_marginTop="@dimen/size_10"
+                android:background="@null"
+                android:gravity="left"
+                android:hint="请提交处理结果..."
+                android:lineSpacingMultiplier="1.2"
+                android:textColor="@color/white"
+                android:textColorHint="@color/gray"
+                android:textCursorDrawable="@drawable/cursor_white"
+                android:textSize="@dimen/text_13" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_defect_result__listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/popupwindow_photo"/>
+
+</android.support.design.widget.CoordinatorLayout>

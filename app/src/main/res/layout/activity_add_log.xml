@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/common_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/base_toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size_12">
+
+                <TextView
+                    android:id="@+id/activity_add_log__time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="维修时间"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <EditText
+                    android:id="@+id/activity_add_log__time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="2017-09-10 11:11"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/activity_add_log__name_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:text="设备名称"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_13" />
+
+                    <EditText
+                        android:id="@+id/activity_add_log__name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="请添加设备名称"
+                        android:lineSpacingMultiplier="1.2"
+                        android:paddingBottom="@dimen/size_5"
+                        android:paddingTop="@dimen/size_5"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/cursor_white"
+                        android:textSize="@dimen/text_14" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.5"
+                        android:background="@color/white" />
+
+                    <TextView
+                        android:id="@+id/activity_add_log__num_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:text="设备编号"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_13" />
+
+                    <EditText
+                        android:id="@+id/activity_add_log__num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="请添加设备编号"
+                        android:paddingBottom="@dimen/size_5"
+                        android:paddingTop="@dimen/size_5"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/cursor_white"
+                        android:textSize="@dimen/text_14" />
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:alpha="0.5"
+                        android:background="@color/white" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/activity_add_log__content_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="维修内容"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <EditText
+                    android:id="@+id/activity_add_log__content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入维修内容"
+                    android:lineSpacingMultiplier="1.2"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/activity_add_log__price_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="维修金额"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <EditText
+                    android:id="@+id/activity_add_log__price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入维修金额"
+                    android:inputType="numberDecimal"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:id="@+id/activity_add_log__listview_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:text="发票上传"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/activity_add_log__listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10" />
+
+
+                <TextView
+                    android:id="@+id/activity_add_log__submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_30"
+                    android:layout_marginLeft="@dimen/size_25"
+                    android:layout_marginRight="@dimen/size_25"
+                    android:layout_marginTop="@dimen/size_50"
+                    android:background="@drawable/border_gray_radius_3"
+                    android:gravity="center"
+                    android:padding="@dimen/size_12"
+                    android:text="提交"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+    <include layout="@layout/popupwindow_photo" />
+
+</android.support.design.widget.CoordinatorLayout>
