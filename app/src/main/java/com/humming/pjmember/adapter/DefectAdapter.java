@@ -20,10 +20,22 @@ public class DefectAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, String item) {
-        String str = "<font color='#ADADAD'>" + "设备机器损坏，运转不灵记录文字，设备机器损坏，运转不灵。" + "</font>";
+        String str = "设备机器损坏，运转不灵记录文字，设备机器损坏，运转不灵。";
 
         helper.addOnClickListener(R.id.item_defect__parent)
-                .setText(R.id.item_defect__content, Html.fromHtml("<font color='#888888'>" + "缺陷描述：" + "</font>"
-                + str));
+                .setText(R.id.item_defect__content, initHtml("缺陷描述", str));
+    }
+
+
+    private CharSequence initHtml(String header, String footer) {
+        String str = "<font color='#888888'>" + header + "：" + "</font>"
+                + "<font color='#ADADAD'>" + footer + "</font>";
+        CharSequence charSequence;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            charSequence = Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            charSequence = Html.fromHtml(str);
+        }
+        return charSequence;
     }
 }

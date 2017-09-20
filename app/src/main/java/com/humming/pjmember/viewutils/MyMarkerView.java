@@ -26,10 +26,10 @@ public class MyMarkerView extends MarkerView {
     }
 
     // callbacks everytime the MarkerView is redrawn, can be used to update the
-    // content (user-interface)
+    // content (user-interface) 每次 MarkerView 重绘此方法都会被调用，并为您提供更新它显示的内容的机会
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
-
+        //这里就设置你想显示到makerview上的数据，Entry可以得到X、Y轴坐标，也可以e.getData()获取其他你设置的数据
         if (e instanceof CandleEntry) {
 
             CandleEntry ce = (CandleEntry) e;
@@ -43,6 +43,12 @@ public class MyMarkerView extends MarkerView {
         super.refreshContent(e, highlight);
     }
 
+    /**
+     * offset 是以點到的那個點作為 (0,0) 中心然後往右下角畫出來 该方法是让markerview现实到坐标的上方
+     * 所以如果要顯示在點的上方
+     * X=寬度的一半，負數
+     * Y=高度的負數
+     */
     @Override
     public MPPointF getOffset() {
         return new MPPointF(-(getWidth() / 2), -getHeight());

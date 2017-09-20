@@ -54,9 +54,8 @@ public class DefectDetailsActivity extends BaseActivity {
 
         submit = (TextView) findViewById(R.id.activity_defect_details__submit);
 
-        String str = "<font color='#ADADAD'>" + "S26各收费站机点供电系统、收费系统、监控系统、通信系统保修故障维修。" + "</font>";
-        content.setText(Html.fromHtml("<font color='#888888'>" + "缺陷描述：" + "</font>"
-                + str));
+        String str = "S26各收费站机点供电系统、收费系统、监控系统、通信系统保修故障维修。";
+        content.setText(initHtml("缺陷描述", str));
 
         leftArrow.setOnClickListener(this);
         submit.setOnClickListener(this);

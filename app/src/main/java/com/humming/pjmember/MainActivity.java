@@ -1,6 +1,7 @@
 package com.humming.pjmember;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity {
         list.add(settingContent);
         adapter = new ContentAdapter(list, titles);
         viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -87,10 +88,10 @@ public class MainActivity extends BaseActivity {
 
                 if (position == 0) {
                     homeImage.setImageResource(R.mipmap.home_select);
-                    homeText.setTextColor(getResources().getColor(R.color.blue));
+                    homeText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.blue));
                 } else if (position == list.size() - 1) {
                     settingImage.setImageResource(R.mipmap.setting_select);
-                    settingText.setTextColor(getResources().getColor(R.color.blue));
+                    settingText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.blue));
                 }
 
             }
@@ -109,9 +110,9 @@ public class MainActivity extends BaseActivity {
 
     private void initBottomView() {
         homeImage.setImageResource(R.mipmap.home_default);
-        homeText.setTextColor(getResources().getColor(R.color.white));
+        homeText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.white));
         settingImage.setImageResource(R.mipmap.setting_default);
-        settingText.setTextColor(getResources().getColor(R.color.white));
+        settingText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.white));
     }
 
     @Override

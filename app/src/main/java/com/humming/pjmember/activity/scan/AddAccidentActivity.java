@@ -2,6 +2,7 @@ package com.humming.pjmember.activity.scan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
@@ -143,10 +144,10 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
                         = new ImageConfig.Builder(AddAccidentActivity.this, new PicassoLoader())
-                        .steepToolBarColor(getResources().getColor(R.color.black))
-                        .titleBgColor(getResources().getColor(R.color.black))
-                        .titleSubmitTextColor(getResources().getColor(R.color.white))
-                        .titleTextColor(getResources().getColor(R.color.white))
+                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
+                        .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
+                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
+                        .titleTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
                         .mutiSelect()
                         .mutiSelectMaxSize(4)
                         .pathList(path)

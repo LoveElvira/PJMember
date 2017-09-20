@@ -200,7 +200,14 @@ public class CaptureActivity extends BaseActivity implements Callback {
 //                                bundle.putParcelable("bitmap",result.get);
                                 resultIntent.putExtras(bundle);
 //                                CaptureActivity.this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
-                                startActivity(DeviceManageActivity.class);
+                                String resultStr = recode(result.getText());
+                                if (resultStr.contains("PJMember://e/")) {
+                                    int from = "PJMember://e/".length();
+                                    String id = resultStr.substring(from, resultStr.length());
+                                    startActivity(new Intent(CaptureActivity.this, DeviceManageActivity.class)
+                                            .putExtra("id", id));
+                                    CaptureActivity.this.finish();
+                                }
 
                             } else {
                                 Message m = handler.obtainMessage();
@@ -341,7 +348,15 @@ public class CaptureActivity extends BaseActivity implements Callback {
 //            Logger.d("saomiao",resultString);
             resultIntent.putExtras(bundle);
 //            this.setResult(RESULT_CODE_QR_SCAN, resultIntent);
-            startActivity(DeviceManageActivity.class);
+//            startActivity(DeviceManageActivity.class);
+            String resultStr = recode(result.getText());
+            if (resultStr.contains("PJMember://e/")) {
+                int from = "PJMember://e/".length();
+                String id = resultStr.substring(from, resultStr.length());
+                startActivity(new Intent(CaptureActivity.this, DeviceManageActivity.class)
+                        .putExtra("id", id));
+                CaptureActivity.this.finish();
+            }
         }
 //        CaptureActivity.this.finish();
     }

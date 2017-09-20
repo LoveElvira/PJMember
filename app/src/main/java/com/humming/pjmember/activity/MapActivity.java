@@ -1,10 +1,12 @@
 package com.humming.pjmember.activity;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +37,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.humming.pjmember.R;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Constant;
 
 import java.util.List;
 
@@ -90,6 +93,8 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
     private GeoCoder geoCoder;
     //定位坐标
     private LatLng locationLatLng;
+
+    private String addressStr = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,6 +332,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
 //            baiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
             MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngZoom(ll, 18);
             baiduMap.animateMapStatus(msu);
+            addressStr = location.getAddrStr();
             addressLayout.setVisibility(View.VISIBLE);
             address.setText(location.getAddrStr());
             addressName.setText(location.getCity());
@@ -362,6 +368,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
         List<PoiInfo> poiInfos = reverseGeoCodeResult.getPoiList();
         if (poiInfos != null && poiInfos.size() > 0) {
+            addressStr = poiInfos.get(0).address;
             addressLayout.setVisibility(View.VISIBLE);
             address.setText(poiInfos.get(0).address);
             addressName.setText(poiInfos.get(0).name);
@@ -391,10 +398,10 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
-                finishThis();
+                finishThis(false);
                 break;
             case R.id.base_toolbar__right_text:
-                finishThis();
+                finishThis(true);
                 break;
             case R.id.activity_map__address_image_layout:
                 MapStatusUpdate msu = MapStatusUpdateFactory.newLatLngZoom(locationLatLng, 18);
@@ -403,7 +410,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
         }
     }
 
-    private void finishThis() {
+    private void finishThis(boolean isReturn) {
         locClient.stop();
 //                setResult(Constant.CODE_RESULT, new Intent().putExtra("imagePath", ""));
         // 当不需要定位图层时关闭定位图层
@@ -413,6 +420,12 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
         if (geoCoder != null) {
             geoCoder.destroy();
         }
+
+        if (isReturn) {
+            setResult(Constant.CODE_RESULT, new Intent()
+                    .putExtra("address", addressStr));
+        }
+
         MapActivity.this.finish();
     }
 

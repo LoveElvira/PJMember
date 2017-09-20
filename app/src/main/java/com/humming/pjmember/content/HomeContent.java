@@ -38,13 +38,6 @@ public class HomeContent extends BaseLinearLayout {
     //动态创建条目 的 父类
     private LinearLayout itemLayoutParent;
 
-    //用户名 和 密码
-    private String userName;
-    private String password;
-
-    //职位  1 ：一线  2 ： 业务  3 ： 管理
-    private String positon = "1";
-
     public HomeContent(Context context) {
         this(context, null);
     }
@@ -59,10 +52,7 @@ public class HomeContent extends BaseLinearLayout {
     protected void initView() {
         super.initView();
 
-        userName = SharePrefUtil.getString(Constant.FILE_NAME, Constant.USERNAME, "", Application.getInstance().getCurrentActivity());
-        password = SharePrefUtil.getString(Constant.FILE_NAME, Constant.PASSWORD, "", Application.getInstance().getCurrentActivity());
-        positon = SharePrefUtil.getString(Constant.FILE_NAME, Constant.POSITION, "1", Application.getInstance().getCurrentActivity());
-
+        onLinePosition = SharePrefUtil.getString(Constant.FILE_NAME, Constant.POSITION, "0", Application.getInstance().getCurrentActivity());
 
         titleLayout = findViewById(R.id.base_toolbar__title_layout);
         title = findViewById(R.id.base_toolbar__title);
@@ -79,14 +69,17 @@ public class HomeContent extends BaseLinearLayout {
 
         itemLayoutParent.removeAllViews();
 
-        //领导用户
-        if (userName.equals("a") && password.equals("a") || positon.equals("3")) {
+
+        if (onLinePosition.equals("0")) {//一线人员
+            itemLayoutParent.addView(initItem(false, 0));
+            itemLayoutParent.addView(initItem(true, 2));
+        } else if (onLinePosition.equals("1")) {//业务人员
+            itemLayoutParent.addView(initItem(false, 0));
+            itemLayoutParent.addView(initItem(true, 2));
+        } else if (onLinePosition.equals("2")) {//领导用户
             itemLayoutParent.addView(initItem(false, 0));
             itemLayoutParent.addView(initItem(false, 2));
             itemLayoutParent.addView(initItem(true, 4));
-        } else {
-            itemLayoutParent.addView(initItem(false, 0));
-            itemLayoutParent.addView(initItem(true, 2));
         }
 
     }
@@ -111,8 +104,25 @@ public class HomeContent extends BaseLinearLayout {
         if (isLast) {
             bottomLine.setVisibility(GONE);
         }
-        //领导用户
-        if (userName.equals("a") && password.equals("a")) {
+        if (onLinePosition.equals("0")) {//一线人员
+            switch (position) {
+                case 0:
+                    leftImage.setImageResource(R.mipmap.work);
+                    leftText.setText("作业管理");
+                    rightImage.setImageResource(R.mipmap.notify);
+                    rightText.setText("通知");
+                    rightTip.setVisibility(VISIBLE);
+                    break;
+                case 2:
+                    leftImage.setImageResource(R.mipmap.take_photo);
+                    leftText.setText("拍一拍");
+                    rightImage.setImageResource(R.mipmap.scan);
+                    rightText.setText("扫一扫");
+                    break;
+            }
+        } else if (onLinePosition.equals("1")) {//业务人员
+
+        } else if (onLinePosition.equals("2")) {//领导用户
             switch (position) {
                 case 0:
                     leftImage.setImageResource(R.mipmap.affair);
@@ -132,22 +142,6 @@ public class HomeContent extends BaseLinearLayout {
                     rightImage.setImageResource(R.mipmap.video);
                     rightText.setText("视频管理");
                     leftTip.setVisibility(VISIBLE);
-                    break;
-            }
-        } else {
-            switch (position) {
-                case 0:
-                    leftImage.setImageResource(R.mipmap.work);
-                    leftText.setText("作业管理");
-                    rightImage.setImageResource(R.mipmap.notify);
-                    rightText.setText("通知");
-                    rightTip.setVisibility(VISIBLE);
-                    break;
-                case 2:
-                    leftImage.setImageResource(R.mipmap.take_photo);
-                    leftText.setText("拍一拍");
-                    rightImage.setImageResource(R.mipmap.scan);
-                    rightText.setText("扫一扫");
                     break;
             }
         }

@@ -16,6 +16,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 import com.humming.pjmember.utils.FileUtils;
 import com.humming.pjmember.utils.ImageFileUtils;
 import com.humming.pjmember.utils.NetWorkUtils;
+import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SelectPhotoPopupWindow;
 
 import java.io.File;
@@ -46,15 +48,12 @@ import java.util.regex.Pattern;
 public class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     //版本比较：是否是4.4及以上版本
-    public static boolean mIsKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    protected boolean mIsKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     /**
      * 存放拍照上传的照片路径
      */
-    public static String mPublishPhotoPath;
+    protected String mPublishPhotoPath;
 
-
-    /*分页 每页10条数据*/
-    protected static final int PAGE_SIZE = 10;
     /*延迟时间 1s*/
     protected int delayMillis = 1000;
     /*退出时间*/
@@ -78,7 +77,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     protected TextView rightText;
     //头部 右边的图标
     protected ImageView rightImage;
-
+    //页数
+    protected String pageable = "";
+    //是否有下一页
+    protected boolean hasMore = true;
     //刷新
     protected SwipeRefreshLayout refresh;
     //列表
@@ -86,6 +88,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     protected SelectPhotoPopupWindow selectPhotoPopupWindow;
     protected LinearLayout selectPhotoLayout;
+
+    protected String id;
+
+    protected ProgressHUD progressHUD;
+
+    protected boolean isShowProgress = true;//第一次显示加载框
+
+    //职位  0 ：一线  1 ： 业务  2 ： 管理
+    protected String onLinePosition = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,10 +210,16 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         return false;
     }
 
-    protected String initHtml(String header, String footer) {
+    protected CharSequence initHtml(String header, String footer) {
         String str = "<font color='#888888'>" + header + "：" + "</font>"
                 + "<font color='#ADADAD'>" + footer + "</font>";
-        return str;
+        CharSequence charSequence;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            charSequence = Html.fromHtml(str, Html.FROM_HTML_MODE_LEGACY);
+        } else {
+            charSequence = Html.fromHtml(str);
+        }
+        return charSequence;
     }
 
     //判断手机号是否正确
@@ -385,5 +402,14 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }
         return degree;
     }
+
+    //只走这么一次
+    protected void closeProgress() {
+        if (isShowProgress) {
+            progressHUD.dismiss();
+            isShowProgress = false;
+        }
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.humming.pjmember.activity.takephoto;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -155,10 +156,10 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
                         = new ImageConfig.Builder(AddDefectActivity.this, new PicassoLoader())
-                        .steepToolBarColor(getResources().getColor(R.color.black))
-                        .titleBgColor(getResources().getColor(R.color.black))
-                        .titleSubmitTextColor(getResources().getColor(R.color.white))
-                        .titleTextColor(getResources().getColor(R.color.white))
+                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
+                        .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
+                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
+                        .titleTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
                         .mutiSelect()
                         .mutiSelectMaxSize(6)
                         .pathList(path)
@@ -169,7 +170,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                 selectPhotoPopupWindow.gonePopupWindow();
                 break;
             case R.id.activity_add_defect__address_layout:
-                startActivity(MapActivity.class);
+                startActivityForResult(new Intent(AddDefectActivity.this, MapActivity.class), Constant.CODE_REQUEST_ONE);
                 break;
         }
     }
@@ -180,6 +181,16 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Constant.CODE_RESULT) {
+
+            if (requestCode == Constant.CODE_REQUEST_ONE) {
+                String addressStr = data.getStringExtra("address");
+                if (!"".equals(addressStr)) {
+                    address.setText(addressStr);
+                }
+
+                return;
+            }
+
             List<String> pathList = null;
             if (requestCode == Constant.CODE_REQUEST_THREE) {
                 pathList = (List<String>) data.getSerializableExtra("imagePath");

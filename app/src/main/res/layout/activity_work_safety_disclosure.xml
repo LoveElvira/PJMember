@@ -73,12 +73,10 @@
             android:background="@drawable/bg_rectangle_gray_radius_3"
             android:gravity="center"
             android:padding="@dimen/size_12"
-            android:text="确认安全交底"
-            android:textColor="@color/gray_888888"
+            android:text="请认真阅读安全交底内容"
+            android:textColor="@color/white"
             android:textSize="@dimen/text_15" />
 
     </LinearLayout>
-
-    <include layout="@layout/popupwindow_photo" />
 
 </android.support.design.widget.CoordinatorLayout>

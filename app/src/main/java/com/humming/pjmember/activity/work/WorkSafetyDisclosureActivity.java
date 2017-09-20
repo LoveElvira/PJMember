@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -48,8 +49,8 @@ public class WorkSafetyDisclosureActivity extends BaseActivity implements View.O
         tip = (TextView) findViewById(R.id.activity_work_safety__tip);
         scrollView = (ScrollView) findViewById(R.id.activity_work_safety__scrollview);
         confirm = (TextView) findViewById(R.id.activity_work_safety__confirm);
-        confirm.setTextColor(getResources().getColor(R.color.gray_888888));
-        confirm.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_rectangle_gray_radius_3));
+//        confirm.setTextColor(getResources().getColor(R.color.gray_888888));
+        confirm.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.bg_rectangle_gray_radius_3));
 
         if (getIntent().getBooleanExtra("isLook", false)) {
             tip.setText("请认真阅读安全交底内容");
@@ -70,9 +71,9 @@ public class WorkSafetyDisclosureActivity extends BaseActivity implements View.O
             isScrollBottom = true;
             // 小心踩坑2: 这里不能是 >=
             // 小心踩坑3（可能忽视的细节2）：这里最容易忽视的就是ScrollView上下的padding　
-            confirm.setTextColor(getResources().getColor(R.color.white));
-            confirm.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_rectangle_green_radius_3));
-
+//            confirm.setTextColor(getResources().getColor(R.color.white));
+            confirm.setText("确认交底");
+            confirm.setBackground(ContextCompat.getDrawable(getBaseContext(), R.drawable.bg_rectangle_green_radius_3));
         }
     }
 

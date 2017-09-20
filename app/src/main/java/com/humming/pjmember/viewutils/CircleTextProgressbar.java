@@ -302,9 +302,11 @@ public class CircleTextProgressbar extends TextView {
      * 开始。
      */
     public void start(int runProgress) {
-        this.runProgress = runProgress;
-        stop();
-        post(progressChangeTask);
+        if (runProgress != 0) {
+            this.runProgress = runProgress;
+            stop();
+            post(progressChangeTask);
+        }
     }
 
     /**

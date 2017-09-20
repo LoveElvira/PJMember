@@ -6,8 +6,7 @@ import android.text.Html;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.humming.pjmember.R;
-import com.pjqs.dto.equipment.EquipmentMaintainInfoBean;
-import com.pjqs.dto.equipment.EquipmentRepairInfoBean;
+import com.pjqs.dto.equipment.EquipmentAcctidentInfoBean;
 
 import java.util.List;
 
@@ -15,19 +14,19 @@ import java.util.List;
  * Created by Elvira on 2017/9/4.
  */
 
-public class RepairAdapter extends BaseQuickAdapter<EquipmentRepairInfoBean, BaseViewHolder> {
+public class AccidentAdapter extends BaseQuickAdapter<EquipmentAcctidentInfoBean, BaseViewHolder> {
 
-    public RepairAdapter(@Nullable List<EquipmentRepairInfoBean> data) {
+    public AccidentAdapter(@Nullable List<EquipmentAcctidentInfoBean> data) {
         super(R.layout.item_log, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, EquipmentRepairInfoBean item) {
+    protected void convert(BaseViewHolder helper, EquipmentAcctidentInfoBean item) {
 //        String str = "<font color='#ADADAD'>" + "设备机器损坏，运转不灵记录文字，设备机器损坏，运转不灵。" + "</font>";
-
-        helper.setText(R.id.item_log__time, item.getRepairTime())
-                .setText(R.id.item_log__content, initHtml("维修内容", item.getReason()))
+        helper.setText(R.id.item_log__time, item.getAccidentTime())
+                .setText(R.id.item_log__content, initHtml("事故原因",item.getRemark()))
                 .addOnClickListener(R.id.item_log__parent);
+
     }
 
     private CharSequence initHtml(String header, String footer) {

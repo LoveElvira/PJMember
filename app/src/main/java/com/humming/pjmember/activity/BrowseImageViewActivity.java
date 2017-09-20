@@ -105,7 +105,7 @@ public class BrowseImageViewActivity extends BaseActivity implements ViewPager.O
         super.onStart();
         adapter = new BrowseImageAdapter(BrowseImageViewActivity.this, allViewPagerView, allImageUrl);
         myViewPager.setAdapter(adapter);
-        myViewPager.setOnPageChangeListener(this);
+        myViewPager.addOnPageChangeListener(this);
         myViewPager.setCurrentItem(currentPosition);
 
     }

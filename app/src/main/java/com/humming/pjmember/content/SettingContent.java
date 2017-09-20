@@ -7,9 +7,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.LoginActivity;
+import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
+import com.humming.pjmember.base.Constant;
+import com.humming.pjmember.utils.SharePrefUtil;
 
 /**
  * Created by Elvira on 2017/8/31.
@@ -51,6 +55,13 @@ public class SettingContent extends BaseLinearLayout {
         updatePwdLayout = findViewById(R.id.fragment_setting__update_pwd);
         exitLogin = findViewById(R.id.fragment_setting__exit);
 
+        String nickName = SharePrefUtil.getString(Constant.FILE_NAME, Constant.NICKNAME, "", Application.getInstance().getCurrentActivity());
+        String url = SharePrefUtil.getString(Constant.FILE_NAME, Constant.HEADURL, "", Application.getInstance().getCurrentActivity());
+
+        userName.setText(nickName);
+        Glide.with(getContext())
+                .load(url)
+                .into(headImage);
         updatePwdLayout.setOnClickListener(this);
         exitLogin.setOnClickListener(this);
 

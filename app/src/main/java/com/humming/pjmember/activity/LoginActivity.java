@@ -1,7 +1,10 @@
 package com.humming.pjmember.activity;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -18,7 +21,12 @@ import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.service.ResponseData;
 import com.humming.pjmember.utils.SharePrefUtil;
+import com.humming.pjmember.viewutils.ProgressHUD;
+import com.pjqs.dto.login.LevelBean;
 import com.pjqs.dto.login.LoginResponse;
+
+import java.io.Serializable;
+import java.util.List;
 
 import okhttp3.Request;
 
@@ -89,14 +97,6 @@ public class LoginActivity extends BaseActivity {
                 String pwd = password.getText().toString().trim();
                 if (isEditNull(name, pwd)) {
                     goLogin(name, pwd);
-                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.USERNAME, name, this);
-                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, pwd, this);
-                    if (name.equals("a") && pwd.equals("a")) {
-                        startActivity(MainActivity.class);
-                    } else {
-                        startActivity(SelectPositonActivity.class);
-                    }
-                    LoginActivity.this.finish();
                 }
                 break;
             case R.id.activity_login__wechat_login:
@@ -106,8 +106,14 @@ public class LoginActivity extends BaseActivity {
 
 
     //登录接口
-    private void goLogin(String name, String pwd) {
+    private void goLogin(final String name, final String pwd) {
 
+        progressHUD = ProgressHUD.show(LoginActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
         RequestParameter parameter = new RequestParameter();
         parameter.setPhone(name);
         parameter.setPwd(pwd);
@@ -115,22 +121,66 @@ public class LoginActivity extends BaseActivity {
         OkHttpClientManager.postAsyn(Config.USER_LOGIN, new OkHttpClientManager.ResultCallback<LoginResponse>() {
             @Override
             public void onError(Request request, Error info) {
-
+                Log.i("onError", info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+                progressHUD.dismiss();
             }
 
             @Override
             public void onResponse(LoginResponse response) {
+                progressHUD.dismiss();
                 if (response != null) {
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.TOKEN, response.getToken(), LoginActivity.this);
-                }
+                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.NICKNAME, response.getNickName(), LoginActivity.this);
+                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.HEADURL, response.getHeadImgUrl(), LoginActivity.this);
+                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.USERNAME, name, LoginActivity.this);
+                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, pwd, LoginActivity.this);
+                    startActivity(response.getLevelBeans());
+//                    if (name.equals("a") && pwd.equals("a")) {
+//                        startActivity(MainActivity.class);
+//                    } else {
+//                        startActivity(SelectPositonActivity.class);
+//                    }
+//                    LoginActivity.this.finish();
 
+                }
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
-
+                Log.i("onError", exception.toString());
+                progressHUD.dismiss();
             }
         }, parameter, LoginResponse.class, LoginActivity.class);
+
+    }
+
+    private void startActivity(List<LevelBean> levelBeanList) {
+        if (levelBeanList.size() == 1) {
+//            if (levelBeanList.get(0).getLevelName().equals("一线人员")) {
+//                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "1", LoginActivity.this);
+//            } else if (levelBeanList.get(0).getLevelName().equals("业务人员")) {
+//                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "2", LoginActivity.this);
+//            } else {
+//                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "3", LoginActivity.this);
+//            }
+            if (levelBeanList.get(0).getLevelNo() == 0) {
+                onLinePosition = "0";
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "0", LoginActivity.this);
+            } else if (levelBeanList.get(0).getLevelNo() == 1) {
+                onLinePosition = "1";
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "1", LoginActivity.this);
+            } else if (levelBeanList.get(0).getLevelNo() == 2) {
+                onLinePosition = "2";
+                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "2", LoginActivity.this);
+            }
+            startActivity(MainActivity.class);
+        } else {
+            startActivity(new Intent(LoginActivity.this, SelectPositonActivity.class)
+                    .putExtra("levelBeanList", (Serializable) levelBeanList));
+        }
+//        startActivity(MainActivity.class);
+        LoginActivity.this.finish();
 
     }
 

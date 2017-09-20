@@ -7,6 +7,8 @@ import android.os.Build;
  */
 
 public class Constant {
+    public static final String NICKNAME = "nickname";
+    public static final String HEADURL = "headurl";
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String POSITION = "positon";//职位

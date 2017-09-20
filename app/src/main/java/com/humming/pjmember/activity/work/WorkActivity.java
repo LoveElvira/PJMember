@@ -135,13 +135,13 @@ public class WorkActivity extends BaseActivity {
                 positions = tab.getPosition();
                 switch (positions) {
                     case 0:
-//                        buyOrder.isNetWork();
+                        todayContent.isInitFirst();
                         break;
                     case 1:
-//                        wishOrder.isNetWork();
+                        unCompleteContent.isInitFirst();
                         break;
                     case 2:
-//                        sendOrder.isNetWork();
+                        wholeContent.isInitFirst();
                         break;
                 }
             }
@@ -156,6 +156,7 @@ public class WorkActivity extends BaseActivity {
 
             }
         });
+        todayContent.isInitFirst();
     }
 
     @Override

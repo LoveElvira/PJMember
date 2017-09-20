@@ -15,10 +15,7 @@
 
         <include layout="@layout/base_toolbar" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/size_50"
-            android:orientation="vertical"></LinearLayout>
+        <include layout="@layout/item_time_top" />
 
         <include layout="@layout/statistics_content" />
 
