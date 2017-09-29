@@ -9,7 +9,7 @@
         android:id="@+id/item_time_top__time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2017-09-20"
+        android:text="2017-9"
         android:textColor="@color/white"
         android:textSize="@dimen/text_15"
         android:visibility="gone" />

@@ -113,7 +113,7 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
             } else {
                 model.setSelect(false);
             }
-            model.setTime((i + 5) + "");
+            model.setTime((i + 22) + "");
             timeModelList.add(model);
         }
 

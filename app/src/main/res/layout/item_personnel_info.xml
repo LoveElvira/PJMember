@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12"
+    android:layout_marginLeft="@dimen/size_12"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_facility_name_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="人员姓名："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <ImageView
+            android:id="@+id/item_personnel_info__sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/size_10" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="员工编号："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__num"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="联系方式："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="人员工种："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__job_type"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="人员专业："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__major"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="所属公司："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__company"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="所属部门："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__org"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="安全教育："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__safety"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="人员保险："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_personnel_info__insurance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="相关证书："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_10"
+        android:visibility="gone" />
+
+</LinearLayout>

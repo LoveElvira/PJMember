@@ -1,7 +1,10 @@
 package com.humming.pjmember.content;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,9 +20,17 @@ import com.humming.pjmember.activity.takephoto.DefectActivity;
 import com.humming.pjmember.activity.work.WorkActivity;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
+import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.google.zxing.activity.CaptureActivity;
+import com.humming.pjmember.requestdate.RequestParameter;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.SharePrefUtil;
+import com.humming.pjmember.viewutils.ProgressHUD;
+import com.pjqs.dto.weather.WeatherBean;
+
+import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/8/31.
@@ -170,10 +181,13 @@ public class HomeContent extends BaseLinearLayout {
         } else if ("通知".equals(name)) {
             startActivity(NotifyActivity.class);
         } else if ("扫一扫".equals(name)) {
-            startActivity(CaptureActivity.class);
+            startActivity(new Intent(getContext(), CaptureActivity.class)
+                    .putExtra("addPerson", false)
+                    .putExtra("workId", ""));
         } else if ("事务管理".equals(name)) {
             startActivity(AffairActivity.class);
         } else if ("设备管理".equals(name)) {
+            startActivity(CaptureActivity.class);
 //            startActivity(CaptureActivity.class);
         } else if ("会议安排".equals(name)) {
             startActivity(MeetingActivity.class);
@@ -182,6 +196,42 @@ public class HomeContent extends BaseLinearLayout {
         } else if ("视频管理".equals(name)) {
 //            startActivity(CaptureActivity.class);
         }
+    }
+
+    //获取天气预报
+    private void getWeather() {
+
+        progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+
+        RequestParameter parameter = new RequestParameter();
+        OkHttpClientManager.postAsyn(Config.GET_WEATHER, new OkHttpClientManager.ResultCallback<WeatherBean>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("onError", info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(WeatherBean response) {
+                progressHUD.dismiss();
+                if (response != null) {
+
+                }
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, WeatherBean.class, Application.getInstance().getClass());
     }
 
     @Override

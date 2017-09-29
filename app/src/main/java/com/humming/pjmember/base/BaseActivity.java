@@ -1,11 +1,13 @@
 package com.humming.pjmember.base;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
@@ -18,16 +20,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.humming.pjmember.R;
 import com.humming.pjmember.utils.FileUtils;
 import com.humming.pjmember.utils.ImageFileUtils;
 import com.humming.pjmember.utils.NetWorkUtils;
@@ -37,6 +44,7 @@ import com.humming.pjmember.viewutils.SelectPhotoPopupWindow;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,6 +98,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     protected LinearLayout selectPhotoLayout;
 
     protected String id;
+    protected String userId;
 
     protected ProgressHUD progressHUD;
 
@@ -97,6 +106,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     //职位  0 ：一线  1 ： 业务  2 ： 管理
     protected String onLinePosition = "0";
+
+    private int year, monthOfYear, dayOfMonth;
+
+    //时间选择器的父类
+    protected View popupParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -401,6 +415,79 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         return degree;
+    }
+
+    private PopupWindow window;
+
+    //时间的popwindow
+    protected void showPopWindowDatePicker(View parent) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.popupwindow_datepicker, null);
+        window = new PopupWindow(view,
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new BitmapDrawable());
+        window.setFocusable(true);
+        window.setOutsideTouchable(true);
+        window.setAnimationStyle(R.style.mypopwindow_anim_style);
+        window.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+
+        // 设置背景颜色变暗
+        final WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.alpha = 0.5f;
+        getWindow().setAttributes(lp);
+        window.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                lp.alpha = 1.0f;
+                getWindow().setAttributes(lp);
+            }
+        });
+
+        DatePicker datePicker = view.findViewById(R.id.date_datepicker);
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        monthOfYear = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar calendarMax = Calendar.getInstance();
+        datePicker.setMaxDate(calendarMax.getTimeInMillis());
+        datePicker.init(year, monthOfYear, dayOfMonth, new DatePicker.OnDateChangedListener() {
+
+            public void onDateChanged(DatePicker view, int years,
+                                      int monthOfYears, int dayOfMonths) {
+                year = years;
+                monthOfYear = monthOfYears;
+                dayOfMonth = dayOfMonths;
+            }
+        });
+        TextView dateCancel = view.findViewById(R.id.date_cancel);
+        TextView datesubmit = view.findViewById(R.id.date_submit);
+        dateCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                window.dismiss();
+            }
+        });
+        datesubmit.setOnClickListener(this);
+    }
+
+    protected String getDate() {
+        String month = "";
+        String day = "";
+        String date = "";
+        if (dayOfMonth < 10) {
+            day = "0" + dayOfMonth;
+        } else {
+            day = dayOfMonth + "";
+        }
+        if (monthOfYear < 9) {
+            month = "0" + (monthOfYear + 1);
+        } else {
+            month = (monthOfYear + 1) + "";
+        }
+        date = year + "-" + month + "-" + day;
+        window.dismiss();
+        return date;
     }
 
     //只走这么一次

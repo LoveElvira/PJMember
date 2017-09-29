@@ -36,7 +36,7 @@
                 android:textColor="@color/red"
                 android:textSize="@dimen/text_15" />
 
-            <ScrollView
+            <com.humming.pjmember.viewutils.ObservableScrollView
                 android:id="@+id/activity_work_safety__scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -44,21 +44,24 @@
                 android:scrollbars="none">
 
                 <TextView
-                    android:id="@+id/item_plan_bottom__address"
+                    android:id="@+id/activity_work_safety__content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineSpacingMultiplier="1.2"
-                    android:text="1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
+                    android:textSize="@dimen/text_13" />
+
+            </com.humming.pjmember.viewutils.ObservableScrollView>
+
+
+            <!--
+              android:text="1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
 \n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
 \n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
 \n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
 \n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
 \n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
 \n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器"
-                    android:textSize="@dimen/text_13" />
-
-            </ScrollView>
-
+                 -->
 
         </LinearLayout>
 

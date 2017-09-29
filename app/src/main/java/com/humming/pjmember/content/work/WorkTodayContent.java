@@ -205,8 +205,10 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_work__parent:
+//                startActivity(WorkPlanActivity.class);
                 startActivity(new Intent(getContext(), WorkSafetyDisclosureActivity.class)
-                        .putExtra("isLook", true));
+                        .putExtra("isLook", true)
+                        .putExtra("id", workLists.get(position).getWorkId() + ""));
                 break;
         }
     }

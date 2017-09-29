@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
 import com.humming.pjmember.MainActivity;
 import com.humming.pjmember.R;
 import com.humming.pjmember.base.Application;
@@ -133,16 +135,10 @@ public class LoginActivity extends BaseActivity {
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.TOKEN, response.getToken(), LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.NICKNAME, response.getNickName(), LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.HEADURL, response.getHeadImgUrl(), LoginActivity.this);
+                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.USER_ID, response.getUserId(), LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.USERNAME, name, LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, pwd, LoginActivity.this);
                     startActivity(response.getLevelBeans());
-//                    if (name.equals("a") && pwd.equals("a")) {
-//                        startActivity(MainActivity.class);
-//                    } else {
-//                        startActivity(SelectPositonActivity.class);
-//                    }
-//                    LoginActivity.this.finish();
-
                 }
             }
 
@@ -155,22 +151,35 @@ public class LoginActivity extends BaseActivity {
 
     }
 
+    //推送绑定账号
+    private void bindAccount() {
+        String userId = SharePrefUtil.getString(Constant.FILE_NAME, "userId", "", LoginActivity.this);
+        if (!"".equals(userId)) {
+            final CloudPushService pushService = Application.getInstance().pushService;
+            pushService.bindAccount(userId, new CommonCallback() {
+                @Override
+                public void onSuccess(String s) {
+                    Log.i("TAG", "----" + pushService.getDeviceId());
+                    SharePrefUtil.putString(Constant.FILE_NAME, "deviceId", pushService.getDeviceId(), LoginActivity.this);
+                }
+
+                @Override
+                public void onFailed(String s, String s1) {
+
+                }
+            });
+        }
+    }
+
     private void startActivity(List<LevelBean> levelBeanList) {
         if (levelBeanList.size() == 1) {
-//            if (levelBeanList.get(0).getLevelName().equals("一线人员")) {
-//                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "1", LoginActivity.this);
-//            } else if (levelBeanList.get(0).getLevelName().equals("业务人员")) {
-//                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "2", LoginActivity.this);
-//            } else {
-//                SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "3", LoginActivity.this);
-//            }
-            if (levelBeanList.get(0).getLevelNo() == 0) {
+            if (levelBeanList.get(0).getLevelNo() == 0) {//一线人员
                 onLinePosition = "0";
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "0", LoginActivity.this);
-            } else if (levelBeanList.get(0).getLevelNo() == 1) {
+            } else if (levelBeanList.get(0).getLevelNo() == 1) {//业务人员
                 onLinePosition = "1";
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "1", LoginActivity.this);
-            } else if (levelBeanList.get(0).getLevelNo() == 2) {
+            } else if (levelBeanList.get(0).getLevelNo() == 2) {//领导人员
                 onLinePosition = "2";
                 SharePrefUtil.putString(Constant.FILE_NAME, Constant.POSITION, "2", LoginActivity.this);
             }
@@ -179,7 +188,6 @@ public class LoginActivity extends BaseActivity {
             startActivity(new Intent(LoginActivity.this, SelectPositonActivity.class)
                     .putExtra("levelBeanList", (Serializable) levelBeanList));
         }
-//        startActivity(MainActivity.class);
         LoginActivity.this.finish();
 
     }

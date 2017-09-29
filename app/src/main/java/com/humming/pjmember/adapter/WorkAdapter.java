@@ -21,13 +21,28 @@ public class WorkAdapter extends BaseQuickAdapter<WorkInfoBean, BaseViewHolder> 
 
     @Override
     protected void convert(BaseViewHolder helper, WorkInfoBean item) {
-//        String str = "<font color='#ADADAD'>" + "S26各收费站机点供电系统、收费系统、监控系统、通信系统保修故障维修。" + "</font>";
 
         helper.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_plan)
                 .addOnClickListener(R.id.item_work__parent)
+                .setText(R.id.item_work__num, item.getWorkCode())
                 .setText(R.id.item_work__time, item.getWorkStartDate())
                 .setText(R.id.item_work__facility_name, item.getFacilityName())
                 .setText(R.id.item_work__content, initHtml("今日作业", item.getWorkContent()));
+
+//        String status = "";
+//        if (item.getRoadWorkState() == 0) {
+//            status = "未开始";
+//        } else if (item.getRoadWorkState() == 1) {
+//            status = "进行中";
+//        } else if (item.getRoadWorkState() == 2) {
+//            status = "已结束";
+//        } else if (item.getRoadWorkState() == 3) {
+//            status = "已完成";
+//        } else if (item.getRoadWorkState() == 4) {
+//            status = "待分配";
+//        }
+        helper.setText(R.id.item_work__status, item.getRoadWork());
+
 
         if (item.getWorkNature() == 2) {//缺陷作业
             helper.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_defect)

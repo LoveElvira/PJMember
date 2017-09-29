@@ -10,14 +10,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.humming.pjmember.activity.work.PersonActivity;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.content.HomeContent;
 import com.humming.pjmember.content.SettingContent;
+import com.humming.pjmember.requestdate.RequestParameter;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
+import com.humming.pjmember.utils.SharePrefUtil;
 import com.humming.pjmember.viewutils.BaseViewPager;
 import com.humming.pjmember.viewutils.ContentAdapter;
+import com.pjqs.dto.equipment.EquipmentTypeRes;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.Request;
 
 public class MainActivity extends BaseActivity {
 
@@ -88,10 +98,10 @@ public class MainActivity extends BaseActivity {
 
                 if (position == 0) {
                     homeImage.setImageResource(R.mipmap.home_select);
-                    homeText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.blue));
+                    homeText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
                 } else if (position == list.size() - 1) {
                     settingImage.setImageResource(R.mipmap.setting_select);
-                    settingText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.blue));
+                    settingText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
                 }
 
             }
@@ -106,14 +116,42 @@ public class MainActivity extends BaseActivity {
         settingLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
 
+        getAccidentType();
     }
 
     private void initBottomView() {
         homeImage.setImageResource(R.mipmap.home_default);
-        homeText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.white));
+        homeText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
         settingImage.setImageResource(R.mipmap.setting_default);
-        settingText.setTextColor(ContextCompat.getColor(getBaseContext(),R.color.white));
+        settingText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
     }
+
+    //获取事故类型
+    private void getAccidentType() {
+        RequestParameter parameter = new RequestParameter();
+        OkHttpClientManager.postAsyn(Config.GET_ACCIDENT_TYPE, new OkHttpClientManager.ResultCallback<EquipmentTypeRes>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("onError", info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+            }
+
+            @Override
+            public void onResponse(EquipmentTypeRes response) {
+                if (response != null) {
+                    SharePrefUtil.setObject(Constant.FILE_NAME, Constant.ACCIDENT_TYPE, response, MainActivity.this);
+                    SharePrefUtil.getObject(Constant.FILE_NAME, Constant.ACCIDENT_TYPE, null, MainActivity.this);
+
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+            }
+        }, parameter, EquipmentTypeRes.class, PersonActivity.class);
+    }
+
 
     @Override
     public void onClick(View v) {

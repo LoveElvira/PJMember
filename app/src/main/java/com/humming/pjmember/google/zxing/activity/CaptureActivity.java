@@ -41,6 +41,7 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.scan.DeviceManageActivity;
+import com.humming.pjmember.activity.scan.PersonnelInfoActivity;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.google.zxing.camera.CameraManager;
 import com.humming.pjmember.google.zxing.decoding.CaptureActivityHandler;
@@ -85,6 +86,9 @@ public class CaptureActivity extends BaseActivity implements Callback {
     public static final int RESULT_CODE_QR_SCAN = 0xA1;
     public static final String INTENT_EXTRA_KEY_QR_SCAN = "qr_scan_result";
 
+    private boolean isAddPerson = false;
+    private String workId = "";
+
     /**
      * Called when the activity is first created.
      */
@@ -92,6 +96,10 @@ public class CaptureActivity extends BaseActivity implements Callback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
+
+        isAddPerson = getIntent().getBooleanExtra("addPerson", false);
+        workId = getIntent().getStringExtra("workId");
+
         //ViewUtil.addTopView(getApplicationContext(), this, R.string.scan_card);
         CameraManager.init(getApplication());
         viewfinderView = (ViewfinderView) findViewById(R.id.viewfinder_content);
@@ -206,7 +214,14 @@ public class CaptureActivity extends BaseActivity implements Callback {
                                     String id = resultStr.substring(from, resultStr.length());
                                     startActivity(new Intent(CaptureActivity.this, DeviceManageActivity.class)
                                             .putExtra("id", id));
-                                    CaptureActivity.this.finish();
+//                                    CaptureActivity.this.finish();
+                                } else if (resultStr.contains("PJMember://m/")) {//人员Id
+                                    int from = "PJMember://m/".length();
+                                    String id = resultStr.substring(from, resultStr.length());
+                                    startActivity(new Intent(CaptureActivity.this, PersonnelInfoActivity.class)
+                                            .putExtra("id", workId)
+                                            .putExtra("userId", id)
+                                            .putExtra("addPerson", isAddPerson));
                                 }
 
                             } else {
@@ -355,7 +370,14 @@ public class CaptureActivity extends BaseActivity implements Callback {
                 String id = resultStr.substring(from, resultStr.length());
                 startActivity(new Intent(CaptureActivity.this, DeviceManageActivity.class)
                         .putExtra("id", id));
-                CaptureActivity.this.finish();
+//                CaptureActivity.this.finish();
+            } else if (resultStr.contains("PJMember://m/")) {
+                int from = "PJMember://m/".length();
+                String id = resultStr.substring(from, resultStr.length());
+                startActivity(new Intent(CaptureActivity.this, PersonnelInfoActivity.class)
+                        .putExtra("id", workId)
+                        .putExtra("userId", id)
+                        .putExtra("addPerson", isAddPerson));
             }
         }
 //        CaptureActivity.this.finish();

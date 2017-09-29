@@ -57,14 +57,53 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.6"
+        android:orientation="vertical"
         android:paddingTop="@dimen/size_20">
 
         <View
-            android:id="@+id/fragment_setting__line"
+            android:id="@+id/fragment_setting__update_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_1"
+            android:alpha="0.5"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/fragment_setting__update_position"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_12"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="@dimen/size_15"
+                android:layout_height="@dimen/size_15"
+                android:src="@mipmap/password" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_5"
+                android:layout_weight="1"
+                android:text="更换职位"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_15"
+                android:src="@mipmap/right_arrow" />
+
+
+        </LinearLayout>
+
+        <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1"
             android:alpha="0.5"
@@ -74,7 +113,6 @@
             android:id="@+id/fragment_setting__update_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_setting__line"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="@dimen/size_12">
@@ -104,9 +142,13 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1"
-            android:layout_below="@+id/fragment_setting__update_pwd"
             android:alpha="0.5"
             android:background="@color/white" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/fragment_setting__exit"
@@ -123,6 +165,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_14" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

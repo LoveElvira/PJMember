@@ -40,7 +40,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
     //维修时间标题
     private TextView timeTitle;
     //维修时间
-    private EditText time;
+    private TextView time;
     //设备名称
 //    private EditText name;
     //设备编号
@@ -80,8 +80,8 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
 
         selectPhotoLayout = (LinearLayout) findViewById(R.id.popup_photo__parent);
 
-        timeTitle = (TextView) findViewById(R.id.activity_add_log__name_title);
-        time = (EditText) findViewById(R.id.activity_add_log__time);
+        timeTitle = (TextView) findViewById(R.id.activity_add_log__time_title);
+        time = (TextView) findViewById(R.id.activity_add_log__time);
 //        name = (EditText) findViewById(R.id.activity_add_repair__name);
 //        num = (EditText) findViewById(R.id.activity_add_repair__num);
         contentTitle = (TextView) findViewById(R.id.activity_add_log__content_title);

@@ -3,7 +3,6 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,10 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
-import com.humming.pjmember.activity.takephoto.AddDefectActivity;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
-import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
@@ -23,7 +20,6 @@ import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.equipment.EquipmentRepairBean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import okhttp3.Request;
 
@@ -34,16 +30,26 @@ import okhttp3.Request;
 
 public class RepairDetailsActivity extends BaseActivity {
 
+    //报修时间标题
+    private TextView timeTitle;
     //报修时间
     private TextView time;
+    //设备名称标题
+    private TextView nameTitle;
     //设备名称
     private TextView name;
+    //设备编号标题
+    private TextView numTitle;
     //设备编号
     private TextView num;
-    //维修内容
+    //维修内容 包含标题和内容
     private TextView content;
+    //维修金额标题
+    private TextView priceTitle;
     //维修金额
     private TextView price;
+    //发票标题
+    private TextView imageTitle;
     //发票图片
     private ImageView image;
 
@@ -52,7 +58,7 @@ public class RepairDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_repair_details);
+        setContentView(R.layout.activity_log_details);
         initView();
     }
 
@@ -68,12 +74,23 @@ public class RepairDetailsActivity extends BaseActivity {
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
-        time = (TextView) findViewById(R.id.activity_repair_details__time);
-        name = (TextView) findViewById(R.id.activity_repair_details__facility_name);
-        num = (TextView) findViewById(R.id.activity_repair_details__num);
-        content = (TextView) findViewById(R.id.activity_repair_details__content);
-        price = (TextView) findViewById(R.id.activity_repair_details__price);
-        image = (ImageView) findViewById(R.id.activity_repair_details__image);
+        timeTitle = (TextView) findViewById(R.id.activity_log_details__time_title);
+        time = (TextView) findViewById(R.id.activity_log_details__time);
+        nameTitle = (TextView) findViewById(R.id.activity_log_details__facility_name_title);
+        name = (TextView) findViewById(R.id.activity_log_details__facility_name);
+        numTitle = (TextView) findViewById(R.id.activity_log_details__num_title);
+        num = (TextView) findViewById(R.id.activity_log_details__num);
+        content = (TextView) findViewById(R.id.activity_log_details__content);
+        priceTitle = (TextView) findViewById(R.id.activity_log_details__price_title);
+        price = (TextView) findViewById(R.id.activity_log_details__price);
+        imageTitle = (TextView) findViewById(R.id.activity_log_details__listview_title);
+        image = (ImageView) findViewById(R.id.activity_log_details__listview);
+
+        timeTitle.setText("维修时间：");
+        nameTitle.setText("设备名称：");
+        numTitle.setText("设备编号：");
+        priceTitle.setText("维修金额：");
+        imageTitle.setText("发票：");
 
         leftArrow.setOnClickListener(this);
         image.setOnClickListener(this);
@@ -102,21 +119,21 @@ public class RepairDetailsActivity extends BaseActivity {
             public void onResponse(EquipmentRepairBean response) {
                 progressHUD.dismiss();
                 if (response != null) {
-
                     name.setText(response.getEquipmentName());
                     num.setText(response.getEquipmentNo());
-                    Log.i("ee", response.getRepairFee() + "");
-                    price.setText("¥ " + response.getRepairFee().setScale(2));
+                    if (response.getRepairFee() != null && !"".equals(response.getRepairFee())) {
+                        price.setText("¥ " + String.format("%.2f", Double.parseDouble(response.getRepairFee())));
+                    } else {
+                        price.setText("¥ 0.00");
+                    }
                     time.setText(response.getRepairTime());
-//                    String str = "<font color='#ADADAD'>" + "S26各收费站机点供电系统、收费系统、监控系统、通信系统保修故障维修。" + "</font>";
-                    content.setText(initHtml("缺陷描述", response.getReason()));
+                    content.setText(initHtml("维修内容", response.getReason()));
                     if (response.getInvoiceUrl() != null && !"".equals(response.getInvoiceUrl())) {
                         Glide.with(getBaseContext())
                                 .load(response.getInvoiceUrl())
                                 .into(image);
                         path.add(response.getInvoiceUrl());
                     }
-
                 }
 
             }
@@ -138,7 +155,7 @@ public class RepairDetailsActivity extends BaseActivity {
             case R.id.base_toolbar__left_image:
                 RepairDetailsActivity.this.finish();
                 break;
-            case R.id.activity_repair_details__image://查看发票大图
+            case R.id.activity_log_details__listview://查看发票大图
                 if (path.size() > 0) {
                     Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
                     intent.putExtra("position", 0);

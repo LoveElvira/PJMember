@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/common_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/base_toolbar" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/size_12"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_12">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_facility_name" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__time_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_facility_name" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__facility_name_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__facility_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_content" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__num_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/activity_log_details__company_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_content" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__company_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:text="维修单位："
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__company"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="维修单位"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/activity_log_details__type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_content" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:text="维修单位："
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="维修单位"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_content" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:lineSpacingMultiplier="1.2"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_content" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__price_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/activity_log_details__listview_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_15"
+                        android:src="@mipmap/work_content" />
+
+                    <TextView
+                        android:id="@+id/activity_log_details__listview_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/size_5"
+                        android:textColor="@color/gray_888888"
+                        android:textSize="@dimen/text_13" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/activity_log_details__listview"
+                    android:layout_width="@dimen/size_80"
+                    android:layout_height="@dimen/size_80"
+                    android:layout_marginLeft="@dimen/size_20"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/bg" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -30,6 +30,11 @@ public class SettingContent extends BaseLinearLayout {
     private TextView company;
     //修改密码
     private LinearLayout updatePwdLayout;
+    //更新职位
+    private LinearLayout updatePositionLayout;
+
+    private View updatePositionLine;
+
     //退出登录
     private TextView exitLogin;
 
@@ -52,7 +57,9 @@ public class SettingContent extends BaseLinearLayout {
         headImage = findViewById(R.id.fragment_setting__head_image);
         userName = findViewById(R.id.fragment_setting__name);
         company = findViewById(R.id.fragment_setting__company);
+        updatePositionLayout = findViewById(R.id.fragment_setting__update_position);
         updatePwdLayout = findViewById(R.id.fragment_setting__update_pwd);
+        updatePositionLine = findViewById(R.id.fragment_setting__update_line);
         exitLogin = findViewById(R.id.fragment_setting__exit);
 
         String nickName = SharePrefUtil.getString(Constant.FILE_NAME, Constant.NICKNAME, "", Application.getInstance().getCurrentActivity());
@@ -62,6 +69,7 @@ public class SettingContent extends BaseLinearLayout {
         Glide.with(getContext())
                 .load(url)
                 .into(headImage);
+        updatePositionLayout.setOnClickListener(this);
         updatePwdLayout.setOnClickListener(this);
         exitLogin.setOnClickListener(this);
 
@@ -77,6 +85,8 @@ public class SettingContent extends BaseLinearLayout {
 
                 startActivity(LoginActivity.class);
 
+                break;
+            case R.id.fragment_setting__update_position://更换职位
                 break;
         }
     }

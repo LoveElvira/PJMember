@@ -1,5 +1,6 @@
 package com.humming.pjmember.activity.takephoto;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -13,21 +14,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
 import com.humming.pjmember.adapter.ImageAdapter;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
+import com.humming.pjmember.requestdate.UploadParameter;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
 import com.humming.pjmember.viewutils.selectpic.ImageSelectorActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/9/4.
@@ -41,6 +51,8 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
     private ImageAdapter adapter;
     private List<Map<String, String>> list = new ArrayList<>();
     private ArrayList<String> path = new ArrayList<>();
+
+    private String[] images;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +96,53 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
     }
 
 
+    private void upLoadImage(List<Map<String, String>> list) {
+        progressHUD = ProgressHUD.show(DefectResultActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+        images = new String[list.size() - 1];
+        List<File> files = new ArrayList<File>();
+        for (int i = 0; i < list.size() - 1; i++) {
+            File file = new File(list.get(i).get("imagePath"));
+            files.add(file);
+        }
+        UploadParameter upload = new UploadParameter();
+        upload.setType("defectResult");
+        OkHttpClientManager.postAsyn(Config.UPDATE_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                showShortToast(info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(List<String> response) {
+                progressHUD.dismiss();
+                for (int i = 0; i < response.size(); i++) {
+                    images[i] = response.get(i);
+                    Log.i("ee", images[i]);
+//                    customerDialog.dismiss();
+                }
+
+//                Log.i("ee", images.toString());
+                //sendSuggestion();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, upload, files, new TypeReference<List<String>>() {
+        }, DefectResultActivity.class);
+    }
+
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -92,6 +151,13 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
                 DefectResultActivity.this.finish();
                 break;
             case R.id.base_toolbar__right_text:
+
+//                if (list.size() > 1) {
+//                    upLoadImage(list);
+//                } else {
+//                    showShortToast("请选择图片");
+//                }
+
                 DefectResultActivity.this.finish();
                 break;
             case R.id.popup_photo__take://拍摄
@@ -101,10 +167,10 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
                         = new ImageConfig.Builder(DefectResultActivity.this, new PicassoLoader())
-                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
-                        .titleTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
+                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
+                        .titleTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .mutiSelect()
                         .mutiSelectMaxSize(6)
                         .pathList(path)

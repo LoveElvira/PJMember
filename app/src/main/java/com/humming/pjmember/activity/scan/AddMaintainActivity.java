@@ -1,10 +1,12 @@
 package com.humming.pjmember.activity.scan;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -17,8 +19,15 @@ import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
 import com.humming.pjmember.adapter.ImageAdapter;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
+import com.humming.pjmember.requestdate.AddMaintainParameter;
+import com.humming.pjmember.requestdate.AddRepairParameter;
+import com.humming.pjmember.responsedate.SuccessResponse;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
@@ -29,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Request;
+
 /**
  * Created by Elvira on 2017/9/3.
  * 添加保养记录
@@ -37,22 +48,30 @@ import java.util.Map;
 public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
 
-    //维修时间标题
+    //保养时间标题
     private TextView timeTitle;
-    //维修时间
-    private EditText time;
-    //设备名称
-//    private EditText name;
-    //设备编号
-//    private EditText num;
-    //维修内容标题
+    //保养时间
+    private TextView time;
+    //保养单位标题
+    private TextView companyTitle;
+    //保养单位
+    private LinearLayout companyLayout;
+    private EditText company;
+    //保养类型标题
+    private TextView typeTitle;
+    //保养类型
+    private LinearLayout typeLayout;
+    private EditText type;
+    //保养内容标题
     private TextView contentTitle;
-    //维修内容
+    //保养内容
     private EditText content;
-    //维修金额标题
+    //保养金额标题
     private TextView priceTitle;
-    //维修金额
+    //保养金额
     private EditText price;
+    //listview title
+    private TextView listViewTitle;
     //发票上传 listview
     //提交
     private TextView submit;
@@ -73,6 +92,10 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     protected void initView() {
         super.initView();
+
+        id = getIntent().getStringExtra("id");
+        popupParent = View.inflate(getBaseContext(), R.layout.activity_add_log, null);
+
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("添加保养记录");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
@@ -80,22 +103,34 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
 
         selectPhotoLayout = (LinearLayout) findViewById(R.id.popup_photo__parent);
 
-        timeTitle = (TextView) findViewById(R.id.activity_add_log__name_title);
-        time = (EditText) findViewById(R.id.activity_add_log__time);
-//        name = (EditText) findViewById(R.id.activity_add_repair__name);
-//        num = (EditText) findViewById(R.id.activity_add_repair__num);
+        timeTitle = (TextView) findViewById(R.id.activity_add_log__time_title);
+        time = (TextView) findViewById(R.id.activity_add_log__time);
+        companyLayout = (LinearLayout) findViewById(R.id.activity_add_log__company_layout);
+        companyTitle = (TextView) findViewById(R.id.activity_add_log__company_title);
+        company = (EditText) findViewById(R.id.activity_add_log__company);
+        typeLayout = (LinearLayout) findViewById(R.id.activity_add_log__type_layout);
+        typeTitle = (TextView) findViewById(R.id.activity_add_log__type_title);
+        type = (EditText) findViewById(R.id.activity_add_log__type_ed);
         contentTitle = (TextView) findViewById(R.id.activity_add_log__content_title);
         content = (EditText) findViewById(R.id.activity_add_log__content);
         priceTitle = (TextView) findViewById(R.id.activity_add_log__price_title);
         price = (EditText) findViewById(R.id.activity_add_log__price);
+        listViewTitle = (TextView) findViewById(R.id.activity_add_log__listview_title);
 
+        companyLayout.setVisibility(View.VISIBLE);
+        typeLayout.setVisibility(View.VISIBLE);
+        type.setVisibility(View.VISIBLE);
         timeTitle.setText("保养时间");
-        time.setHint("2017-08-04 16:58");
+        time.setHint("请选择保养时间");
+        companyTitle.setText("保养单位");
+        company.setHint("请输入保养单位");
+        typeTitle.setText("保养类型");
+        type.setHint("请输入保养类型");
         contentTitle.setText("保养内容");
         content.setHint("请输入保养内容");
         priceTitle.setText("保养金额");
         price.setHint("请输入保养金额");
-
+        listViewTitle.setText("发票上传");
 
         listView = (RecyclerView) findViewById(R.id.activity_add_log__listview);
 
@@ -103,7 +138,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
         listView.setLayoutManager(gridLayoutManager);
 
         listView.addItemDecoration(new SpacesItemDecoration(10));
-        initDate();
+        initAddImage();
         adapter = new ImageAdapter(list, this, 1);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
@@ -112,13 +147,78 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
 
         leftArrow.setOnClickListener(this);
         submit.setOnClickListener(this);
+        time.setOnClickListener(this);
     }
 
 
-    private void initDate() {
+    private void initAddImage() {
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);
+    }
+
+    //新增设备保养信息
+    private void addMaintainLog(String time, String company, String type, String content, String price) {
+        progressHUD = ProgressHUD.show(AddMaintainActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+        AddMaintainParameter parameter = new AddMaintainParameter();
+        parameter.setEquipmentId(id);
+        parameter.setMaintainTime(time);
+        parameter.setMaintainDepartment(company);
+        parameter.setType(type);
+        parameter.setContent(content);
+        parameter.setMaintainFee(price);
+
+        OkHttpClientManager.postAsyn(Config.ADD_MAINTAIN_LOG, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
+            @Override
+            public void onError(Request request, Error info) {
+                showShortToast(info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(SuccessResponse response) {
+                progressHUD.dismiss();
+                if (response!=null) {
+                    showShortToast(response.getMsg());
+                    if (response.getCode() == 1) {
+                        AddMaintainActivity.this.finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, SuccessResponse.class, DeviceManageActivity.class);
+
+    }
+
+    private boolean isNull(String time, String company, String type, String content, String price) {
+        if (TextUtils.isEmpty(time)) {
+            showShortToast("保养时间不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(company)) {
+            showShortToast("保养单位不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(type)) {
+            showShortToast("保养类型不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(price)) {
+            showShortToast("保养金额不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(content)) {
+            showShortToast("保养内容不能为空");
+            return false;
+        }
+        return true;
     }
 
 
@@ -130,7 +230,14 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                 AddMaintainActivity.this.finish();
                 break;
             case R.id.activity_add_log__submit:
-                AddMaintainActivity.this.finish();
+                String timeStr = time.getText().toString().trim();
+                String companyStr = company.getText().toString().trim();
+                String typeStr = type.getText().toString().trim();
+                String contentStr = content.getText().toString().trim();
+                String priceStr = price.getText().toString().trim();
+                if (isNull(timeStr, companyStr, typeStr, contentStr, priceStr)) {
+                    addMaintainLog(timeStr, companyStr, typeStr, contentStr, priceStr);
+                }
                 break;
             case R.id.popup_photo__take://拍摄
                 getCamerePhoto();
@@ -139,10 +246,10 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
                         = new ImageConfig.Builder(AddMaintainActivity.this, new PicassoLoader())
-                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
-                        .titleTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
+                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
+                        .titleTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .mutiSelect()
                         .mutiSelectMaxSize(1)
                         .pathList(path)
@@ -151,6 +258,12 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                         .build();
                 ImageSelector.open(imageConfig);
                 selectPhotoPopupWindow.gonePopupWindow();
+                break;
+            case R.id.activity_add_log__time://选择时间
+                showPopWindowDatePicker(popupParent);
+                break;
+            case R.id.date_submit://获取时间
+                time.setText(getDate());
                 break;
         }
     }
@@ -196,7 +309,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                 list.add(map);
             }
             if (list.size() < 1) {
-                initDate();//添加最后一个 add
+                initAddImage();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
         }
@@ -216,7 +329,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 1) {
-                            initDate();//添加最后一个 add
+                            initAddImage();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {
@@ -235,7 +348,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 1) {
-                            initDate();//添加最后一个 add
+                            initAddImage();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {

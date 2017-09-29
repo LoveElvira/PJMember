@@ -2,8 +2,13 @@ package com.humming.pjmember.base;
 
 import android.app.Activity;
 import android.app.Service;
+import android.content.Context;
 import android.os.Vibrator;
+import android.util.Log;
 
+import com.alibaba.sdk.android.push.CloudPushService;
+import com.alibaba.sdk.android.push.CommonCallback;
+import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.baidu.mapapi.SDKInitializer;
 import com.humming.pjmember.service.LocationService;
 
@@ -20,7 +25,7 @@ public class Application extends android.app.Application {
     private Activity currentActivity;
     /*管理当前打开的所有activity*/
     private static Stack<Activity> activityStack;
-
+    public CloudPushService pushService;
     public LocationService locationService;
     public Vibrator mVibrator;
 
@@ -40,6 +45,36 @@ public class Application extends android.app.Application {
         mVibrator = (Vibrator) getApplicationContext().getSystemService(Service.VIBRATOR_SERVICE);
         SDKInitializer.initialize(getApplicationContext());
         SDKInitializer.getCoordType();
+
+        initCloudChannel(this);
+    }
+
+    /**
+     * 初始化云推送通道
+     *
+     * @param applicationContext
+     */
+    private void initCloudChannel(Context applicationContext) {
+        PushServiceFactory.init(applicationContext);
+        pushService = PushServiceFactory.getCloudPushService();
+//        MobclickAgent.setScenarioType(applicationContext, MobclickAgent.EScenarioType.E_UM_NORMAL);
+        pushService.register(applicationContext, new CommonCallback() {
+            @Override
+            public void onSuccess(String response) {
+                Log.i("push", "init cloudchannel success");
+
+            }
+
+            @Override
+            public void onFailed(String errorCode, String errorMessage) {
+                Log.e("push", "init cloudchannel failed -- errorcode:" + errorCode + " -- errorMessage:" + errorMessage);
+            }
+        });
+        // 初始化小米通道，自动判断是否支持小米系统推送，如不支持会跳过注册
+//        MiPushRegister.register(applicationContext, "小米AppID", "小米AppKey");
+        // 初始化华为通道，自动判断是否支持华为系统推送，如不支持会跳过注册
+//        HuaWeiRegister.register(applicationContext);
+
     }
 
     public static synchronized Application getInstance() {

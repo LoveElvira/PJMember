@@ -23,9 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingBottom="@dimen/size_12"
                 android:paddingLeft="@dimen/size_12"
-                android:paddingRight="@dimen/size_12"
-                android:paddingBottom="@dimen/size_12">
+                android:paddingRight="@dimen/size_12">
 
 
                 <include layout="@layout/item_plan_middle" />
@@ -37,16 +37,17 @@
                     android:id="@+id/activity_plan_details__btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/size_20"
                     android:layout_marginLeft="@dimen/size_30"
                     android:layout_marginRight="@dimen/size_30"
                     android:layout_marginTop="@dimen/size_30"
-                    android:layout_marginBottom="@dimen/size_20"
                     android:background="@drawable/border_gray_radius_3"
                     android:gravity="center"
                     android:padding="@dimen/size_12"
-                    android:text="确认安全交底并开始作业"
+                    android:text="开始作业"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_14" />
+                    android:textSize="@dimen/text_14"
+                    android:visibility="gone" />
 
 
             </LinearLayout>

@@ -2,21 +2,43 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.humming.pjmember">
 
+    <!-- 阿里移动推送相关权限 -->
+    <!-- Android 6.0版本可去除，用于选举信息（通道复用）的同步 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- 进行网络访问和网络状态监控相关的权限声明 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 震动权限 -->
+    <!-- 允许对sd卡进行读写操作 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 网络库使用，当网络操作时需要确保事务完成不被杀掉 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 用于读取手机硬件信息等，用于机型过滤 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 选举使用，当应用有删除或者更新时需要重新选举，复用推送通道 -->
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_CHANGED" />
+    <uses-permission android:name="android.permission.BROADCAST_PACKAGE_REPLACED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <!-- 补偿通道小米PUSH使用，不用可去除 -->
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <!-- 补偿通道GCM使用，不使用可去除 -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <!-- 允许监听启动完成事件 -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- 允许访问震动器 -->
     <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- 允许task重排序 -->
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+
     <!-- 摄像头权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- 自动聚焦权限 -->
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <!-- 写文件的权限 -->
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS" />-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 存储卡的权限 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
@@ -58,21 +80,31 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.scan.AddRepairActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.scan.AddMaintainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.scan.AddUseOilActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.scan.AddAccidentActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.scan.DeviceManageActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.scan.RepairDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.scan.MaintainDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.scan.AccidentDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.scan.RepairLogActivity"
@@ -88,7 +120,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.takephoto.AddDefectActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.notify.NotifyActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -132,8 +165,27 @@
         <activity
             android:name=".activity.work.WorkSafetyDisclosureActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.work.PersonActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.work.EquipmentActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.work.MaterialActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.scan.PersonnelInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.scan.AccidentNatureActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.scan.AccidentTypeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
+        <!--百度定位-->
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
@@ -145,6 +197,93 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="CWYlDxq7ySs54SVAqYDDPTC1glLFSKzo" />  <!--http://lbsyun.baidu.com/apiconsole/key-->
+
+        <!--阿里云推送-->
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="24634597" /> <!-- 请填写你自己的- appKey -->
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="c939be9e8b5fdec32464fd57278f3a89" /> <!-- 请填写你自己的appSecret -->
+        <!--公司秘钥-->
+        <!--<meta-data-->
+        <!--android:name="com.alibaba.app.appkey"-->
+        <!--android:value="23537479" /> &lt;!&ndash; 请填写你自己的- appKey &ndash;&gt;-->
+        <!--<meta-data-->
+        <!--android:name="com.alibaba.app.appsecret"-->
+        <!--android:value="d3168c12ee975201bee7a8b0efe3db61" /> &lt;!&ndash; 请填写你自己的appSecret &ndash;&gt;-->
+        <!--友盟-->
+        <!--<meta-data-->
+        <!--android:name="UMENG_APPKEY"-->
+        <!--android:value="5992c1adb27b0a71f0001e74" />-->
+        <!--<meta-data-->
+        <!--android:name="UMENG_CHANNEL"-->
+        <!--android:value="${UMENG_CHANNEL_VALUE}" />-->
+
+        <!-- 通道保持服务 -->
+        <service
+            android:name="com.alibaba.sdk.android.push.ChannelService"
+            android:exported="true"
+            android:process=":channel">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.SERVICE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.agoo.android.intent.action.PING_V4" />
+                <category android:name="taobao" />
+            </intent-filter>
+        </service>
+        <!-- 消息接收服务 -->
+        <service
+            android:name="com.alibaba.sdk.android.push.MsgService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.RECEIVE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.NOTIFY_ACTION" />
+            </intent-filter>
+        </service>
+        <!-- 消息接收增强服务（可提高通知/消息达到率）-->
+        <service
+            android:name="com.alibaba.sdk.android.push.channel.TaobaoRecvService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.android.agoo.client.MessageReceiverService" />
+            </intent-filter>
+        </service>
+
+        <!--消息接收监听器 自己定义-->
+        <receiver android:name="com.humming.pjmember.receiver.MyMessageReceiver">
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_OPENED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.push2.action.NOTIFICATION_REMOVED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.taobao.accs.intent.action.COMMAND" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.taobao.taobao.intent.action.COMMAND" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.alibaba.sdk.android.push.RECEIVE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
 
 
     </application>

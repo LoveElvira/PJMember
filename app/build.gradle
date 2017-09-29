@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            //选择要添加的对应cpu类型的.so库。为了兼容cpu，查看官网SDK的libs多添加几个
+            abiFilters 'arm64-v8a', 'armeabi', 'armeabi-v7a', 'mips', 'mips64', 'x86', 'x86_64'
+        }
     }
     buildTypes {
         release {
@@ -65,4 +69,9 @@ dependencies {
     //折线图
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile files('libs/pjmember_dto.jar')
+
+    //阿里云推送
+    compile 'com.aliyun.ams:alicloud-android-push:3.0.12'
+    compile 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'
+    compile 'com.aliyun.ams:alicloud-android-ut:5.1.0'
 }

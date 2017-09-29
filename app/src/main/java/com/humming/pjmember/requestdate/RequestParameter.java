@@ -20,10 +20,51 @@ public class RequestParameter implements IRequestMainData {
     //第几页 获取第几页数据，首页不用传
     private String pagable;
 
+    //获取作业详情  获取作业人员信息
+    private String workId;
+
     //获取维修记录详情 id
     private String repairId;
+    //获取保养记录详情 id
+    private String maintainId;
+    //获取事故记录详情 id
+    private String accidentId;
+
+    private String userId;
 
     public RequestParameter() {
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getWorkId() {
+        return workId;
+    }
+
+    public void setWorkId(String workId) {
+        this.workId = workId;
+    }
+
+    public String getMaintainId() {
+        return maintainId;
+    }
+
+    public void setMaintainId(String maintainId) {
+        this.maintainId = maintainId;
+    }
+
+    public String getAccidentId() {
+        return accidentId;
+    }
+
+    public void setAccidentId(String accidentId) {
+        this.accidentId = accidentId;
     }
 
     public String getRepairId() {

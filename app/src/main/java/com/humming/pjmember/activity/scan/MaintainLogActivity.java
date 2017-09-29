@@ -171,7 +171,7 @@ public class MaintainLogActivity extends BaseActivity implements BaseQuickAdapte
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_log__parent:
-                startActivity(new Intent(MaintainLogActivity.this, RepairDetailsActivity.class)
+                startActivity(new Intent(MaintainLogActivity.this, MaintainDetailsActivity.class)
                         .putExtra("id", maintainLists.get(position).getMaintainId()));
                 break;
         }

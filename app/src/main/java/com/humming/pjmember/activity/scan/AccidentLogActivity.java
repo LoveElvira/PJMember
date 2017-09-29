@@ -171,7 +171,7 @@ public class AccidentLogActivity extends BaseActivity implements BaseQuickAdapte
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_log__parent:
-                startActivity(new Intent(AccidentLogActivity.this, RepairDetailsActivity.class)
+                startActivity(new Intent(AccidentLogActivity.this, AccidentDetailsActivity.class)
                         .putExtra("id", accidentLists.get(position).getAccidentId()));
                 break;
         }

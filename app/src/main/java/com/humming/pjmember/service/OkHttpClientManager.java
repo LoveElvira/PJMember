@@ -150,6 +150,8 @@ public class OkHttpClientManager {
         builder.addFormDataPart("parameters", json);
         for (int i = 0; i < files.size(); i++) {
             builder.addFormDataPart("files", files.get(i).getName(), RequestBody.create(null, files.get(i)));
+            Log.i("ee", "files----" + files.get(i).getName());
+//            builder.addFormDataPart("files", "pjmember" + i + ".jpg", RequestBody.create(null, files.get(i)));
         }
         String url = Config.URL_SERVICE_UPLOAD;
         RequestBody requestBody = builder.build();
