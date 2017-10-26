@@ -21,7 +21,6 @@ import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.service.ResponseData;
 import com.humming.pjmember.utils.SharePrefUtil;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.login.LevelBean;

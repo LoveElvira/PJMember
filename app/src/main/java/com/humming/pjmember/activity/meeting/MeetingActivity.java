@@ -58,6 +58,7 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
         rightImage.setImageResource(R.mipmap.meeting_search);
 
         time = (TextView) findViewById(R.id.item_time_top__time);
+        time.setVisibility(View.VISIBLE);
         listView = (RecyclerView) findViewById(R.id.item_time_top__listview);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7);
@@ -71,7 +72,7 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
             } else {
                 model.setSelect(false);
             }
-            model.setTime((i + 22) + "");
+            model.setTime((i + 23) + "");
             timeModelList.add(model);
         }
 

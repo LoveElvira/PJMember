@@ -36,7 +36,7 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
     protected void initView() {
         super.initView();
         title = (TextView) findViewById(R.id.base_toolbar__title);
-        title.setText("保养记录");
+        title.setText("用油记录");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 

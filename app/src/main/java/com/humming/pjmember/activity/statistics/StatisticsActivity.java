@@ -1,16 +1,11 @@
 package com.humming.pjmember.activity.statistics;
 
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,9 +13,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -29,19 +22,15 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.ChartTouchListener;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Utils;
 import com.humming.pjmember.R;
 import com.humming.pjmember.adapter.TimeAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.bean.TimeModel;
 import com.humming.pjmember.viewutils.MyMarkerView;
-import com.humming.pjmember.viewutils.MyXAxisRenderer;
+import com.humming.pjmember.viewutils.MyXFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +102,7 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
             } else {
                 model.setSelect(false);
             }
-            model.setTime((i + 22) + "");
+            model.setTime((i + 23) + "");
             timeModelList.add(model);
         }
 
@@ -137,7 +126,8 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         lineChart.setDrawBorders(false);
         //设置图表的描述 false 不显示
         lineChart.getDescription().setEnabled(false);
-
+        // 没有数据时样式
+        lineChart.setNoDataText("暂无数据");
         // 设置是否可以触摸
         lineChart.setTouchEnabled(true);
 
@@ -173,6 +163,9 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         //设置x轴的显示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
+        String[] value = {"大桥", "隧道", "高速", "浦东", "东海", "嘉青"};
+        xAxis.setValueFormatter(new MyXFormatter(value));
+
         //获取左边的轴线
         YAxis leftAxis = lineChart.getAxisLeft();
         //设置图表右边的y轴禁用
@@ -200,7 +193,7 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         //mChart.getViewPortHandler().setMaximumScaleX(2f);
 
         // add data
-        setLineData(20, 100, lineChart);
+        setLineData(6, 100, lineChart);
 
 //        mChart.setVisibleXRange(20);
 //        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
@@ -231,7 +224,7 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         for (int i = 0; i < count; i++) {
 
             float val = (float) (Math.random() * range) + 3;
-            values.add(new Entry(i, val, getResources().getDrawable(R.mipmap.address)));
+            values.add(new Entry(i, val, ContextCompat.getDrawable(getBaseContext(), R.mipmap.address)));
         }
 
         //LineDataSet每一个对象就是一条连接线
@@ -302,21 +295,30 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         pieChart.getDescription().setEnabled(false);
         //设置图表上下左右的偏移，类似于外边距
 //        pieChart.setExtraOffsets(5, 10, 5, 5);
+        //设置阻尼系数,范围在[0,1]之间,越小饼状图转动越困难
+//        pieChart.setDragDecelerationFrictionCoef(0.95f);
         //设置PieChart中间文字的内容
         pieChart.setDrawCenterText(true);
         pieChart.setCenterText("总费用");
         //设置字体大小
-        pieChart.setCenterTextSize(15);
-        //是否要将PieChart设为一个圆环状
+        pieChart.setCenterTextSize(13);
+        //是否要将PieChart设为一个圆环状/是否绘制饼状图中间的圆
         pieChart.setDrawHoleEnabled(true);
         //设置PieChart中间圆的颜色
         pieChart.setHoleColor(Color.WHITE);
+        //饼状图中间的圆的半径大小
+//        pieChart.setHoleRadius(58f);
         //设置中间圆的半透明圆环
-        pieChart.setTransparentCircleRadius(10f);
+//        pieChart.setTransparentCircleRadius(10f);
         //设置图表初始化时第一块数据显示的位置
         pieChart.setRotationAngle(90f);
         pieChart.setRotationEnabled(true);//设置可以手动旋转
         pieChart.setUsePercentValues(true);//显示成百分比
+
+        // 设置 pieChart 图表Item文本属性
+        pieChart.setDrawEntryLabels(true);//设置pieChart是否只显示饼图上百分比不显示文字（true：下面属性才有效果）
+        pieChart.setEntryLabelColor(Color.WHITE);//设置pieChart图表文本字体颜色
+        pieChart.setEntryLabelTextSize(10f);//设置pieChart图表文本字体大小
 
         Legend mLegend = pieChart.getLegend();
         mLegend.setForm(Legend.LegendForm.NONE);//Line线性 square
@@ -345,19 +347,23 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         list.add(new PieEntry(quarterly_three, 2));
         //y轴集合
         PieDataSet set = new PieDataSet(list, "");
-        set.setSliceSpace(0f);//设置饼状之间的间隙
+        set.setSliceSpace(2f);//设置饼状之间的间隙
+        set.setSelectionShift(5f);
         ArrayList<Integer> mColorIntegers = new ArrayList<Integer>();
         //饼状的颜色
-        mColorIntegers.add(Color.rgb(215, 215, 215));
-        mColorIntegers.add(Color.rgb(117, 18, 223));
-        mColorIntegers.add(Color.rgb(255, 115, 125));
+        mColorIntegers.add(Color.rgb(54, 93, 254));
+        mColorIntegers.add(Color.rgb(227, 61, 181));
+        mColorIntegers.add(Color.rgb(32, 143, 255));
         //设置颜色集
         set.setColors(mColorIntegers);
         //选中态多出的长度
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        float px = 5 * (dm.densityDpi / 160f);
-        set.setSelectionShift(px);
+//        DisplayMetrics dm = getResources().getDisplayMetrics();
+//        float px = 5 * (dm.densityDpi / 160f);
+//        set.setSelectionShift(px);
         PieData pieData = new PieData(set);
+        pieData.setValueTextColor(Color.WHITE);
+        pieData.setValueFormatter(new PercentFormatter());//设置显示 % 号
+        pieData.setValueTextSize(10f);//设置百分比的字号
 
         pieChart.setData(pieData);
 

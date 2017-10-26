@@ -199,19 +199,19 @@
             android:value="CWYlDxq7ySs54SVAqYDDPTC1glLFSKzo" />  <!--http://lbsyun.baidu.com/apiconsole/key-->
 
         <!--阿里云推送-->
-        <meta-data
-            android:name="com.alibaba.app.appkey"
-            android:value="24634597" /> <!-- 请填写你自己的- appKey -->
-        <meta-data
-            android:name="com.alibaba.app.appsecret"
-            android:value="c939be9e8b5fdec32464fd57278f3a89" /> <!-- 请填写你自己的appSecret -->
-        <!--公司秘钥-->
         <!--<meta-data-->
         <!--android:name="com.alibaba.app.appkey"-->
-        <!--android:value="23537479" /> &lt;!&ndash; 请填写你自己的- appKey &ndash;&gt;-->
+        <!--android:value="24634597" /> &lt;!&ndash; 请填写你自己的- appKey &ndash;&gt;-->
         <!--<meta-data-->
         <!--android:name="com.alibaba.app.appsecret"-->
-        <!--android:value="d3168c12ee975201bee7a8b0efe3db61" /> &lt;!&ndash; 请填写你自己的appSecret &ndash;&gt;-->
+        <!--android:value="c939be9e8b5fdec32464fd57278f3a89" /> &lt;!&ndash; 请填写你自己的appSecret &ndash;&gt;-->
+        <!--公司秘钥-->
+        <meta-data
+            android:name="com.alibaba.app.appkey"
+            android:value="24670650" /> <!-- 请填写你自己的- appKey -->
+        <meta-data
+            android:name="com.alibaba.app.appsecret"
+            android:value="42340719a4bd7759d14960e470283440" /> <!-- 请填写你自己的appSecret -->
         <!--友盟-->
         <!--<meta-data-->
         <!--android:name="UMENG_APPKEY"-->

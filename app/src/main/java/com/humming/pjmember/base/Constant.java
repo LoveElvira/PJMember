@@ -27,6 +27,7 @@ public class Constant {
     public static final int CODE_REQUEST_FOUR = 0X07;
     public static final int CODE_REQUEST_FIVE = 0X08;
     public static final int CODE_REQUEST_SIX = 0X09;
+    public static final int CODE_LOGIN = 0X98;
     public static final int CODE_RESULT = 0X99;//结果值
 
 

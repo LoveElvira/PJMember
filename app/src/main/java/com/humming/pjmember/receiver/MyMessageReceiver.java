@@ -8,6 +8,9 @@ import com.alibaba.sdk.android.push.CloudPushService;
 import com.alibaba.sdk.android.push.MessageReceiver;
 import com.alibaba.sdk.android.push.noonesdk.PushServiceFactory;
 import com.alibaba.sdk.android.push.notification.CPushMessage;
+import com.humming.pjmember.activity.scan.DeviceManageActivity;
+import com.humming.pjmember.activity.scan.PersonnelInfoActivity;
+import com.humming.pjmember.google.zxing.activity.CaptureActivity;
 
 import java.util.Map;
 
@@ -89,6 +92,23 @@ public class MyMessageReceiver extends MessageReceiver {
 //        7、进入网页：MarkorhomeRehomeApp://w?u=http://kdfjkadfjasdfasj
 
 //        Intent intent = null;
+
+
+        if (extraMap.contains("PJMember://e/")) {
+            int from = "PJMember://e/".length();
+            String id = extraMap.substring(from, extraMap.length());
+            context.startActivity(new Intent(context, DeviceManageActivity.class)
+                    .putExtra("id", id));
+//                                    CaptureActivity.this.finish();
+        } else if (extraMap.contains("PJMember://m/")) {//人员Id
+            int from = "PJMember://m/".length();
+            String id = extraMap.substring(from, extraMap.length());
+            context.startActivity(new Intent(context, PersonnelInfoActivity.class)
+                    .putExtra("id", "")
+                    .putExtra("userId", id)
+                    .putExtra("addPerson", false));
+        }
+
 //        if (extraMap.contains("MarkorhomeRehomeApp:\\/\\/tme\\/")) {//主题界面
 //            Log.i(REC_TAG, "主题界面" + StringUtils.getId(extraMap));
 //

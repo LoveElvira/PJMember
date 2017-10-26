@@ -1,6 +1,7 @@
 package com.humming.pjmember.service;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.google.gson.Gson;
+import com.humming.pjmember.activity.LoginActivity;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
@@ -336,11 +338,10 @@ public class OkHttpClientManager {
                 builer.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Application.getInstance().finishAllActivity();
-                        SharePrefUtil.putString(Constant.FILE_NAME, "flag", "0", Application.getInstance().getCurrentActivity());
                         SharePrefUtil.putString(Constant.FILE_NAME, "token", "", Application.getInstance().getCurrentActivity());
-//                        Intent intents = new Intent(Application.getInstance().getApplicationContext(), LoginActivity.class);
-//                        intents.putExtra("loginflag", "1");
-//                        Application.getInstance().getCurrentActivity().startActivityForResult(intents, 0x05);
+                        SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, "", Application.getInstance().getCurrentActivity());
+                        Intent intent = new Intent(Application.getInstance().getApplicationContext(), LoginActivity.class);
+                        Application.getInstance().getCurrentActivity().startActivityForResult(intent, Constant.CODE_LOGIN);
                         dialog.dismiss();
                     }
                 });

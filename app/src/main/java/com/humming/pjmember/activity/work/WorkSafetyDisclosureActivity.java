@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.humming.pjmember.R;
-import com.humming.pjmember.base.AppManager;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
@@ -32,7 +31,7 @@ import okhttp3.Request;
  * Created by Elvira on 2017/9/12.
  * 安全交底内容
  */
-
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class WorkSafetyDisclosureActivity extends BaseWorkActivity implements ObservableScrollView.ScrollViewListener {
 
     //提示
@@ -58,7 +57,6 @@ public class WorkSafetyDisclosureActivity extends BaseWorkActivity implements Ob
         super.initView();
 
         userId = SharePrefUtil.getString(Constant.FILE_NAME, Constant.USER_ID, "", WorkSafetyDisclosureActivity.this);
-        AppManager.getInstance().initWidthHeight(WorkSafetyDisclosureActivity.this);
 
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("安全交底");
