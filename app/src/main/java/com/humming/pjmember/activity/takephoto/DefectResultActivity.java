@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.takephoto;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
 import com.humming.pjmember.viewutils.selectpic.ImageSelectorActivity;
+import com.pjqs.dto.work.WorkBean;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,7 +82,7 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
         listView.setLayoutManager(gridLayoutManager);
 
         listView.addItemDecoration(new SpacesItemDecoration(10));
-        initDate();
+        initData();
         adapter = new ImageAdapter(list, this, 1);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
@@ -89,57 +92,10 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
     }
 
 
-    private void initDate() {
+    private void initData() {
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);
-    }
-
-
-    private void upLoadImage(List<Map<String, String>> list) {
-        progressHUD = ProgressHUD.show(DefectResultActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressHUD.dismiss();
-            }
-        });
-        images = new String[list.size() - 1];
-        List<File> files = new ArrayList<File>();
-        for (int i = 0; i < list.size() - 1; i++) {
-            File file = new File(list.get(i).get("imagePath"));
-            files.add(file);
-        }
-        UploadParameter upload = new UploadParameter();
-        upload.setType("defectResult");
-        OkHttpClientManager.postAsyn(Config.UPDATE_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
-
-            @Override
-            public void onError(Request request, Error info) {
-                showShortToast(info.getInfo().toString());
-                Log.e("onError", info.getInfo().toString());
-                progressHUD.dismiss();
-            }
-
-            @Override
-            public void onResponse(List<String> response) {
-                progressHUD.dismiss();
-                for (int i = 0; i < response.size(); i++) {
-                    images[i] = response.get(i);
-                    Log.i("ee", images[i]);
-//                    customerDialog.dismiss();
-                }
-
-//                Log.i("ee", images.toString());
-                //sendSuggestion();
-            }
-
-            @Override
-            public void onOtherError(Request request, Exception exception) {
-                Log.e("onError", exception.toString());
-                progressHUD.dismiss();
-            }
-        }, upload, files, new TypeReference<List<String>>() {
-        }, DefectResultActivity.class);
     }
 
 
@@ -151,14 +107,23 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
                 DefectResultActivity.this.finish();
                 break;
             case R.id.base_toolbar__right_text:
-
-//                if (list.size() > 1) {
-//                    upLoadImage(list);
-//                } else {
-//                    showShortToast("请选择图片");
-//                }
-
-                DefectResultActivity.this.finish();
+                if (list.size() > 1) {
+                    handler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            super.handleMessage(msg);
+                            switch (msg.what) {
+                                case Constant.CODE_SUCCESS:
+                                    List<String> imageList = (List<String>) msg.obj;
+                                    break;
+                            }
+                        }
+                    };
+                    upLoadImage(list, handler);
+                } else {
+                    showShortToast("请选择图片");
+                }
+//                DefectResultActivity.this.finish();
                 break;
             case R.id.popup_photo__take://拍摄
                 getCamerePhoto();
@@ -224,7 +189,7 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
                 list.add(map);
             }
             if (list.size() < 6) {
-                initDate();//添加最后一个 add
+                initData();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
         }
@@ -244,7 +209,7 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 6) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {
@@ -263,7 +228,7 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 6) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {

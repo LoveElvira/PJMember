@@ -2,6 +2,7 @@ package com.humming.pjmember.base;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,13 +13,16 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -34,7 +38,12 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.humming.pjmember.R;
+import com.humming.pjmember.activity.takephoto.DefectResultActivity;
+import com.humming.pjmember.requestdate.UploadParameter;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.FileUtils;
 import com.humming.pjmember.utils.ImageFileUtils;
 import com.humming.pjmember.utils.NetWorkUtils;
@@ -44,10 +53,15 @@ import com.humming.pjmember.viewutils.SelectPhotoPopupWindow;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/5/31.
@@ -111,6 +125,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     //时间选择器的父类
     protected View popupParent;
+
+    protected Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -496,6 +512,59 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             progressHUD.dismiss();
             isShowProgress = false;
         }
+    }
+
+
+    protected void upLoadImage(List<Map<String, String>> list, final Handler handler) {
+//        progressHUD = ProgressHUD.show(getBaseContext(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//                progressHUD.dismiss();
+//            }
+//        });
+//        images = new String[list.size() - 1];
+        List<File> files = new ArrayList<File>();
+        for (int i = 0; i < list.size() - 1; i++) {
+            File file = new File(list.get(i).get("imagePath"));
+            files.add(file);
+        }
+        UploadParameter upload = new UploadParameter();
+        upload.setType("defectResult");
+        OkHttpClientManager.postAsyn(Config.UPDATE_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
+
+            @Override
+            public void onError(Request request, Error info) {
+                showShortToast(info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
+//                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(List<String> response) {
+//                progressHUD.dismiss();
+                if (response != null) {
+                    Message msg = new Message();
+                    msg.what = Constant.CODE_SUCCESS;
+                    msg.obj = response;
+                    handler.sendMessage(msg);
+                }
+//                for (int i = 0; i < response.size(); i++) {
+////                    images[i] = response.get(i);
+//                    Log.i("ee", images[i]);
+////                    customerDialog.dismiss();
+//                }
+
+//                Log.i("ee", images.toString());
+                //sendSuggestion();
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+//                progressHUD.dismiss();
+            }
+        }, upload, files, new TypeReference<List<String>>() {
+        }, DefectResultActivity.class);
     }
 
 

@@ -39,6 +39,14 @@
                 android:textColor="@color/blue"
                 android:textSize="@dimen/text_15" />
 
+            <TextView
+                android:id="@+id/item_plan_middle__status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_5"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/text_14" />
+
         </LinearLayout>
 
         <LinearLayout

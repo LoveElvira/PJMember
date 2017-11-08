@@ -2,6 +2,8 @@ package com.humming.pjmember.requestdate;
 
 import com.humming.pjmember.service.IRequestMainData;
 
+import java.util.List;
+
 /**
  * Created by Elvira on 2017/9/8.
  */
@@ -31,6 +33,8 @@ public class RequestParameter implements IRequestMainData {
     private String accidentId;
 
     private String userId;
+
+    private List<String> pictureUrls;
 
     public RequestParameter() {
     }
@@ -113,5 +117,13 @@ public class RequestParameter implements IRequestMainData {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<String> getPictureUrls() {
+        return pictureUrls;
+    }
+
+    public void setPictureUrls(List<String> pictureUrls) {
+        this.pictureUrls = pictureUrls;
     }
 }

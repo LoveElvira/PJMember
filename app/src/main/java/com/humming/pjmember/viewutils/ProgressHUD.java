@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.humming.pjmember.R;
 
 /**
@@ -28,7 +30,7 @@ public class ProgressHUD extends Dialog {
 
 
     public void onWindowFocusChanged(boolean hasFocus) {
-        ImageView imageView = (ImageView) findViewById(R.id.spinnerImageView);
+        ImageView imageView = (ImageView) findViewById(R.id.image);
 //        AnimationDrawable spinner = (AnimationDrawable) imageView.getBackground();
 //        spinner.start();
     }
@@ -36,7 +38,7 @@ public class ProgressHUD extends Dialog {
     public void setMessage(CharSequence message) {
         if (message != null && message.length() > 0) {
             findViewById(R.id.message).setVisibility(View.VISIBLE);
-            TextView txt = (TextView) findViewById(R.id.message);
+            TextView txt = findViewById(R.id.message);
             txt.setText(message);
             txt.invalidate();
         }
@@ -62,6 +64,11 @@ public class ProgressHUD extends Dialog {
                 return false;
             }
         });
+        ImageView image = dialog.findViewById(R.id.image);
+        Glide.with(context)
+                .load(R.drawable.loading_one)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(image);
         dialog.setCancelable(cancelable);
         dialog.setOnCancelListener(cancelListener);
         dialog.getWindow().getAttributes().gravity = Gravity.CENTER;

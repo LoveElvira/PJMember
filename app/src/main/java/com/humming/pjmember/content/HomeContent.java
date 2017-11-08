@@ -93,6 +93,9 @@ public class HomeContent extends BaseLinearLayout {
             itemLayoutParent.addView(initItem(true, 4));
         }
 
+
+        getWeather();
+
     }
 
     //设置条目基础信息
@@ -221,7 +224,8 @@ public class HomeContent extends BaseLinearLayout {
             public void onResponse(WeatherBean response) {
                 progressHUD.dismiss();
                 if (response != null) {
-
+                    weatherTemp.setText(response.getTempDay() + "°");
+                    weatherTime.setText(response.getPredictDate() + " " + response.getConditionDay());
                 }
 
             }

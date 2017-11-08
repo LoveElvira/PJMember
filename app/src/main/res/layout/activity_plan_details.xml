@@ -56,4 +56,6 @@
 
     </LinearLayout>
 
+    <include layout="@layout/popupwindow_photo" />
+
 </android.support.design.widget.CoordinatorLayout>

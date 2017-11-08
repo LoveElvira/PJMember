@@ -58,19 +58,7 @@ public class UnCompleteContent extends BaseLinearLayout implements BaseQuickAdap
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add("0");
-            list.add("1");
-            list.add("2");
-            list.add("3");
-        }
-
-//        adapter = new WorkAdapter(list);
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
         workLists = new ArrayList<>();
-//        getWorkDate(pageable);
         isOne = false;
         isShowProgress = true;
     }

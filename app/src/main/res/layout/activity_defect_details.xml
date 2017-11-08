@@ -35,7 +35,6 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
                         android:orientation="horizontal">
 
 
@@ -76,7 +75,38 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="设备名称："
+                            android:text="作业名称："
+                            android:textColor="@color/gray_888888"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <TextView
+                            android:id="@+id/activity_defect_details__work_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray_ADADAD"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:orientation="horizontal">
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/size_15"
+                            android:src="@mipmap/work_content" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:text="设施名称："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
@@ -86,7 +116,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="修路挖掘机"
                             android:textColor="@color/gray_ADADAD"
                             android:textSize="@dimen/text_13" />
 
@@ -118,7 +147,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="张先生"
                             android:textColor="@color/gray_ADADAD"
                             android:textSize="@dimen/text_13" />
 
@@ -134,7 +162,7 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/size_15"
-                            android:src="@mipmap/work_facility_name" />
+                            android:src="@mipmap/work_content" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -150,7 +178,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="2017-08-04 16:58"
                             android:textColor="@color/gray_ADADAD"
                             android:textSize="@dimen/text_13" />
 
@@ -174,7 +201,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
                             android:lineSpacingMultiplier="1.2"
-                            android:text="维修内容：S26各收费站机点供电系统、收费系统、监控系统、通信系统保修故障维修。"
                             android:textSize="@dimen/text_13" />
 
                     </LinearLayout>
@@ -205,7 +231,6 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="普陀区陕西北路1438号"
                             android:textColor="@color/gray_ADADAD"
                             android:textSize="@dimen/text_13" />
 
@@ -216,7 +241,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_10"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -239,7 +265,8 @@
                         android:layout_marginLeft="@dimen/size_20"
                         android:layout_marginTop="@dimen/size_10"
                         android:scaleType="centerCrop"
-                        android:src="@mipmap/bg" />
+                        android:src="@mipmap/bg"
+                        android:visibility="gone" />
 
 
                 </LinearLayout>

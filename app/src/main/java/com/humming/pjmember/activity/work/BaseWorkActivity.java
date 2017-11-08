@@ -26,7 +26,6 @@ import okhttp3.Request;
 public class BaseWorkActivity extends BaseActivity {
 
     protected WorkBean workBean;
-    protected Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class BaseWorkActivity extends BaseActivity {
         id = getIntent().getStringExtra("id");
     }
 
-    //获取保养记录
+    //获取作业详情
     protected void getWorkDetails(final Handler handler) {
         RequestParameter parameter = new RequestParameter();
         parameter.setWorkId(id);

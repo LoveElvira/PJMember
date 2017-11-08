@@ -79,6 +79,12 @@
             android:name=".activity.work.WorkPlanActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.work.StartOrEndWorkActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.work.WorkImageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.scan.AddRepairActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -133,6 +139,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.takephoto.DefectResultActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.takephoto.FacilityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".google.zxing.activity.CaptureActivity"
@@ -208,11 +217,17 @@
         <!--公司秘钥-->
         <meta-data
             android:name="com.alibaba.app.appkey"
-            android:value="24670650" /> <!-- 请填写你自己的- appKey -->
+            android:value="24639696" /> <!-- 请填写你自己的- appKey -->
         <meta-data
             android:name="com.alibaba.app.appsecret"
-            android:value="42340719a4bd7759d14960e470283440" /> <!-- 请填写你自己的appSecret -->
-        <!--友盟-->
+            android:value="4a6c41c250093c9aa9ad9969e5a70807" /> <!-- 请填写你自己的appSecret -->
+        <!--<meta-data-->
+        <!--android:name="com.alibaba.app.appkey"-->
+        <!--android:value="24670650" /> &lt;!&ndash; 请填写你自己的- appKey &ndash;&gt;-->
+        <!--<meta-data-->
+        <!--android:name="com.alibaba.app.appsecret"-->
+        <!--android:value="42340719a4bd7759d14960e470283440" /> &lt;!&ndash; 请填写你自己的appSecret &ndash;&gt;-->
+        <!--&lt;!&ndash;友盟&ndash;&gt;-->
         <!--<meta-data-->
         <!--android:name="UMENG_APPKEY"-->
         <!--android:value="5992c1adb27b0a71f0001e74" />-->

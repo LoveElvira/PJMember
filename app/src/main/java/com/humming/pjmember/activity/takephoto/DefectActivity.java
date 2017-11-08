@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
-import com.humming.pjmember.activity.scan.AccidentLogActivity;
 import com.humming.pjmember.adapter.DefectAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
@@ -27,8 +26,8 @@ import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
 import com.humming.pjmember.viewutils.selectpic.ImageSelectorActivity;
-import com.pjqs.dto.emergency.EmergencyInfoBean;
-import com.pjqs.dto.emergency.EmergencyRes;
+import com.pjqs.dto.work.DefictBean;
+import com.pjqs.dto.work.QueryDefictRes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -49,8 +48,9 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
     private ArrayList<String> path = new ArrayList<>();
     private List<Map<String, String>> list = new ArrayList<>();
 
-    private List<EmergencyInfoBean> emergencyList;
-    private List<EmergencyInfoBean> emergencyLists;
+    private List<DefictBean> workList;//每一页
+    private List<DefictBean> workLists;//总的
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,89 +74,85 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
         listView.setLayoutManager(linearLayoutManager);
 
         selectPhotoLayout = (LinearLayout) findViewById(R.id.popup_photo__parent);
-
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(i + "");
-        }
-        adapter = new DefectAdapter(list);
-        listView.setAdapter(adapter);
-        adapter.setOnItemChildClickListener(this);
+        workLists = new ArrayList<>();
+//        List<String> list = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            list.add(i + "");
+//        }
+//        adapter = new DefectAdapter(list);
+//        listView.setAdapter(adapter);
+//        adapter.setOnItemChildClickListener(this);
 
         leftArrow.setOnClickListener(this);
         rightText.setOnClickListener(this);
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        path.clear();
-        list.clear();
+        pageable = "";
+        getDefect(pageable);
     }
 
 
     //获取事故记录
-    private void getAccidentLog(final String pageable) {
-//        progressHUD = ProgressHUD.show(DefectActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                progressHUD.dismiss();
-//            }
-//        });
-//        RequestParameter parameter = new RequestParameter();
-//        parameter.setEquipmentId(id);
-//        parameter.setPagable(pageable);
-//        OkHttpClientManager.postAsyn(Config.GET_DEFECT, new OkHttpClientManager.ResultCallback<EmergencyRes>() {
-//            @Override
-//            public void onError(Request request, Error info) {
-//                Log.e("onError", info.getInfo().toString());
-//                showShortToast(info.getInfo().toString());
-//                progressHUD.dismiss();
-//            }
-//
-//            @Override
-//            public void onResponse(EmergencyRes response) {
-//                progressHUD.dismiss();
-//                if (response != null) {
-//                    emergencyList = response.getEmergencys();
-//                    if (emergencyList != null && emergencyList.size() > 0) {
-//                        if ("".equals(pageable)) {
-//                            emergencyLists.clear();
-//                            emergencyLists.addAll(emergencyList);
-//                            adapter = new DefectAdapter(emergencyList);
-//                            listView.setAdapter(adapter);
-//                            if (response.getHasMore() == 1) {
-//                                hasMore = true;
-//                            } else {
-//                                hasMore = false;
-//                            }
-//                            DefectActivity.this.pageable = response.getPagable();
-//                        } else {
-//                            emergencyLists.addAll(emergencyList);
-//
-//                            if (response.getHasMore() == 1) {
-//                                hasMore = true;
-//                                DefectActivity.this.pageable = response.getPagable();
-//                                adapter.addData(emergencyList);
-//                            } else {
-//                                adapter.addData(emergencyList);
-//                                hasMore = false;
-//                                DefectActivity.this.pageable = "";
-//                            }
-//                        }
-//                        adapter.setOnLoadMoreListener(DefectActivity.this, listView);
-//                        adapter.setOnItemChildClickListener(DefectActivity.this);
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onOtherError(Request request, Exception exception) {
-//                Log.e("onError", exception.toString());
-//                progressHUD.dismiss();
-//            }
-//        }, parameter, EmergencyRes.class, DefectActivity.class);
+    private void getDefect(final String pageable) {
+        progressHUD = ProgressHUD.show(DefectActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+        RequestParameter parameter = new RequestParameter();
+        parameter.setPagable(pageable);
+        OkHttpClientManager.postAsyn(Config.GET_DEFECT_WORK, new OkHttpClientManager.ResultCallback<QueryDefictRes>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("onError", info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(QueryDefictRes response) {
+                progressHUD.dismiss();
+                if (response != null) {
+                    workList = response.getDeficts();
+                    if (workList != null && workList.size() > 0) {
+                        if ("".equals(pageable)) {
+                            workLists.clear();
+                            workLists.addAll(workList);
+                            adapter = new DefectAdapter(workList);
+                            listView.setAdapter(adapter);
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                            } else {
+                                hasMore = false;
+                            }
+                            DefectActivity.this.pageable = response.getPagable();
+                        } else {
+                            workLists.addAll(workList);
+
+                            if (response.getHasMore() == 1) {
+                                hasMore = true;
+                                DefectActivity.this.pageable = response.getPagable();
+                                adapter.addData(workList);
+                            } else {
+                                adapter.addData(workList);
+                                hasMore = false;
+                                DefectActivity.this.pageable = "";
+                            }
+                        }
+                        adapter.setOnLoadMoreListener(DefectActivity.this, listView);
+                        adapter.setOnItemChildClickListener(DefectActivity.this);
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, QueryDefictRes.class, DefectActivity.class);
     }
 
 
@@ -168,7 +164,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                 if (!hasMore) {//没有数据了
                     adapter.loadMoreEnd();
                 } else {
-                    getAccidentLog(pageable);
+                    getDefect(pageable);
                 }
             }
         }, delayMillis);
@@ -215,7 +211,8 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_defect__parent:
-                startActivity(DefectDetailsActivity.class);
+                startActivity(new Intent(DefectActivity.this, DefectDetailsActivity.class)
+                        .putExtra("id", workLists.get(position).getWorkId()));
                 break;
         }
     }
@@ -225,6 +222,16 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Constant.CODE_RESULT) {
+            if (requestCode == Constant.CODE_REQUEST_ONE) {
+                if (data.getBooleanExtra("addSuccess", false)) {
+                    path.clear();
+                    list.clear();
+                    pageable = "";
+                    getDefect(pageable);
+                    return;
+                }
+            }
+
             List<String> pathList = null;
             if (requestCode == Constant.CODE_REQUEST_THREE) {
                 pathList = (List<String>) data.getSerializableExtra("imagePath");
@@ -245,14 +252,14 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                 list.add(map);
             }
             if (list.size() < 6) {
-                initDate();//添加最后一个 add
+                initData();//添加最后一个 add
             }
 //            adapter.notifyDataSetChanged();
 
             Intent intent = new Intent(DefectActivity.this, AddDefectActivity.class);
             intent.putExtra("photoLists", (Serializable) list);
-            intent.putExtra("path", (Serializable) path);
-            startActivity(intent);
+            intent.putExtra("path", path);
+            startActivityForResult(intent, Constant.CODE_REQUEST_ONE);
 
         }
 
@@ -273,7 +280,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 6) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
 //                        adapter.notifyDataSetChanged();
                     } else {
@@ -294,7 +301,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 6) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
 //                        adapter.notifyDataSetChanged();
                     } else {
@@ -307,12 +314,11 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
         Intent intent = new Intent(DefectActivity.this, AddDefectActivity.class);
         intent.putExtra("photoLists", (Serializable) list);
         intent.putExtra("path", path);
-        startActivity(intent);
+        startActivityForResult(intent, Constant.CODE_REQUEST_ONE);
 
-//        adapter.notifyDataSetChanged();
     }
 
-    private void initDate() {
+    private void initData() {
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);

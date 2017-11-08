@@ -146,7 +146,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
         listView.setLayoutManager(gridLayoutManager);
 
         listView.addItemDecoration(new SpacesItemDecoration(10));
-        initDate();
+        initData();
         adapter = new ImageAdapter(list, this, 1);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
@@ -161,7 +161,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
     }
 
 
-    private void initDate() {
+    private void initData() {
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);
@@ -338,7 +338,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
                 list.add(map);
             }
             if (list.size() < 6) {
-                initDate();//添加最后一个 add
+                initData();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
         }
@@ -358,7 +358,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 6) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {
@@ -377,7 +377,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 6) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {

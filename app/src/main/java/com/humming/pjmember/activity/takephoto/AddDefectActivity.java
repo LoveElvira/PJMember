@@ -1,10 +1,12 @@
 package com.humming.pjmember.activity.takephoto;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -17,10 +19,19 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
 import com.humming.pjmember.activity.MapActivity;
+import com.humming.pjmember.activity.scan.AddAccidentActivity;
 import com.humming.pjmember.adapter.ImageAdapter;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
+import com.humming.pjmember.bean.FacilityInfoModel;
+import com.humming.pjmember.requestdate.AddAccidentParameter;
+import com.humming.pjmember.requestdate.AddDefectParameter;
+import com.humming.pjmember.responsedate.SuccessResponse;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
@@ -30,6 +41,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/9/4.
@@ -42,12 +55,8 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
     private LinearLayout nameLayout;
     //名称
     private TextView name;
-    //通知主管
-    private LinearLayout directorLayout;
-    //主管
-    private TextView director;
-    //报修时间
-    private EditText time;
+    //工作名称
+    private EditText workName;
     //缺陷描述
     private EditText content;
     //选择位置
@@ -67,6 +76,9 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
     private List<Map<String, String>> defectList = new ArrayList<>();
     private ArrayList<String> path = new ArrayList<>();
 
+    //设施
+    private FacilityInfoModel facilityModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +92,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         super.initView();
 
         title = (TextView) findViewById(R.id.base_toolbar__title);
-        title.setText("缺陷管理");
+        title.setText("添加缺陷");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
@@ -91,11 +103,9 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         listView.setLayoutManager(gridLayoutManager);
 
+        workName = (EditText) findViewById(R.id.activity_add_defect__work_name);
         nameLayout = (LinearLayout) findViewById(R.id.activity_add_defect__name_layout);
         name = (TextView) findViewById(R.id.activity_add_defect__name);
-        directorLayout = (LinearLayout) findViewById(R.id.activity_add_defect__director_layout);
-        director = (TextView) findViewById(R.id.activity_add_defect__director);
-        time = (EditText) findViewById(R.id.activity_add_defect__time);
         content = (EditText) findViewById(R.id.activity_add_defect__content);
         addressLayout = (LinearLayout) findViewById(R.id.activity_add_defect__address_layout);
         address = (TextView) findViewById(R.id.activity_add_defect__address);
@@ -106,6 +116,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         leftArrow.setOnClickListener(this);
         submit.setOnClickListener(this);
         addressLayout.setOnClickListener(this);
+        nameLayout.setOnClickListener(this);
 
         listView.addItemDecoration(new SpacesItemDecoration(10));
         defectList = (List<Map<String, String>>) getIntent().getSerializableExtra("photoLists");
@@ -121,6 +132,70 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);
+    }
+
+    //添加缺陷
+    private void addDefectWork(String workName, String content, String address, String addressDes) {
+        progressHUD = ProgressHUD.show(AddDefectActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+        AddDefectParameter parameter = new AddDefectParameter();
+        parameter.setWorkName(workName);
+        parameter.setFacilityId(Long.parseLong(facilityModel.getFacilityId()));
+        parameter.setLocation(address);
+        parameter.setRemark(addressDes);
+        List<String> imageList = new ArrayList<>(1);
+        imageList.add("aaa");
+        parameter.setPictureUrls(imageList);
+        parameter.setRemark(content);
+        OkHttpClientManager.postAsyn(Config.ADD_WORK, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
+            @Override
+            public void onError(Request request, Error info) {
+                showShortToast(info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(SuccessResponse response) {
+                progressHUD.dismiss();
+                if (response != null) {
+                    showShortToast(response.getMsg());
+                    if (response.getCode() == 1) {
+                        setResult(Constant.CODE_RESULT, new Intent()
+                                .putExtra("addSuccess", true));
+                        AddDefectActivity.this.finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, SuccessResponse.class, AddAccidentActivity.class);
+
+    }
+
+    private boolean isNull(String workName, String name, String content, String address) {
+        if (TextUtils.isEmpty(workName)) {
+            showShortToast("作业名称不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(name)) {
+            showShortToast("请选择设施名称");
+            return false;
+        } else if (TextUtils.isEmpty(content)) {
+            showShortToast("缺陷内容不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(address)) {
+            showShortToast("请选择对应地址");
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -147,7 +222,16 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                 AddDefectActivity.this.finish();
                 break;
             case R.id.activity_add_defect__submit://提交缺陷
-                AddDefectActivity.this.finish();
+
+                String workNameStr = workName.getText().toString().trim();
+                String nameStr = name.getText().toString().trim();//设施名称
+                String workContent = content.getText().toString().trim();
+                String addressStr = address.getText().toString().trim();
+                String addressDesStr = addressDes.getText().toString().trim();
+
+                if (isNull(workNameStr, nameStr, workContent, addressStr)) {
+                    addDefectWork(workNameStr, workContent, addressStr, addressDesStr);
+                }
                 break;
             case R.id.popup_photo__take://拍摄
                 getCamerePhoto();
@@ -156,10 +240,10 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
                         = new ImageConfig.Builder(AddDefectActivity.this, new PicassoLoader())
-                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
-                        .titleTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
+                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
+                        .titleTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .mutiSelect()
                         .mutiSelectMaxSize(6)
                         .pathList(path)
@@ -171,6 +255,9 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                 break;
             case R.id.activity_add_defect__address_layout:
                 startActivityForResult(new Intent(AddDefectActivity.this, MapActivity.class), Constant.CODE_REQUEST_ONE);
+                break;
+            case R.id.activity_add_defect__name_layout:
+                startActivityForResult(new Intent(AddDefectActivity.this, FacilityActivity.class), Constant.CODE_REQUEST_FOUR);
                 break;
         }
     }
@@ -187,7 +274,12 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                 if (!"".equals(addressStr)) {
                     address.setText(addressStr);
                 }
-
+                return;
+            } else if (requestCode == Constant.CODE_REQUEST_FOUR) {
+                facilityModel = (FacilityInfoModel) data.getSerializableExtra("facilityModel");
+                if (facilityModel != null) {
+                    name.setText(facilityModel.getFacilityName());
+                }
                 return;
             }
 
@@ -260,6 +352,5 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
             }
         }
     }
-
 
 }

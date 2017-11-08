@@ -7,8 +7,8 @@ package com.humming.pjmember.base;
 
 public class Config {
     public static final String URL_SERVICE = "http://pjqs.humming-tech.com/cgi";//正式环境
-    //    public static final String URL_SERVICE_UPLOAD = "http://pjqs.humming-tech.com/uploadImage";//上传文件
-    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.64:8080/uploadFile";//上传文件
+    //    public static final String URL_SERVICE_UPLOAD = "http://pjqs.humming-tech.com/uploadFile";//上传文件
+    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.70:8080/uploadFile";//上传文件
 
     public static final String USER_LOGIN = "newUser/newLogin";//登录
     //    public static final String USER_LOGIN = "user/login";//登录
@@ -37,4 +37,11 @@ public class Config {
     public static final String GET_WORK_PERSON_INFO = "user/find";//查询人员信息
     public static final String ADD_WORK_PERSON = "work/addUser";//作业中添加用户接口
     public static final String GET_WEATHER = "weather/now";//获取当日天气
+    public static final String GET_FACILITY = "work/facility";//获取设施列表
+    public static final String ADD_WORK = "work/addWork";//添加缺陷
+    public static final String GET_DEFECT_WORK = "work/defect";//获取缺陷作业列表
+    public static final String WORK_START = "work/start";//开始工作
+    public static final String WORK_BIND_PIC = "work/picture";//绑定上传图片
+    public static final String WORK_END = "work/end";//绑定上传图片
+    public static final String GET_WORK_PIC = "work/findWorkPicture";//获取作业图片
 }

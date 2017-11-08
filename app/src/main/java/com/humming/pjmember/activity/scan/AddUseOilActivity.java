@@ -104,7 +104,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
         listView.setLayoutManager(gridLayoutManager);
 
         listView.addItemDecoration(new SpacesItemDecoration(10));
-        initDate();
+        initData();
         adapter = new ImageAdapter(list, this, 1);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
@@ -116,7 +116,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
     }
 
 
-    private void initDate() {
+    private void initData() {
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);
@@ -197,7 +197,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                 list.add(map);
             }
             if (list.size() < 1) {
-                initDate();//添加最后一个 add
+                initData();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
         }
@@ -217,7 +217,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 1) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {
@@ -236,7 +236,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                         map.put("isAdd", "0");
                         list.add(0, map);
                         if (list.size() < 1) {
-                            initDate();//添加最后一个 add
+                            initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
                     } else {

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.humming.pjmember.R;
@@ -74,7 +75,9 @@ public class BrowseImageAdapter extends PagerAdapter {
 
         View v = allImageView.get(position);
         //View v = LayoutInflater.from(context).inflate(R.layout.item_browse_image,null);
-        PhotoView imageView = (PhotoView) v
+
+        ImageView click = v.findViewById(R.id.item_browse_click);
+        PhotoView imageView = v
                 .findViewById(R.id.item_browse_image);
         Glide.with(v.getContext())
                 .load(imageUrl.get(position).toString().trim())
@@ -84,6 +87,12 @@ public class BrowseImageAdapter extends PagerAdapter {
         imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
+                BrowseImageViewActivity.finsh();
+            }
+        });
+        click.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 BrowseImageViewActivity.finsh();
             }
         });

@@ -113,6 +113,11 @@ public class OkHttpClientManager {
         getInstance()._postAsyn(url, callback, requestMainDataData, resultVOClass, cls);
     }
 
+    //异步请求 (返回集合类)
+    public static <T> void postAsyn(String url, final ResultCallback callback, IRequestMainData requestMainDataData, final TypeReference typeReference, Class<?> cls) {
+        getInstance()._postAsyn(url, callback, requestMainDataData, typeReference, cls);
+    }
+
     //上传图片或者视频
     public static <T> void postAsyn(String url, final ResultCallback callback, IRequestMainData requestMainDataData, final List<File> files, final TypeReference typeReference, Class<?> cls) {
         getInstance()._postAsyn(url, callback, requestMainDataData, files, typeReference, cls);
@@ -139,6 +144,29 @@ public class OkHttpClientManager {
         mCall = mOkHttpClient.newCall(request);
         putCall(cls, mCall);
         deliveryResult(callback, request, resultVOClass);
+    }
+
+    //异步请求 类(返回集合类)
+    private <T> void _postAsyn(String cmd, final ResultCallback callback, IRequestMainData requestMainDataData, final TypeReference typeReference, Class<?> cls) {
+        String token = SharePrefUtil.getString(Constant.FILE_NAME, Constant.TOKEN, "", Application.getInstance().getCurrentActivity());
+        String deviceId = SharePrefUtil.getString(Constant.FILE_NAME, "deviceId", "", Application.getInstance().getCurrentActivity());
+
+        final RequestData requestData = new RequestData();
+        if (!"".equals(token)) {
+            requestData.setToken(token);
+        }
+        if (!"".equals(deviceId)) {
+            requestData.setAppPushToken(deviceId);
+        }
+        requestData.setCmd(cmd);
+        requestData.setParameters(requestMainDataData);
+        requestData.setAppVersion(Constant.AppVersion);
+        //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
+        String url = Config.URL_SERVICE;
+        Request request = buildPostRequest(url, requestData);
+        mCall = mOkHttpClient.newCall(request);
+        putCall(cls, mCall);
+        deliveryResult(callback, request, typeReference);
     }
 
     //异步请求 类(返回普通类) 上传文件专用

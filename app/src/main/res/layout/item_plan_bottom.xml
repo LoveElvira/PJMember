@@ -48,8 +48,9 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/item_plan_bottom__pic_parent_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/size_50"
         android:layout_marginTop="@dimen/size_10"
         android:background="@drawable/bg_rectangle_white_radius_3_alpha"
         android:orientation="horizontal"
@@ -82,7 +83,7 @@
         <ImageView
             android:id="@+id/item_plan_bottom__add_pic"
             android:layout_width="@dimen/size_50"
-            android:layout_height="@dimen/size_50"
+            android:layout_height="match_parent"
             android:padding="@dimen/size_15"
             android:src="@mipmap/add"
             android:visibility="gone" />

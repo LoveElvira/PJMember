@@ -42,6 +42,62 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_10"
+                    android:text="作业名称"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_13" />
+
+
+                <EditText
+                    android:id="@+id/activity_add_defect__work_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入作业名称"
+                    android:lineSpacingMultiplier="1.2"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/gray"
+                    android:textCursorDrawable="@drawable/cursor_white"
+                    android:textSize="@dimen/text_14" />
+
+                <LinearLayout
+                    android:id="@+id/activity_add_defect__director_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/size_5"
+                    android:paddingTop="@dimen/size_5"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/activity_add_defect__director"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="请选择维修主管"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_14" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/size_15"
+                        android:src="@mipmap/right_arrow" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:alpha="0.5"
+                    android:background="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
                     android:text="设施名称"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_13" />
@@ -71,73 +127,6 @@
                         android:src="@mipmap/right_arrow" />
 
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:alpha="0.5"
-                    android:background="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="通知主管"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_13" />
-
-                <LinearLayout
-                    android:id="@+id/activity_add_defect__director_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingTop="@dimen/size_5">
-
-                    <TextView
-                        android:id="@+id/activity_add_defect__director"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:lineSpacingMultiplier="1.2"
-                        android:text="请选择维修主管"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/text_14" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/size_15"
-                        android:src="@mipmap/right_arrow" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:alpha="0.5"
-                    android:background="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:text="维修时间"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_13" />
-
-                <EditText
-                    android:id="@+id/activity_add_defect__time"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="2017-09-10 11:11"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingTop="@dimen/size_5"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/gray"
-                    android:textCursorDrawable="@drawable/cursor_white"
-                    android:textSize="@dimen/text_14" />
 
                 <View
                     android:layout_width="match_parent"

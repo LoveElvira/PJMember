@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_5"
             android:layout_weight="1"
-            android:text="2017-8-22"
             android:textColor="@color/blue"
             android:textSize="@dimen/text_15" />
 
@@ -55,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_5"
-            android:text="设备名称："
+            android:text="作业名称："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
@@ -65,7 +64,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="南浦大桥"
             android:textColor="@color/gray_ADADAD"
             android:textSize="@dimen/text_13" />
 
@@ -98,7 +96,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="普陀区陕西北路1438号"
             android:textColor="@color/gray_ADADAD"
             android:textSize="@dimen/text_13" />
 
@@ -122,7 +119,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_5"
             android:lineSpacingMultiplier="1.2"
-            android:text="缺陷描述：设备机器损坏，运转不灵记录文字，设备机器损坏，运转不灵。"
             android:textSize="@dimen/text_13" />
 
     </LinearLayout>
