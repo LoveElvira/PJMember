@@ -3,16 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.humming.pjmember.viewutils.zoom.PhotoView
-        android:id="@+id/item_browse_image"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"/>
-
     <ImageView
         android:id="@+id/item_browse_click"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"/>
+        android:layout_centerInParent="true" />
+
+    <com.humming.pjmember.viewutils.zoom.PhotoView
+        android:id="@+id/item_browse_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

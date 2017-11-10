@@ -35,7 +35,7 @@
                     android:src="@mipmap/work_facility_name" />
 
                 <TextView
-                    android:id="@+id/activity_log_details__time_title"
+                    android:id="@+id/activity_log_details__facility_name_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_5"
@@ -44,7 +44,7 @@
 
 
                 <TextView
-                    android:id="@+id/activity_log_details__time"
+                    android:id="@+id/activity_log_details__facility_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -63,10 +63,10 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/size_15"
-                    android:src="@mipmap/work_facility_name" />
+                    android:src="@mipmap/work_content" />
 
                 <TextView
-                    android:id="@+id/activity_log_details__facility_name_title"
+                    android:id="@+id/activity_log_details__time_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_5"
@@ -75,7 +75,7 @@
 
 
                 <TextView
-                    android:id="@+id/activity_log_details__facility_name"
+                    android:id="@+id/activity_log_details__time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -265,14 +265,19 @@
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
 
-                <ImageView
+                <!--<ImageView-->
+                    <!--android:id="@+id/activity_log_details__listview"-->
+                    <!--android:layout_width="@dimen/size_80"-->
+                    <!--android:layout_height="@dimen/size_80"-->
+                    <!--android:layout_marginLeft="@dimen/size_20"-->
+                    <!--android:layout_marginTop="@dimen/size_10"-->
+                    <!--android:scaleType="centerCrop" />-->
+
+                <android.support.v7.widget.RecyclerView
                     android:id="@+id/activity_log_details__listview"
-                    android:layout_width="@dimen/size_80"
-                    android:layout_height="@dimen/size_80"
-                    android:layout_marginLeft="@dimen/size_20"
-                    android:layout_marginTop="@dimen/size_10"
-                    android:scaleType="centerCrop"
-                    android:src="@mipmap/bg" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10" />
 
             </LinearLayout>
 

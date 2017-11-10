@@ -21,7 +21,7 @@ public class NotifyAdapter extends BaseQuickAdapter<EmergencyInfoBean, BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, EmergencyInfoBean item) {
         helper.setText(R.id.item_notify__time, item.getHappensTime() + " " + item.getEmerPlace())
-                .setText(R.id.item_notify__warning, "事故类型：" + item.getAccidentType())
+                .setText(R.id.item_notify__warning, item.getTitle())
                 .setText(R.id.item_notify__content, item.getEmerDesc())
                 .setImageResource(R.id.item_notify__dot, R.mipmap.weather_notify_orange)
                 .setBackgroundRes(R.id.item_notify__time, R.drawable.bg_rectangle_orange_radius_10);

@@ -58,33 +58,29 @@ public class RepairLogActivity extends BaseActivity implements BaseQuickAdapter.
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
-        listView = (RecyclerView) findViewById(R.id.comment_listview__list);
+        listView = (RecyclerView) findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
-//        List<String> list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(i + "");
-//        }
-//        adapter = new RepairAdapter(list,1);
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
         repairLists = new ArrayList<>();
+        adapter = new RepairAdapter(repairLists);
+        listView.setAdapter(adapter);
+        adapter.setOnLoadMoreListener(this, listView);
+        adapter.setOnItemChildClickListener(this);
 
         leftArrow.setOnClickListener(this);
 
-        isShowProgress = true;
+        getRepairLog(pageable);
+    }
+
+    //获取维修记录
+    private void getRepairLog(final String pageable) {
         progressHUD = ProgressHUD.show(RepairLogActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
             }
         });
-        getRepairLog(pageable);
-    }
-
-    //获取维修记录
-    private void getRepairLog(final String pageable) {
         RequestParameter parameter = new RequestParameter();
         parameter.setEquipmentId(id);
         parameter.setPagable(pageable);
@@ -93,20 +89,19 @@ public class RepairLogActivity extends BaseActivity implements BaseQuickAdapter.
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
                 showShortToast(info.getInfo().toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
 
             @Override
             public void onResponse(EquipmentRepairRes response) {
-                closeProgress();
+                progressHUD.dismiss();
                 if (response != null) {
                     repairList = response.getRepairs();
                     if (repairList != null && repairList.size() > 0) {
                         if ("".equals(pageable)) {
                             repairLists.clear();
                             repairLists.addAll(repairList);
-                            adapter = new RepairAdapter(repairList);
-                            listView.setAdapter(adapter);
+                            adapter.setNewData(repairList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
@@ -126,8 +121,7 @@ public class RepairLogActivity extends BaseActivity implements BaseQuickAdapter.
                                 RepairLogActivity.this.pageable = "";
                             }
                         }
-                        adapter.setOnLoadMoreListener(RepairLogActivity.this, listView);
-                        adapter.setOnItemChildClickListener(RepairLogActivity.this);
+                        adapter.loadMoreComplete();
                     }
                 }
 
@@ -136,7 +130,7 @@ public class RepairLogActivity extends BaseActivity implements BaseQuickAdapter.
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("onError", exception.toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
         }, parameter, EquipmentRepairRes.class, RepairLogActivity.class);
     }

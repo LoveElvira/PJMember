@@ -2,6 +2,8 @@ package com.humming.pjmember.requestdate;
 
 import com.humming.pjmember.service.IRequestMainData;
 
+import java.util.List;
+
 /**
  * Created by Elvira on 2017/9/20.
  * 新增设备保养信息
@@ -26,7 +28,7 @@ public class AddMaintainParameter implements IRequestMainData {
     private String maintainTime;
     private String content;
     private String maintainDepartment;
-    private String[] maintainImg;
+    private List<String> maintainImgUrl;
 
     public AddMaintainParameter() {
     }
@@ -79,11 +81,11 @@ public class AddMaintainParameter implements IRequestMainData {
         this.maintainDepartment = maintainDepartment;
     }
 
-    public String[] getMaintainImg() {
-        return maintainImg;
+    public List<String> getMaintainImgUrl() {
+        return maintainImgUrl;
     }
 
-    public void setMaintainImg(String[] maintainImg) {
-        this.maintainImg = maintainImg;
+    public void setMaintainImgUrl(List<String> maintainImgUrl) {
+        this.maintainImgUrl = maintainImgUrl;
     }
 }

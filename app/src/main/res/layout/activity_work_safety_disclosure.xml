@@ -16,9 +16,9 @@
         <include layout="@layout/base_toolbar" />
 
         <LinearLayout
+            android:id="@+id/activity_work_safety__scrollview_parent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="@dimen/size_10"
             android:layout_marginLeft="@dimen/size_15"
             android:layout_marginRight="@dimen/size_15"
             android:layout_marginTop="@dimen/size_10"
@@ -31,7 +31,7 @@
                 android:id="@+id/activity_work_safety__tip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/size_10"
+                android:paddingBottom="@dimen/size_10"
                 android:text="请认真阅读安全交底内容"
                 android:textColor="@color/red"
                 android:textSize="@dimen/text_15" />
@@ -52,17 +52,6 @@
 
             </com.humming.pjmember.viewutils.ObservableScrollView>
 
-
-            <!--
-              android:text="1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
-\n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
-\n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
-\n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
-\n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
-\n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器
-\n1.戴好安全帽；\n2.严禁高温条件下操作；\n3.高处作业必须正确使用安全带；\n4.钢结构施工必须拉设水平绳，软爬梯用速查自控器"
-                 -->
-
         </LinearLayout>
 
         <TextView
@@ -72,7 +61,7 @@
             android:layout_marginBottom="@dimen/size_20"
             android:layout_marginLeft="@dimen/size_30"
             android:layout_marginRight="@dimen/size_30"
-            android:layout_marginTop="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_20"
             android:background="@drawable/bg_rectangle_gray_radius_3"
             android:gravity="center"
             android:padding="@dimen/size_12"

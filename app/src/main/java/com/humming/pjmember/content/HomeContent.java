@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.affair.AffairActivity;
 import com.humming.pjmember.activity.meeting.MeetingActivity;
@@ -68,8 +69,8 @@ public class HomeContent extends BaseLinearLayout {
         titleLayout = findViewById(R.id.base_toolbar__title_layout);
         title = findViewById(R.id.base_toolbar__title);
         titleImage = findViewById(R.id.base_toolbar__title_image);
-        titleImage.setVisibility(VISIBLE);
-        title.setText("普陀区");
+        titleImage.setVisibility(GONE);
+//        title.setText("普陀区");
         titleImage.setImageResource(R.mipmap.address);
 
         weatherImage = findViewById(R.id.fragment_home__wether_image);
@@ -135,7 +136,21 @@ public class HomeContent extends BaseLinearLayout {
                     break;
             }
         } else if (onLinePosition.equals("1")) {//业务人员
-
+            switch (position) {
+                case 0:
+                    leftImage.setImageResource(R.mipmap.work);
+                    leftText.setText("作业管理");
+                    rightImage.setImageResource(R.mipmap.notify);
+                    rightText.setText("通知");
+                    rightTip.setVisibility(VISIBLE);
+                    break;
+                case 2:
+                    leftImage.setImageResource(R.mipmap.take_photo);
+                    leftText.setText("拍一拍");
+                    rightImage.setImageResource(R.mipmap.scan);
+                    rightText.setText("扫一扫");
+                    break;
+            }
         } else if (onLinePosition.equals("2")) {//领导用户
             switch (position) {
                 case 0:
@@ -226,6 +241,9 @@ public class HomeContent extends BaseLinearLayout {
                 if (response != null) {
                     weatherTemp.setText(response.getTempDay() + "°");
                     weatherTime.setText(response.getPredictDate() + " " + response.getConditionDay());
+                    Glide.with(getContext())
+                            .load(response.getConditionDayImg())
+                            .into(weatherImage);
                 }
 
             }

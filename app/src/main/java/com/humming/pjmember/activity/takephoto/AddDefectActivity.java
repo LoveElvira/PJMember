@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.takephoto;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -135,7 +137,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
     }
 
     //添加缺陷
-    private void addDefectWork(String workName, String content, String address, String addressDes) {
+    private void addDefectWork(String workName, String content, String address, String addressDes, List<String> imageList) {
         progressHUD = ProgressHUD.show(AddDefectActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -147,8 +149,6 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         parameter.setFacilityId(Long.parseLong(facilityModel.getFacilityId()));
         parameter.setLocation(address);
         parameter.setRemark(addressDes);
-        List<String> imageList = new ArrayList<>(1);
-        imageList.add("aaa");
         parameter.setPictureUrls(imageList);
         parameter.setRemark(content);
         OkHttpClientManager.postAsyn(Config.ADD_WORK, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
@@ -210,7 +210,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
             intent.putExtra("position", position);
             intent.putExtra("imageUrl", path);
             intent.putExtra("isShowDelete", "isShow");
-            AddDefectActivity.this.startActivityForResult(intent, Constant.CODE_REQUEST_ONE);
+            AddDefectActivity.this.startActivityForResult(intent, Constant.CODE_REQUEST_THREE);
         }
     }
 
@@ -219,18 +219,37 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
+                setResult(Constant.CODE_RESULT, new Intent()
+                        .putExtra("addSuccess", false));
                 AddDefectActivity.this.finish();
                 break;
             case R.id.activity_add_defect__submit://提交缺陷
-
-                String workNameStr = workName.getText().toString().trim();
+                final String workNameStr = workName.getText().toString().trim();
                 String nameStr = name.getText().toString().trim();//设施名称
-                String workContent = content.getText().toString().trim();
-                String addressStr = address.getText().toString().trim();
-                String addressDesStr = addressDes.getText().toString().trim();
+                final String workContent = content.getText().toString().trim();
+                final String addressStr = address.getText().toString().trim();
+                final String addressDesStr = addressDes.getText().toString().trim();
 
                 if (isNull(workNameStr, nameStr, workContent, addressStr)) {
-                    addDefectWork(workNameStr, workContent, addressStr, addressDesStr);
+
+                    if (defectList.size() > 0) {
+                        handler = new Handler() {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                super.handleMessage(msg);
+                                switch (msg.what) {
+                                    case Constant.CODE_SUCCESS:
+                                        List<String> imageList = (List<String>) msg.obj;
+                                        addDefectWork(workNameStr, workContent, addressStr, addressDesStr, imageList);
+                                        break;
+                                }
+                            }
+                        };
+                        upLoadImage(defectList, handler, "addDefect");
+                    } else {
+                        showShortToast("请先选择图片");
+                    }
+
                 }
                 break;
             case R.id.popup_photo__take://拍摄

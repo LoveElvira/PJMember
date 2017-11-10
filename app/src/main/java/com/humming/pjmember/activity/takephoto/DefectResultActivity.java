@@ -119,7 +119,7 @@ public class DefectResultActivity extends BaseActivity implements BaseQuickAdapt
                             }
                         }
                     };
-                    upLoadImage(list, handler);
+                    upLoadImage(list, handler,"defectResult");
                 } else {
                     showShortToast("请选择图片");
                 }

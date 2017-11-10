@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,6 +89,8 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
     private AccidentNatureModel natureModel;
     private AccidentTypeModel typeModel;
 
+    private LinearLayout listViewLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +125,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
         content = (EditText) findViewById(R.id.activity_add_log__content);
         priceTitle = (TextView) findViewById(R.id.activity_add_log__price_title);
         price = (EditText) findViewById(R.id.activity_add_log__price);
+        listViewLayout = (LinearLayout) findViewById(R.id.activity_add_log__listview_layout);
         listViewTitle = (TextView) findViewById(R.id.activity_add_log__listview_title);
 
         typeLayout.setVisibility(View.VISIBLE);
@@ -168,7 +173,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
     }
 
     //新增设备事故信息
-    private void addAccidentLog(String time, String content, String price) {
+    private void addAccidentLog(String time, String content, String price, List<String> imageList) {
         progressHUD = ProgressHUD.show(AddAccidentActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -182,6 +187,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
         parameter.setType(typeModel.getTypeContent());//事故类型 1.追尾2.被追尾3.被撞
         parameter.setRemark(content);
         parameter.setLossFee(price);
+        parameter.setAccidentUrl(imageList);
 
         OkHttpClientManager.postAsyn(Config.ADD_ACCIDENT_LOG, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
             @Override
@@ -240,13 +246,30 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
                 AddAccidentActivity.this.finish();
                 break;
             case R.id.activity_add_log__submit:
-                String timeStr = time.getText().toString().trim();
+                final String timeStr = time.getText().toString().trim();
                 String typeStr = type.getText().toString().trim();
                 String natureStr = nature.getText().toString().trim();
-                String contentStr = content.getText().toString().trim();
-                String priceStr = price.getText().toString().trim();
+                final String contentStr = content.getText().toString().trim();
+                final String priceStr = price.getText().toString().trim();
                 if (isNull(timeStr, natureStr, typeStr, contentStr, priceStr)) {
-                    addAccidentLog(timeStr, contentStr, priceStr);
+                    if (list.size() > 0) {
+                        handler = new Handler() {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                super.handleMessage(msg);
+                                switch (msg.what) {
+                                    case Constant.CODE_SUCCESS:
+                                        List<String> imageList = (List<String>) msg.obj;
+                                        addAccidentLog(timeStr, contentStr, priceStr, imageList);
+                                        break;
+                                }
+                            }
+                        };
+                        upLoadImage(list, handler, "addAccident");
+                    } else {
+                        showShortToast("请先选择图片");
+                    }
+
                 }
                 break;
             case R.id.popup_photo__take://拍摄

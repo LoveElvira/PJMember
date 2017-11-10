@@ -73,6 +73,9 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".activity.setting.UpdatePwdActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.work.WorkActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

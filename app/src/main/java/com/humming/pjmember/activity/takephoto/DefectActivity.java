@@ -69,20 +69,16 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
         rightText = (TextView) findViewById(R.id.base_toolbar__right_text);
         rightText.setText("添加缺陷");
 
-        listView = (RecyclerView) findViewById(R.id.comment_listview__list);
+        listView = (RecyclerView) findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
         selectPhotoLayout = (LinearLayout) findViewById(R.id.popup_photo__parent);
         workLists = new ArrayList<>();
-//        List<String> list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(i + "");
-//        }
-//        adapter = new DefectAdapter(list);
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
-
+        adapter = new DefectAdapter(workLists);
+        listView.setAdapter(adapter);
+        adapter.setOnLoadMoreListener(this, listView);
+        adapter.setOnItemChildClickListener(this);
         leftArrow.setOnClickListener(this);
         rightText.setOnClickListener(this);
 
@@ -118,8 +114,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                         if ("".equals(pageable)) {
                             workLists.clear();
                             workLists.addAll(workList);
-                            adapter = new DefectAdapter(workList);
-                            listView.setAdapter(adapter);
+                            adapter.setNewData(workList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
@@ -139,8 +134,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                                 DefectActivity.this.pageable = "";
                             }
                         }
-                        adapter.setOnLoadMoreListener(DefectActivity.this, listView);
-                        adapter.setOnItemChildClickListener(DefectActivity.this);
+                        adapter.loadMoreComplete();
                     }
 
                 }
@@ -162,7 +156,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
             @Override
             public void run() {
                 if (!hasMore) {//没有数据了
-                    adapter.loadMoreEnd();
+                    adapter.loadMoreEnd(false);
                 } else {
                     getDefect(pageable);
                 }
@@ -223,13 +217,13 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
 
         if (resultCode == Constant.CODE_RESULT) {
             if (requestCode == Constant.CODE_REQUEST_ONE) {
+                path.clear();
+                list.clear();
                 if (data.getBooleanExtra("addSuccess", false)) {
-                    path.clear();
-                    list.clear();
                     pageable = "";
                     getDefect(pageable);
-                    return;
                 }
+                return;
             }
 
             List<String> pathList = null;

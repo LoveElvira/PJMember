@@ -60,7 +60,7 @@ public class WorkImageActivity extends BaseWorkActivity implements BaseQuickAdap
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
-        listView = (RecyclerView) findViewById(R.id.comment_listview__list);
+        listView = (RecyclerView) findViewById(R.id.common_listview__list);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         listView.setLayoutManager(gridLayoutManager);
         listView.addItemDecoration(new SpacesItemDecoration(10));

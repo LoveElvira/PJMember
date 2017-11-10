@@ -2,6 +2,7 @@ package com.humming.pjmember.activity.notify;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +32,7 @@ import okhttp3.Request;
  * 通知 天气预报
  */
 
-public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener {
+public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private NotifyAdapter adapter;
 
@@ -41,7 +42,7 @@ public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.Req
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview);
+        setContentView(R.layout.activity_notify);
         initView();
     }
 
@@ -52,20 +53,18 @@ public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.Req
         title.setText("通知");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
-        listView = (RecyclerView) findViewById(R.id.comment_listview__list);
+        refresh = (SwipeRefreshLayout) findViewById(R.id.common_refresh);
+        refresh.setColorSchemeColors(getResources().getColor(R.color.blue));
+        refresh.setOnRefreshListener(this);
+        listView = (RecyclerView) findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
-//        List<String> list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(i + "");
-//        }
-//
-//        adapter = new NotifyAdapter(list);
-//        listView.setAdapter(adapter);
-
         emergencyLists = new ArrayList<>();
-
+        adapter = new NotifyAdapter(emergencyLists);
+        listView.setAdapter(adapter);
+        adapter.setOnItemChildClickListener(this);
+        adapter.setOnLoadMoreListener(this, listView);
         leftArrow.setOnClickListener(this);
         pageable = "";
         getNotify(pageable);
@@ -99,8 +98,7 @@ public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.Req
                         if ("".equals(pageable)) {
                             emergencyLists.clear();
                             emergencyLists.addAll(emergencyList);
-                            adapter = new NotifyAdapter(emergencyList);
-                            listView.setAdapter(adapter);
+                            adapter.setNewData(emergencyList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
@@ -119,8 +117,7 @@ public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.Req
                                 NotifyActivity.this.pageable = "";
                             }
                         }
-                        adapter.setOnLoadMoreListener(NotifyActivity.this, listView);
-                        adapter.setOnItemChildClickListener(NotifyActivity.this);
+                        adapter.loadMoreComplete();
                     }
                 }
 
@@ -136,14 +133,16 @@ public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.Req
 
     @Override
     public void onLoadMoreRequested() {
+        refresh.setEnabled(false);
         listView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (!hasMore) {//没有数据了
-                    adapter.loadMoreEnd();
+                    adapter.loadMoreEnd(false);
                 } else {
                     getNotify(pageable);
                 }
+                refresh.setEnabled(true);
             }
         }, delayMillis);
     }
@@ -162,5 +161,20 @@ public class NotifyActivity extends BaseActivity implements BaseQuickAdapter.Req
                 NotifyActivity.this.finish();
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        adapter.setEnableLoadMore(false);
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                pageable = "";
+                getNotify(pageable);
+                refresh.setRefreshing(false);
+                adapter.loadMoreEnd(true);
+                adapter.setEnableLoadMore(true);
+            }
+        });
     }
 }

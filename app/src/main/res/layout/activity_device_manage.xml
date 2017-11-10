@@ -119,7 +119,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_10"
                         android:background="@drawable/bg_rectangle_white_radius_3_alpha"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <LinearLayout
                             android:id="@+id/activity_device_manage__use_oil_log_layout"

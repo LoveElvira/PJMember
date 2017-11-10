@@ -22,7 +22,6 @@
             android:paddingLeft="@dimen/size_15"
             android:paddingRight="@dimen/size_15"
             android:paddingTop="@dimen/size_5"
-            android:text="09-26 09:00 普陀区"
             android:textColor="@color/white"
             android:textSize="@dimen/text_13" />
 
@@ -63,7 +62,6 @@
                 android:id="@+id/item_notify__warning"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="雷电橙色预警"
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_14" />
 
@@ -78,7 +76,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10"
-                android:text="09:00普陀区发布雷电橙色预警，预计今天下午将有2个小时强降雨，并伴有雷电橙色预警。"
                 android:lineSpacingMultiplier="1.2"
                 android:textColor="@color/gray_ADADAD"
                 android:textSize="@dimen/text_13" />

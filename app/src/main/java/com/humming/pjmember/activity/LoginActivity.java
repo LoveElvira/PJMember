@@ -187,8 +187,7 @@ public class LoginActivity extends BaseActivity {
             startActivity(new Intent(LoginActivity.this, SelectPositonActivity.class)
                     .putExtra("levelBeanList", (Serializable) levelBeanList));
         }
-        LoginActivity.this.finish();
-
+        Application.getInstance().finishAllActivity();
     }
 
 }

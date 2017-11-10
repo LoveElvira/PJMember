@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
+import com.humming.pjmember.activity.work.WorkPlanActivity;
 import com.humming.pjmember.activity.work.WorkSafetyDisclosureActivity;
 import com.humming.pjmember.adapter.WorkAdapter;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
 import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
@@ -36,7 +39,7 @@ import okhttp3.Request;
  * 今日工作
  */
 
-public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private WorkAdapter adapter;
     private CircleTextProgressbar circleText;
@@ -64,23 +67,22 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
     protected void initView() {
         super.initView();
         pageable = "";
-        listView = findViewById(R.id.comment_listview__list);
+
+        refresh = findViewById(R.id.common_refresh);
+        refresh.setColorSchemeColors(getResources().getColor(R.color.blue));
+        refresh.setOnRefreshListener(this);
+
+        listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add("0");
-            list.add("1");
-            list.add("2");
-            list.add("3");
-        }
+
         workLists = new ArrayList<>();
-//        adapter = new WorkAdapter(list);
-//        adapter.addHeaderView(getHeaderView(2, 8));
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
-//        getWorkDate(pageable);
+
+        adapter = new WorkAdapter(workLists);
+        listView.setAdapter(adapter);
+        adapter.setOnItemChildClickListener(this);
+        adapter.setOnLoadMoreListener(this, listView);
         isOne = false;
         isShowProgress = true;
     }
@@ -94,7 +96,7 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
                         progressHUD.dismiss();
                     }
                 });
-                getWorkDate(pageable);
+                getWorkData(pageable);
                 isOne = true;
             }
 //            listView.setVisibility(VISIBLE);
@@ -103,6 +105,19 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
 //            listView.setVisibility(GONE);
 //            noWifiLayout.setVisibility(VISIBLE);
         }
+    }
+
+    public void updateView(int roadWorkState, String roadWork, int isSafety, int position) {
+        if (workLists.get(position).getIsSafety() != isSafety) {
+            workLists.get(position).setIsSafety(isSafety);
+        }
+        if (workLists.get(position).getRoadWorkState() != roadWorkState) {
+            workLists.get(position).setRoadWorkState(roadWorkState);
+        }
+        if (!roadWork.equals(workLists.get(position).getRoadWork())) {
+            workLists.get(position).setRoadWork(roadWork);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     private View getHeaderView(int finishWork, int sumWork) {
@@ -117,14 +132,14 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
         circleText.setProgressLineWidth(10);
         circleText.setOutLineWidth(10);
         circleText.setProgressType(CircleTextProgressbar.ProgressType.COUNT);
-        circleText.start((finishWork / sumWork) * 100);
+        circleText.start((int)(((float)finishWork / (float) sumWork) * 100));
         workNum.setText(sumWork + "");
         completeNum.setText(finishWork + "");
         unCompleteNum.setText((sumWork - finishWork) + "");
         return headView;
     }
 
-    private void getWorkDate(final String pageable) {
+    private void getWorkData(final String pageable) {
         RequestParameter parameter = new RequestParameter();
         parameter.setType("1");
         parameter.setPagable(pageable);
@@ -146,14 +161,15 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
                         if ("".equals(pageable)) {
                             workLists.clear();
                             workLists.addAll(workList);
-                            adapter = new WorkAdapter(workList);
-                            listView.setAdapter(adapter);
+                            adapter.setNewData(workList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
                                 hasMore = false;
                             }
                             WorkTodayContent.this.pageable = response.getPagable();
+                            adapter.removeAllHeaderView();
+                            adapter.addHeaderView(getHeaderView(response.getFinishWork(), response.getSumWork()));
                         } else {
                             workLists.addAll(workList);
 
@@ -167,13 +183,8 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
                                 WorkTodayContent.this.pageable = "";
                             }
                         }
-                        adapter.setOnLoadMoreListener(WorkTodayContent.this, listView);
-                        adapter.setOnItemChildClickListener(WorkTodayContent.this);
+                        adapter.loadMoreComplete();
                     }
-                    if (adapter != null) {
-                        adapter.addHeaderView(getHeaderView(response.getFinishWork(), response.getSumWork()));
-                    }
-
                 }
 
             }
@@ -189,14 +200,16 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
 
     @Override
     public void onLoadMoreRequested() {
+        refresh.setEnabled(false);
         listView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (!hasMore) {//没有数据了
-                    adapter.loadMoreEnd();
+                    adapter.loadMoreEnd(false);
                 } else {
-                    getWorkDate(pageable);
+                    getWorkData(pageable);
                 }
+                refresh.setEnabled(true);
             }
         }, delayMillis);
     }
@@ -205,12 +218,32 @@ public class WorkTodayContent extends BaseLinearLayout implements BaseQuickAdapt
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_work__parent:
-//                startActivity(WorkPlanActivity.class);
-                startActivity(new Intent(getContext(), WorkSafetyDisclosureActivity.class)
-                        .putExtra("isLook", true)
-                        .putExtra("id", workLists.get(position).getWorkId() + ""));
+                Intent intent = new Intent();
+                if (workLists.get(position).getIsSafety() == 1) {//已经读过安全交底
+                    intent.setClass(getContext(), WorkPlanActivity.class);
+                } else {
+                    intent.setClass(getContext(), WorkSafetyDisclosureActivity.class);
+                    intent.putExtra("isLook", true);
+                }
+                intent.putExtra("id", workLists.get(position).getWorkId() + "");
+                intent.putExtra("position", position);
+                Application.getInstance().getCurrentActivity().startActivityForResult(intent, Constant.CODE_REQUEST_ONE);
                 break;
         }
     }
 
+    @Override
+    public void onRefresh() {
+        adapter.setEnableLoadMore(false);
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                pageable = "";
+                getWorkData(pageable);
+                refresh.setRefreshing(false);
+                adapter.loadMoreEnd(true);
+                adapter.setEnableLoadMore(true);
+            }
+        });
+    }
 }

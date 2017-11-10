@@ -2,7 +2,9 @@ package com.humming.pjmember.adapter;
 
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.humming.pjmember.R;
@@ -22,12 +24,17 @@ public class WorkAdapter extends BaseQuickAdapter<WorkInfoBean, BaseViewHolder> 
     @Override
     protected void convert(BaseViewHolder helper, WorkInfoBean item) {
 
-        helper.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_plan)
+        helper/*.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_plan)*/
                 .addOnClickListener(R.id.item_work__parent)
                 .setText(R.id.item_work__num, item.getWorkCode())
                 .setText(R.id.item_work__time, item.getWorkStartDate())
                 .setText(R.id.item_work__facility_name, item.getFacilityName())
                 .setText(R.id.item_work__content, initHtml("今日作业", item.getWorkContent()));
+
+        Glide.with(helper.getConvertView().getContext())
+                .load(item.getWorkTypeUrl())
+                .into((ImageView) helper.getView(R.id.item_work__tip));
+
 
 //        String status = "";
 //        if (item.getRoadWorkState() == 0) {
@@ -45,11 +52,11 @@ public class WorkAdapter extends BaseQuickAdapter<WorkInfoBean, BaseViewHolder> 
 
 
         if (item.getWorkNature() == 2) {//缺陷作业
-            helper.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_defect)
+            helper/*.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_defect)*/
                     .setText(R.id.item_work__content, initHtml("缺陷描述", item.getWorkContent()));
 
         } else if (item.getWorkNature() == 3) {//抢修作业
-            helper.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_repair)
+            helper/*.setImageResource(R.id.item_work__tip, R.mipmap.work_tip_repair)*/
                     .setText(R.id.item_work__content, initHtml("缺陷描述", item.getWorkContent()));
         }
     }

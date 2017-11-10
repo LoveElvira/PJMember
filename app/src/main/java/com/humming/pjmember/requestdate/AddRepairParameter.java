@@ -2,6 +2,8 @@ package com.humming.pjmember.requestdate;
 
 import com.humming.pjmember.service.IRequestMainData;
 
+import java.util.List;
+
 /**
  * Created by Elvira on 2017/9/20.
  * 新增设备维修信息
@@ -23,7 +25,7 @@ public class AddRepairParameter implements IRequestMainData {
     private String repairTime;
     private String reason;
     private String repairDepartment;
-    private String[] repairImg;
+    private List<String> repairImgUrl;
 
     public AddRepairParameter() {
     }
@@ -68,11 +70,11 @@ public class AddRepairParameter implements IRequestMainData {
         this.repairDepartment = repairDepartment;
     }
 
-    public String[] getRepairImg() {
-        return repairImg;
+    public List<String> getRepairImgUrl() {
+        return repairImgUrl;
     }
 
-    public void setRepairImg(String[] repairImg) {
-        this.repairImg = repairImg;
+    public void setRepairImgUrl(List<String> repairImgUrl) {
+        this.repairImgUrl = repairImgUrl;
     }
 }

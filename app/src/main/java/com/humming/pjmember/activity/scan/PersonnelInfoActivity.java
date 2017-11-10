@@ -134,7 +134,6 @@ public class PersonnelInfoActivity extends BaseActivity {
 
                     Glide.with(getBaseContext())
                             .load(response.getPhoto())
-                            .error(R.mipmap.bg)
                             .into(headImage);
                     name.setText(response.getName());
 

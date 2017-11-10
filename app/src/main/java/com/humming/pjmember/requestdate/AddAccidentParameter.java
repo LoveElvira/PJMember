@@ -2,6 +2,8 @@ package com.humming.pjmember.requestdate;
 
 import com.humming.pjmember.service.IRequestMainData;
 
+import java.util.List;
+
 /**
  * Created by Elvira on 2017/9/20.
  * 新增设备事故信息
@@ -25,6 +27,7 @@ public class AddAccidentParameter implements IRequestMainData {
     private String accidentTime;
     private String nature;
     private String remark;
+    private List<String> accidentUrl;
 
     public AddAccidentParameter() {
     }
@@ -75,5 +78,13 @@ public class AddAccidentParameter implements IRequestMainData {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<String> getAccidentUrl() {
+        return accidentUrl;
+    }
+
+    public void setAccidentUrl(List<String> accidentUrl) {
+        this.accidentUrl = accidentUrl;
     }
 }

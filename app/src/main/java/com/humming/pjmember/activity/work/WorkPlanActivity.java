@@ -12,9 +12,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.humming.pjmember.R;
+import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.google.zxing.activity.CaptureActivity;
+import com.humming.pjmember.requestdate.RequestParameter;
+import com.humming.pjmember.responsedate.SuccessResponse;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.PicassoLoader;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
@@ -27,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/9/4.
@@ -96,6 +104,9 @@ public class WorkPlanActivity extends BaseWorkActivity {
     @Override
     protected void initView() {
         super.initView();
+
+        position = getIntent().getIntExtra("position", 0);
+
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("计划作业");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
@@ -137,7 +148,11 @@ public class WorkPlanActivity extends BaseWorkActivity {
         materialLayout.setOnClickListener(this);
         startWorkBtn.setOnClickListener(this);
         initHandler();
-        getWorkDetails();
+        if (workBean != null) {
+            initData();
+        } else {
+            getWorkDetails();
+        }
     }
 
     private void initHandler() {
@@ -168,22 +183,24 @@ public class WorkPlanActivity extends BaseWorkActivity {
     private void initData() {
 
         if (workBean != null) {
-//            Glide.with(getBaseContext())
-//                    .load(workBean.getWorkTypeUrl())
-//                    .into(typeImage);
+            Glide.with(getBaseContext())
+                    .load(workBean.getWorkTypeUrl())
+                    .into(typeImage);
             time.setText(workBean.getWorkStartDate());
             workNum.setText(workBean.getWorkCode());
             workName.setText(workBean.getWorkName());
             String str = "";
             if (workBean.getWorkNature() == 1) {
                 str = "计划作业";
-                typeImage.setImageResource(R.mipmap.work_tip_plan);
+//                typeImage.setImageResource(R.mipmap.work_tip_plan);
             } else if (workBean.getWorkNature() == 2) {
                 str = "缺陷作业";
-                typeImage.setImageResource(R.mipmap.work_tip_defect);
+//                typeImage.setImageResource(R.mipmap.work_tip_defect);
             } else if (workBean.getWorkNature() == 3) {
                 str = "抢修作业";
-                typeImage.setImageResource(R.mipmap.work_tip_repair);
+//                typeImage.setImageResource(R.mipmap.work_tip_repair);
+            } else if (workBean.getWorkNature() == 4) {
+                str = "随修作业";
             }
             typeName.setText(str);
             facilityName.setText(workBean.getFacilityName());
@@ -193,15 +210,15 @@ public class WorkPlanActivity extends BaseWorkActivity {
             phone.setText(workBean.getFormanPhone());
 
             startWorkBtn.setVisibility(View.GONE);
+            addPerson.setVisibility(View.GONE);
             status = workBean.getRoadWorkState();
             workStatus.setText(workBean.getRoadWork());
             if (workBean.getIsPrincipal() == 1) {//是否是现场负责人 1:是 0:不是
-                addPerson.setVisibility(View.VISIBLE);
                 startWorkBtn.setVisibility(View.VISIBLE);
                 if (status == 0) {
                     startWorkBtn.setText("开始工作");
-                }
-                if (status == 2) {
+                } else if (status == 2) {
+                    addPerson.setVisibility(View.VISIBLE);
                     startWorkBtn.setText("结束工作");
                 } else {
                     startWorkBtn.setVisibility(View.GONE);
@@ -219,6 +236,43 @@ public class WorkPlanActivity extends BaseWorkActivity {
         }
 
     }
+
+    private void endWork() {
+        progressHUD = ProgressHUD.show(WorkPlanActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+        RequestParameter parameter = new RequestParameter();
+        parameter.setWorkId(id);
+        OkHttpClientManager.postAsyn(Config.WORK_END, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("onError", info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(SuccessResponse response) {
+                progressHUD.dismiss();
+                if (response != null) {
+                    showShortToast(response.getMsg());
+                    if (response.getCode() == 1) {
+                        getWorkDetails();
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, SuccessResponse.class, BaseWorkActivity.class);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -359,12 +413,18 @@ public class WorkPlanActivity extends BaseWorkActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
+                setResult(Constant.CODE_RESULT, new Intent()
+                        .putExtra("roadWorkState", workBean.getRoadWorkState())
+                        .putExtra("roadWork", workBean.getRoadWork())
+                        .putExtra("isSafety", workBean.getIsSafety())
+                        .putExtra("position", position));
                 WorkPlanActivity.this.finish();
                 break;
             case R.id.base_toolbar__right_text://安全交底内容
                 startActivity(new Intent(WorkPlanActivity.this, WorkSafetyDisclosureActivity.class)
                         .putExtra("isLook", false)
-                        .putExtra("id", id));
+                        .putExtra("id", id)
+                        .putExtra("position", position));
                 break;
             case R.id.item_plan_bottom__add_person://添加人员信息
                 startActivity(new Intent(WorkPlanActivity.this, CaptureActivity.class)
@@ -395,10 +455,14 @@ public class WorkPlanActivity extends BaseWorkActivity {
                         .putExtra("id", id));
                 break;
             case R.id.activity_plan_details__btn://开始工作
-                selectPhotoPopupWindow.initView(selectPhotoLayout);
-                selectPhotoPopupWindow.showPopupWindow();
-                selectPhotoPopupWindow.getSelectPhoto().setOnClickListener(this);
-                selectPhotoPopupWindow.getTakePhoto().setOnClickListener(this);
+                if ("结束工作".equals(startWorkBtn.getText().toString().trim())) {
+                    endWork();
+                } else {
+                    selectPhotoPopupWindow.initView(selectPhotoLayout);
+                    selectPhotoPopupWindow.showPopupWindow();
+                    selectPhotoPopupWindow.getSelectPhoto().setOnClickListener(this);
+                    selectPhotoPopupWindow.getTakePhoto().setOnClickListener(this);
+                }
                 break;
             case R.id.popup_photo__take://拍摄
                 getCamerePhoto();

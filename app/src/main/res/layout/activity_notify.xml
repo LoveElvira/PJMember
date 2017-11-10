@@ -13,10 +13,15 @@
 
         <include layout="@layout/base_toolbar" />
 
-        <include layout="@layout/common_listview" />
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/common_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <include layout="@layout/common_listview" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </LinearLayout>
-
-    <include layout="@layout/popupwindow_photo" />
 
 </android.support.design.widget.CoordinatorLayout>

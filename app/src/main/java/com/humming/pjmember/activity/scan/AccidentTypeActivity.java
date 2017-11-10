@@ -65,7 +65,7 @@ public class AccidentTypeActivity extends BaseActivity implements BaseQuickAdapt
         rightText = (TextView) findViewById(R.id.base_toolbar__right_text);
         rightText.setText("确定");
 
-        listView = (RecyclerView) findViewById(R.id.comment_listview__list);
+        listView = (RecyclerView) findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 

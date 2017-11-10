@@ -61,7 +61,7 @@ public class ImageAdapter extends BaseQuickAdapter<Map<String, String>, BaseView
             return;
 
         Log.e("ee", "--" + item.get("imagePath"));
-
+        helper.setVisible(R.id.item_image__add, false);
         ImageView image = helper.getView(R.id.item_image__image);
         image.setVisibility(View.VISIBLE);
         try {

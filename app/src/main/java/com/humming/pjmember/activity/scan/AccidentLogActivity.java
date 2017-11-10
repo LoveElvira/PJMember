@@ -58,34 +58,29 @@ public class AccidentLogActivity extends BaseActivity implements BaseQuickAdapte
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
-        listView = (RecyclerView) findViewById(R.id.comment_listview__list);
+        listView = (RecyclerView) findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
-//        List<String> list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(i + "");
-//        }
-//        adapter = new RepairAdapter(list,3);
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
-
         accidentLists = new ArrayList<>();
+        adapter = new AccidentAdapter(accidentLists);
+        listView.setAdapter(adapter);
+        adapter.setOnLoadMoreListener(this, listView);
+        adapter.setOnItemChildClickListener(this);
 
         leftArrow.setOnClickListener(this);
 
-        isShowProgress = true;
+        getAccidentLog(pageable);
+    }
+
+    //获取事故记录
+    private void getAccidentLog(final String pageable) {
         progressHUD = ProgressHUD.show(AccidentLogActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
             }
         });
-        getAccidentLog(pageable);
-    }
-
-    //获取事故记录
-    private void getAccidentLog(final String pageable) {
         RequestParameter parameter = new RequestParameter();
         parameter.setEquipmentId(id);
         parameter.setPagable(pageable);
@@ -94,20 +89,19 @@ public class AccidentLogActivity extends BaseActivity implements BaseQuickAdapte
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
                 showShortToast(info.getInfo().toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
 
             @Override
             public void onResponse(EquipmentAcctidentRes response) {
-                closeProgress();
+                progressHUD.dismiss();
                 if (response != null) {
                     accidentList = response.getAccident();
                     if (accidentList != null && accidentList.size() > 0) {
                         if ("".equals(pageable)) {
                             accidentLists.clear();
                             accidentLists.addAll(accidentList);
-                            adapter = new AccidentAdapter(accidentList);
-                            listView.setAdapter(adapter);
+                            adapter.setNewData(accidentList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
@@ -127,8 +121,7 @@ public class AccidentLogActivity extends BaseActivity implements BaseQuickAdapte
                                 AccidentLogActivity.this.pageable = "";
                             }
                         }
-                        adapter.setOnLoadMoreListener(AccidentLogActivity.this, listView);
-                        adapter.setOnItemChildClickListener(AccidentLogActivity.this);
+                        adapter.loadMoreComplete();
                     }
                 }
 
@@ -137,7 +130,7 @@ public class AccidentLogActivity extends BaseActivity implements BaseQuickAdapte
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("onError", exception.toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
         }, parameter, EquipmentAcctidentRes.class, AccidentLogActivity.class);
     }
@@ -148,7 +141,7 @@ public class AccidentLogActivity extends BaseActivity implements BaseQuickAdapte
             @Override
             public void run() {
                 if (!hasMore) {//没有数据了
-                    adapter.loadMoreEnd();
+                    adapter.loadMoreEnd(false);
                 } else {
                     getAccidentLog(pageable);
                 }

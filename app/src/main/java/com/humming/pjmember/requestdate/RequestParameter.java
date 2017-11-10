@@ -14,6 +14,10 @@ public class RequestParameter implements IRequestMainData {
     private String phone;
     private String pwd;
 
+    //修改密码
+    private String oldPwd;
+    private String newPwd;
+
     //获取设备信息 ID  获取事故、维修 记录的ID
     private String equipmentId;
 
@@ -37,6 +41,22 @@ public class RequestParameter implements IRequestMainData {
     private List<String> pictureUrls;
 
     public RequestParameter() {
+    }
+
+    public String getOldPwd() {
+        return oldPwd;
+    }
+
+    public void setOldPwd(String oldPwd) {
+        this.oldPwd = oldPwd;
+    }
+
+    public String getNewPwd() {
+        return newPwd;
+    }
+
+    public void setNewPwd(String newPwd) {
+        this.newPwd = newPwd;
     }
 
     public String getUserId() {

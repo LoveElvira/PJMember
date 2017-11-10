@@ -27,6 +27,7 @@ import android.graphics.RectF;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.humming.pjmember.R;
@@ -302,6 +303,7 @@ public class CircleTextProgressbar extends TextView {
      * 开始。
      */
     public void start(int runProgress) {
+        Log.i("ee",runProgress+"-----");
         if (runProgress != 0) {
             this.runProgress = runProgress;
             stop();

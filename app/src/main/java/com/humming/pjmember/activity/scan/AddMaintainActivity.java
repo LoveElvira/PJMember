@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -158,7 +160,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
     }
 
     //新增设备保养信息
-    private void addMaintainLog(String time, String company, String type, String content, String price) {
+    private void addMaintainLog(String time, String company, String type, String content, String price, List<String> imageList) {
         progressHUD = ProgressHUD.show(AddMaintainActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -172,6 +174,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
         parameter.setType(type);
         parameter.setContent(content);
         parameter.setMaintainFee(price);
+        parameter.setMaintainImgUrl(imageList);
 
         OkHttpClientManager.postAsyn(Config.ADD_MAINTAIN_LOG, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
             @Override
@@ -184,7 +187,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
             @Override
             public void onResponse(SuccessResponse response) {
                 progressHUD.dismiss();
-                if (response!=null) {
+                if (response != null) {
                     showShortToast(response.getMsg());
                     if (response.getCode() == 1) {
                         AddMaintainActivity.this.finish();
@@ -230,13 +233,30 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                 AddMaintainActivity.this.finish();
                 break;
             case R.id.activity_add_log__submit:
-                String timeStr = time.getText().toString().trim();
-                String companyStr = company.getText().toString().trim();
-                String typeStr = type.getText().toString().trim();
-                String contentStr = content.getText().toString().trim();
-                String priceStr = price.getText().toString().trim();
+                final String timeStr = time.getText().toString().trim();
+                final String companyStr = company.getText().toString().trim();
+                final String typeStr = type.getText().toString().trim();
+                final String contentStr = content.getText().toString().trim();
+                final String priceStr = price.getText().toString().trim();
                 if (isNull(timeStr, companyStr, typeStr, contentStr, priceStr)) {
-                    addMaintainLog(timeStr, companyStr, typeStr, contentStr, priceStr);
+                    if (list.size() > 0) {
+                        handler = new Handler() {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                super.handleMessage(msg);
+                                switch (msg.what) {
+                                    case Constant.CODE_SUCCESS:
+                                        List<String> imageList = (List<String>) msg.obj;
+                                        addMaintainLog(timeStr, companyStr, typeStr, contentStr, priceStr, imageList);
+                                        break;
+                                }
+                            }
+                        };
+                        upLoadImage(list, handler, "addMaintain");
+                    } else {
+                        showShortToast("请先选择图片");
+                    }
+
                 }
                 break;
             case R.id.popup_photo__take://拍摄
@@ -251,7 +271,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .titleTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .mutiSelect()
-                        .mutiSelectMaxSize(1)
+                        .mutiSelectMaxSize(6)
                         .pathList(path)
                         .filePath("/ImageSelector/Pictures")
 //                        .showCamera()//显示拍摄按钮
@@ -308,7 +328,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                 map.put("isAdd", "0");
                 list.add(map);
             }
-            if (list.size() < 1) {
+            if (list.size() < 6) {
                 initAddImage();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
@@ -328,7 +348,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                         map.put("imagePath", mPublishPhotoPath);
                         map.put("isAdd", "0");
                         list.add(0, map);
-                        if (list.size() < 1) {
+                        if (list.size() < 6) {
                             initAddImage();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
@@ -347,7 +367,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                         map.put("imagePath", mPublishPhotoPath);
                         map.put("isAdd", "0");
                         list.add(0, map);
-                        if (list.size() < 1) {
+                        if (list.size() < 6) {
                             initAddImage();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();

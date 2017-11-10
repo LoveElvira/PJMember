@@ -23,7 +23,6 @@ public class BrowseImageAdapter extends PagerAdapter {
     private List<View> allImageView;
     private Context context;
     private List<String> imageUrl = new ArrayList<String>();
-    private Bitmap bitmap;
 
 
     public BrowseImageAdapter(Context context, List<View> allImageView,
@@ -31,9 +30,6 @@ public class BrowseImageAdapter extends PagerAdapter {
         this.context = context;
         this.allImageView = allImageView;
         this.imageUrl = allImageUrl;
-//        for (int i=0;i<9;i++) {
-//            imageUrl.add(""+i);
-//        }
     }
 
     /**
@@ -74,7 +70,6 @@ public class BrowseImageAdapter extends PagerAdapter {
 
 
         View v = allImageView.get(position);
-        //View v = LayoutInflater.from(context).inflate(R.layout.item_browse_image,null);
 
         ImageView click = v.findViewById(R.id.item_browse_click);
         PhotoView imageView = v
@@ -96,26 +91,6 @@ public class BrowseImageAdapter extends PagerAdapter {
                 BrowseImageViewActivity.finsh();
             }
         });
-
-//        imageView.setImageResource(R.drawable.p2);
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        // 获取这个图片的宽和高
-//        Bitmap bitmap = BitmapFactory.decodeFile(imageUrl.get(position),
-//                options); // 此时返回bm为空
-//        options.inJustDecodeBounds = false;
-//        // 计算缩放比
-//        int be = (int) (options.outHeight / (float) 200);
-//        if (be <= 0)
-//            be = 1;
-//        options.inSampleSize = be;
-//        // 重新读入图片，注意这次要把options.inJustDecodeBounds 设为 false哦
-//        bitmap = BitmapFactory.decodeFile(imageUrl.get(position), options);
-//        int w = bitmap.getWidth();
-//        int h = bitmap.getHeight();
-//        System.out.println(w + "" + h);
-//        Bitmap resizeBmp = ThumbnailUtils.extractThumbnail(bitmap, 100, 100);
-//        imageView.setImageBitmap(resizeBmp);
         view.addView(allImageView.get(position));
         return allImageView.get(position);
     }

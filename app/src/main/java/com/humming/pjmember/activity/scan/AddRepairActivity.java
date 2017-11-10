@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -166,7 +168,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
     }
 
     //新增设备维修信息
-    private void addRepairLog(String time, String company, String content, String price) {
+    private void addRepairLog(String time, String company, String content, String price, List<String> imageList) {
         progressHUD = ProgressHUD.show(AddRepairActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -179,6 +181,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
         parameter.setRepairDepartment(company);
         parameter.setReason(content);
         parameter.setRepairFee(price);
+        parameter.setRepairImgUrl(imageList);
 
         OkHttpClientManager.postAsyn(Config.ADD_REPAIR_LOG, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
             @Override
@@ -208,42 +211,6 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
 
     }
 
-    private void upLoadImage(List<Map<String, String>> list) {
-        images = new String[list.size() - 1];
-        List<File> files = new ArrayList<File>();
-        for (int i = 0; i < list.size() - 1; i++) {
-            File file = new File(list.get(i).get("imagePath"));
-            files.add(file);
-        }
-        UploadParameter upload = new UploadParameter();
-        upload.setType("addRepair");
-        OkHttpClientManager.postAsyn(Config.URL_SERVICE_UPLOAD, new OkHttpClientManager.ResultCallback<List<String>>() {
-
-            @Override
-            public void onError(Request request, Error info) {
-                showShortToast(info.getInfo().toString());
-                Log.e("onError", info.getInfo().toString());
-                progressHUD.dismiss();
-            }
-
-            @Override
-            public void onResponse(List<String> response) {
-                for (int i = 0; i < response.size(); i++) {
-                    images[i] = response.get(i);
-//                    customerDialog.dismiss();
-                }
-                //sendSuggestion();
-            }
-
-            @Override
-            public void onOtherError(Request request, Exception exception) {
-                Log.e("onError", exception.toString());
-                progressHUD.dismiss();
-            }
-        }, upload, files, new TypeReference<List<String>>() {
-        }, AddRepairActivity.class);
-    }
-
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -252,12 +219,28 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
                 AddRepairActivity.this.finish();
                 break;
             case R.id.activity_add_log__submit:
-                String timeStr = time.getText().toString().trim();
-                String companyStr = company.getText().toString().trim();
-                String contentStr = content.getText().toString().trim();
-                String priceStr = price.getText().toString().trim();
+                final String timeStr = time.getText().toString().trim();
+                final String companyStr = company.getText().toString().trim();
+                final String contentStr = content.getText().toString().trim();
+                final String priceStr = price.getText().toString().trim();
                 if (isNull(timeStr, companyStr, contentStr, priceStr)) {
-                    addRepairLog(timeStr, companyStr, contentStr, priceStr);
+                    if (list.size() > 0) {
+                        handler = new Handler() {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                super.handleMessage(msg);
+                                switch (msg.what) {
+                                    case Constant.CODE_SUCCESS:
+                                        List<String> imageList = (List<String>) msg.obj;
+                                        addRepairLog(timeStr, companyStr, contentStr, priceStr, imageList);
+                                        break;
+                                }
+                            }
+                        };
+                        upLoadImage(list, handler, "addRepair");
+                    } else {
+                        showShortToast("请先选择图片");
+                    }
                 }
                 break;
             case R.id.popup_photo__take://拍摄
@@ -272,7 +255,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .titleTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .mutiSelect()
-                        .mutiSelectMaxSize(1)
+                        .mutiSelectMaxSize(6)
                         .pathList(path)
                         .filePath("/ImageSelector/Pictures")
 //                        .showCamera()//显示拍摄按钮
@@ -329,7 +312,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
                 map.put("isAdd", "0");
                 list.add(map);
             }
-            if (list.size() < 1) {
+            if (list.size() < 6) {
                 initAddImage();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
@@ -349,7 +332,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
                         map.put("imagePath", mPublishPhotoPath);
                         map.put("isAdd", "0");
                         list.add(0, map);
-                        if (list.size() < 1) {
+                        if (list.size() < 6) {
                             initAddImage();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
@@ -368,7 +351,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
                         map.put("imagePath", mPublishPhotoPath);
                         map.put("isAdd", "0");
                         list.add(0, map);
-                        if (list.size() < 1) {
+                        if (list.size() < 6) {
                             initAddImage();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();

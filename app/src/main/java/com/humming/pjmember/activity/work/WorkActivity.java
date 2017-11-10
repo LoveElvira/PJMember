@@ -1,5 +1,6 @@
 package com.humming.pjmember.activity.work;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.humming.pjmember.R;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.content.work.UnCompleteContent;
 import com.humming.pjmember.content.work.WholeContent;
 import com.humming.pjmember.content.work.WorkTodayContent;
@@ -157,6 +159,36 @@ public class WorkActivity extends BaseActivity {
             }
         });
         todayContent.isInitFirst();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode!= Constant.CODE_RESULT)
+            return;
+
+        switch (requestCode){
+            case Constant.CODE_REQUEST_ONE:
+
+                int roadWorkState = data.getIntExtra("roadWorkState",0);
+                String  roadWork = data.getStringExtra("roadWork");
+                int isSafety = data.getIntExtra("isSafety",0);
+                int position = data.getIntExtra("position",0);
+
+                switch (positions) {
+                    case 0:
+                        todayContent.updateView(roadWorkState,roadWork,isSafety,position);
+                        break;
+                    case 1:
+                        unCompleteContent.updateView(roadWorkState,roadWork,isSafety,position);
+                        break;
+                    case 2:
+                        wholeContent.updateView(roadWorkState,roadWork,isSafety,position);
+                        break;
+                }
+
+                break;
+        }
     }
 
     @Override

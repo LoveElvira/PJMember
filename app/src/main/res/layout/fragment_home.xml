@@ -20,14 +20,12 @@
             <ImageView
                 android:id="@+id/fragment_home__wether_image"
                 android:layout_width="@dimen/size_100"
-                android:layout_height="@dimen/size_100"
-                android:src="@mipmap/weather" />
+                android:layout_height="@dimen/size_100"/>
 
             <TextView
                 android:id="@+id/fragment_home__wether_temp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="25°"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_40" />
 
@@ -35,7 +33,6 @@
                 android:id="@+id/fragment_home__wether_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="9月26日 雷阵雨"
                 android:textColor="@color/gray"
                 android:textSize="@dimen/text_14" />
 

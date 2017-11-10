@@ -515,53 +515,38 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    protected void upLoadImage(List<Map<String, String>> list, final Handler handler) {
-//        progressHUD = ProgressHUD.show(getBaseContext(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-//            @Override
-//            public void onCancel(DialogInterface dialog) {
-//                progressHUD.dismiss();
-//            }
-//        });
-//        images = new String[list.size() - 1];
+    protected void upLoadImage(List<Map<String, String>> list, final Handler handler, String type) {
         List<File> files = new ArrayList<File>();
-        for (int i = 0; i < list.size() - 1; i++) {
-            File file = new File(list.get(i).get("imagePath"));
-            files.add(file);
+        for (int i = 0; i < list.size(); i++) {
+            if ("0".equals(list.get(i).get("isAdd"))) {
+                File file = new File(list.get(i).get("imagePath"));
+                files.add(file);
+            }
         }
         UploadParameter upload = new UploadParameter();
-        upload.setType("defectResult");
+        upload.setType(type);
         OkHttpClientManager.postAsyn(Config.UPDATE_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
 
             @Override
             public void onError(Request request, Error info) {
                 showShortToast(info.getInfo().toString());
                 Log.e("onError", info.getInfo().toString());
-//                progressHUD.dismiss();
             }
 
             @Override
             public void onResponse(List<String> response) {
-//                progressHUD.dismiss();
                 if (response != null) {
+                    Log.i("ee", response.toString());
                     Message msg = new Message();
                     msg.what = Constant.CODE_SUCCESS;
                     msg.obj = response;
                     handler.sendMessage(msg);
                 }
-//                for (int i = 0; i < response.size(); i++) {
-////                    images[i] = response.get(i);
-//                    Log.i("ee", images[i]);
-////                    customerDialog.dismiss();
-//                }
-
-//                Log.i("ee", images.toString());
-                //sendSuggestion();
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("onError", exception.toString());
-//                progressHUD.dismiss();
             }
         }, upload, files, new TypeReference<List<String>>() {
         }, DefectResultActivity.class);

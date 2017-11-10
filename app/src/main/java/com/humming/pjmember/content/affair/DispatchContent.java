@@ -25,7 +25,7 @@ public class DispatchContent extends BaseLinearLayout implements BaseQuickAdapte
 
     public DispatchContent(Context context, AttributeSet attrs) {
         super(context, attrs);
-        view = inflate(context, R.layout.comment_listview, this);
+        view = inflate(context, R.layout.common_listview, this);
         initView();
     }
 
@@ -33,7 +33,7 @@ public class DispatchContent extends BaseLinearLayout implements BaseQuickAdapte
     protected void initView() {
         super.initView();
 
-        listView = findViewById(R.id.comment_listview__list);
+        listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 

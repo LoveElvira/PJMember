@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,16 +12,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
+import com.humming.pjmember.adapter.ImageLookAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.viewutils.ProgressHUD;
+import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.equipment.EquipmentMaintainBean;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
@@ -30,7 +36,7 @@ import okhttp3.Request;
  * 保养记录详情
  */
 
-public class MaintainDetailsActivity extends BaseActivity {
+public class MaintainDetailsActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
     //保养时间标题
     private TextView timeTitle;
@@ -58,7 +64,8 @@ public class MaintainDetailsActivity extends BaseActivity {
     //发票标题
     private TextView imageTitle;
     //发票图片
-    private ImageView image;
+//    private ImageView image;
+    private ImageLookAdapter adapter;
 
     private ArrayList<String> path = new ArrayList<>();
 
@@ -94,7 +101,13 @@ public class MaintainDetailsActivity extends BaseActivity {
         priceTitle = (TextView) findViewById(R.id.activity_log_details__price_title);
         price = (TextView) findViewById(R.id.activity_log_details__price);
         imageTitle = (TextView) findViewById(R.id.activity_log_details__listview_title);
-        image = (ImageView) findViewById(R.id.activity_log_details__listview);
+//        image = (ImageView) findViewById(R.id.activity_log_details__listview);
+
+        listView = (RecyclerView) findViewById(R.id.activity_log_details__listview);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        listView.setLayoutManager(gridLayoutManager);
+        listView.addItemDecoration(new SpacesItemDecoration(10));
+
 
         companyLayout.setVisibility(View.VISIBLE);
         timeTitle.setText("保养时间：");
@@ -105,7 +118,7 @@ public class MaintainDetailsActivity extends BaseActivity {
         imageTitle.setText("发票：");
 
         leftArrow.setOnClickListener(this);
-        image.setOnClickListener(this);
+//        image.setOnClickListener(this);
         getMaintainDetails();
     }
 
@@ -141,11 +154,12 @@ public class MaintainDetailsActivity extends BaseActivity {
                     }
                     time.setText(response.getMaintainTime());
                     content.setText(initHtml("保养内容", response.getContent()));
-                    if (response.getMaintainImg() != null && !"".equals(response.getMaintainImg())) {
-                        Glide.with(getBaseContext())
-                                .load(response.getMaintainImg())
-                                .into(image);
-                        path.add(response.getMaintainImg());
+                    if (response.getMaintainImg() != null && response.getMaintainImg().size() > 0) {
+                        path.clear();
+                        path.addAll(response.getMaintainImg());
+                        adapter = new ImageLookAdapter(path, getBaseContext());
+                        listView.setAdapter(adapter);
+                        adapter.setOnItemChildClickListener(MaintainDetailsActivity.this);
                     }
                 }
             }
@@ -175,6 +189,19 @@ public class MaintainDetailsActivity extends BaseActivity {
                     intent.putExtra("isShowDelete", "false");
                     startActivity(intent);
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()) {
+            case R.id.item_image__image_bg:
+            case R.id.item_image__image:
+                Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("imageUrl", path);
+                startActivity(intent);
                 break;
         }
     }

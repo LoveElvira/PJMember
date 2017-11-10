@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.work;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -173,7 +175,7 @@ public class StartOrEndWorkActivity extends BaseWorkActivity implements BaseQuic
             intent.putExtra("position", position);
             intent.putExtra("imageUrl", path);
             intent.putExtra("isShowDelete", "isShow");
-            StartOrEndWorkActivity.this.startActivityForResult(intent, Constant.CODE_REQUEST_ONE);
+            startActivity(intent);
         }
     }
 
@@ -263,25 +265,23 @@ public class StartOrEndWorkActivity extends BaseWorkActivity implements BaseQuic
                 StartOrEndWorkActivity.this.finish();
                 break;
             case R.id.activity_start_work__btn:
-//                if (list.size() > 1) {
-//                    handler = new Handler() {
-//                        @Override
-//                        public void handleMessage(Message msg) {
-//                            super.handleMessage(msg);
-//                            switch (msg.what) {
-//                                case Constant.CODE_SUCCESS:
-//                                    List<String> imageList = (List<String>) msg.obj;
-//                                    break;
-//                            }
-//                        }
-//                    };
-//                    upLoadImage(list, handler);
-//                } else {
-//                    showShortToast("请选择图片");
-//                }
-                List<String> imageList = new ArrayList<>();
-                imageList.add("aaa");
-                startWork(imageList);
+                if (list.size() > 1) {
+                    handler = new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            super.handleMessage(msg);
+                            switch (msg.what) {
+                                case Constant.CODE_SUCCESS:
+                                    List<String> imageList = (List<String>) msg.obj;
+                                    startWork(imageList);
+                                    break;
+                            }
+                        }
+                    };
+                    upLoadImage(list, handler, "bindWork");
+                } else {
+                    showShortToast("请选择图片");
+                }
                 break;
             case R.id.popup_photo__take://拍摄
                 getCamerePhoto();

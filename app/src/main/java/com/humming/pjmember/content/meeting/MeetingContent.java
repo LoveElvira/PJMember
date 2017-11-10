@@ -27,7 +27,7 @@ public class MeetingContent extends BaseLinearLayout implements BaseQuickAdapter
 
     public MeetingContent(Context context, AttributeSet attrs) {
         super(context, attrs);
-        view = inflate(context, R.layout.comment_listview, this);
+        view = inflate(context, R.layout.common_listview, this);
         initView();
     }
 
@@ -35,7 +35,7 @@ public class MeetingContent extends BaseLinearLayout implements BaseQuickAdapter
     protected void initView() {
         super.initView();
 
-        listView = findViewById(R.id.comment_listview__list);
+        listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 

@@ -1,7 +1,9 @@
 package com.humming.pjmember.adapter;
 
 import android.support.annotation.Nullable;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.humming.pjmember.R;
@@ -25,6 +27,10 @@ public class PersonAdapter extends BaseQuickAdapter<UserInfoBean, BaseViewHolder
                 .setText(R.id.item_plan_peoson__name, item.getName())
                 .setText(R.id.item_plan_peoson__post, item.getWorkPlace())
                 .setText(R.id.item_plan_peoson__type, item.getJobType());
+
+        Glide.with(helper.getConvertView().getContext())
+                .load(item.getAvatarUrl())
+                .into((ImageView) helper.getView(R.id.fragment_mine__head_image));
 
         if ("1".equals(item.getSex())) {
             helper.setImageResource(R.id.item_plan_peoson__sex, R.mipmap.sex_boy_small);

@@ -3,6 +3,8 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,14 +12,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
+import com.humming.pjmember.adapter.ImageLookAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.viewutils.ProgressHUD;
+import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.equipment.EquipmentAcctidentBean;
 import com.pjqs.dto.equipment.EquipmentMaintainBean;
 
@@ -30,7 +35,7 @@ import okhttp3.Request;
  * 事故记录详情
  */
 
-public class AccidentDetailsActivity extends BaseActivity {
+public class AccidentDetailsActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
     //保养时间标题
     private TextView timeTitle;
@@ -59,7 +64,8 @@ public class AccidentDetailsActivity extends BaseActivity {
     private TextView imageTitle;
     //发票图片
     private LinearLayout imageLayout;
-    private ImageView image;
+//    private ImageView image;
+    private ImageLookAdapter adapter;
 
     private ArrayList<String> path = new ArrayList<>();
 
@@ -96,18 +102,23 @@ public class AccidentDetailsActivity extends BaseActivity {
         price = (TextView) findViewById(R.id.activity_log_details__price);
         imageLayout = (LinearLayout) findViewById(R.id.activity_log_details__listview_layout);
         imageTitle = (TextView) findViewById(R.id.activity_log_details__listview_title);
-        image = (ImageView) findViewById(R.id.activity_log_details__listview);
+//        image = (ImageView) findViewById(R.id.activity_log_details__listview);
 
-        imageLayout.setVisibility(View.GONE);
+        listView = (RecyclerView) findViewById(R.id.activity_log_details__listview);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        listView.setLayoutManager(gridLayoutManager);
+        listView.addItemDecoration(new SpacesItemDecoration(10));
+
+//        imageLayout.setVisibility(View.GONE);
         timeTitle.setText("事故发生时间：");
         nameTitle.setText("设备名称：");
         numTitle.setText("设备编号：");
 //        companyTitle.setText("保养单位");
         priceTitle.setText("损失金额：");
-//        imageTitle.setText("发票");
+        imageTitle.setText("相关资料");
 
         leftArrow.setOnClickListener(this);
-        image.setOnClickListener(this);
+//        image.setOnClickListener(this);
         getMaintainDetails();
     }
 
@@ -141,14 +152,15 @@ public class AccidentDetailsActivity extends BaseActivity {
                     } else {
                         price.setText("¥ 0.00");
                     }
-                    time.setText(response.getAccidentTiem());
+                    time.setText(response.getAccidentTime());
                     content.setText(initHtml("事故原因", response.getRemark()));
-//                    if (response.getMaintainImg() != null && !"".equals(response.getMaintainImg())) {
-//                        Glide.with(getBaseContext())
-//                                .load(response.getMaintainImg())
-//                                .into(image);
-//                        path.add(response.getMaintainImg());
-//                    }
+                    if (response.getAccidentImgUrl() != null && response.getAccidentImgUrl().size()>0) {
+                        path.clear();
+                        path.addAll(response.getAccidentImgUrl());
+                        adapter = new ImageLookAdapter(path, getBaseContext());
+                        listView.setAdapter(adapter);
+                        adapter.setOnItemChildClickListener(AccidentDetailsActivity.this);
+                    }
                 }
             }
 
@@ -161,6 +173,18 @@ public class AccidentDetailsActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()) {
+            case R.id.item_image__image_bg:
+            case R.id.item_image__image:
+                Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("imageUrl", path);
+                startActivity(intent);
+                break;
+        }
+    }
 
     @Override
     public void onClick(View v) {

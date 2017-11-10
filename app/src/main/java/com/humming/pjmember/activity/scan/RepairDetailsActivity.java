@@ -3,20 +3,25 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
+import com.humming.pjmember.adapter.ImageLookAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.viewutils.ProgressHUD;
+import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.equipment.EquipmentRepairBean;
 
 import java.util.ArrayList;
@@ -28,7 +33,7 @@ import okhttp3.Request;
  * 维修记录详情
  */
 
-public class RepairDetailsActivity extends BaseActivity {
+public class RepairDetailsActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
     //报修时间标题
     private TextView timeTitle;
@@ -51,7 +56,8 @@ public class RepairDetailsActivity extends BaseActivity {
     //发票标题
     private TextView imageTitle;
     //发票图片
-    private ImageView image;
+//    private ImageView image;
+    private ImageLookAdapter adapter;
 
     private ArrayList<String> path = new ArrayList<>();
 
@@ -84,7 +90,13 @@ public class RepairDetailsActivity extends BaseActivity {
         priceTitle = (TextView) findViewById(R.id.activity_log_details__price_title);
         price = (TextView) findViewById(R.id.activity_log_details__price);
         imageTitle = (TextView) findViewById(R.id.activity_log_details__listview_title);
-        image = (ImageView) findViewById(R.id.activity_log_details__listview);
+//        image = (ImageView) findViewById(R.id.activity_log_details__listview);
+
+        listView = (RecyclerView) findViewById(R.id.activity_log_details__listview);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        listView.setLayoutManager(gridLayoutManager);
+        listView.addItemDecoration(new SpacesItemDecoration(10));
+
 
         timeTitle.setText("维修时间：");
         nameTitle.setText("设备名称：");
@@ -93,7 +105,7 @@ public class RepairDetailsActivity extends BaseActivity {
         imageTitle.setText("发票：");
 
         leftArrow.setOnClickListener(this);
-        image.setOnClickListener(this);
+//        image.setOnClickListener(this);
         getRepairDetails();
     }
 
@@ -128,11 +140,12 @@ public class RepairDetailsActivity extends BaseActivity {
                     }
                     time.setText(response.getRepairTime());
                     content.setText(initHtml("维修内容", response.getReason()));
-                    if (response.getInvoiceUrl() != null && !"".equals(response.getInvoiceUrl())) {
-                        Glide.with(getBaseContext())
-                                .load(response.getInvoiceUrl())
-                                .into(image);
-                        path.add(response.getInvoiceUrl());
+                    if (response.getInvoiceUrl() != null && response.getInvoiceUrl().size()>0) {
+                        path.clear();
+                        path.addAll(response.getInvoiceUrl());
+                        adapter = new ImageLookAdapter(path, getBaseContext());
+                        listView.setAdapter(adapter);
+                        adapter.setOnItemChildClickListener(RepairDetailsActivity.this);
                     }
                 }
 
@@ -163,6 +176,19 @@ public class RepairDetailsActivity extends BaseActivity {
                     intent.putExtra("isShowDelete", "false");
                     startActivity(intent);
                 }
+                break;
+        }
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()) {
+            case R.id.item_image__image_bg:
+            case R.id.item_image__image:
+                Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("imageUrl", path);
+                startActivity(intent);
                 break;
         }
     }

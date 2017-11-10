@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.LoginActivity;
+import com.humming.pjmember.activity.setting.UpdatePwdActivity;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
 import com.humming.pjmember.base.Constant;
@@ -80,6 +81,7 @@ public class SettingContent extends BaseLinearLayout {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.fragment_setting__update_pwd://修改密码
+                startActivity(UpdatePwdActivity.class);
                 break;
             case R.id.fragment_setting__exit://退出登录
 

@@ -107,8 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1"
             android:alpha="0.5"
-            android:background="@color/white"
-            android:visibility="gone"/>
+            android:background="@color/white"/>
 
         <LinearLayout
             android:id="@+id/fragment_setting__update_pwd"
@@ -116,8 +115,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="@dimen/size_12"
-            android:visibility="gone">
+            android:padding="@dimen/size_12">
 
             <ImageView
                 android:layout_width="@dimen/size_15"
@@ -145,8 +143,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_1"
             android:alpha="0.5"
-            android:background="@color/white"
-            android:visibility="gone"/>
+            android:background="@color/white"/>
 
         <View
             android:layout_width="match_parent"

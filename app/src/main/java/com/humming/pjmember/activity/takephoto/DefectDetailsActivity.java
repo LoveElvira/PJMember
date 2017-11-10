@@ -18,6 +18,7 @@ import com.humming.pjmember.activity.work.BaseWorkActivity;
 import com.humming.pjmember.adapter.ImageLookAdapter;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.viewutils.ProgressHUD;
+import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.work.WorkBean;
 
 import java.io.Serializable;
@@ -66,6 +67,7 @@ public class DefectDetailsActivity extends BaseWorkActivity implements BaseQuick
         listView = (RecyclerView) findViewById(R.id.activity_defect_details__listview);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         listView.setLayoutManager(gridLayoutManager);
+        listView.addItemDecoration(new SpacesItemDecoration(10));
 
         workName = (TextView) findViewById(R.id.activity_defect_details__work_name);
         name = (TextView) findViewById(R.id.activity_defect_details__name);

@@ -26,6 +26,7 @@ import okhttp3.Request;
 public class BaseWorkActivity extends BaseActivity {
 
     protected WorkBean workBean;
+    protected int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

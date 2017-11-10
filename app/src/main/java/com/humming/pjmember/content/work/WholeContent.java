@@ -3,6 +3,7 @@ package com.humming.pjmember.content.work;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,11 +12,13 @@ import android.widget.LinearLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
+import com.humming.pjmember.activity.work.WorkPlanActivity;
 import com.humming.pjmember.activity.work.WorkSafetyDisclosureActivity;
 import com.humming.pjmember.adapter.WorkAdapter;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
 import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
@@ -33,7 +36,7 @@ import okhttp3.Request;
  * 全部作业
  */
 
-public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private WorkAdapter adapter;
     //筛选
@@ -57,25 +60,20 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
         super.initView();
         pageable = "";
         screenLayout = findViewById(R.id.content_work__screen);
-        screenLayout.setVisibility(VISIBLE);
+//        screenLayout.setVisibility(VISIBLE);
 
-        listView = findViewById(R.id.comment_listview__list);
+        refresh = findViewById(R.id.common_refresh);
+        refresh.setColorSchemeColors(getResources().getColor(R.color.blue));
+        refresh.setOnRefreshListener(this);
+        listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add("0");
-            list.add("1");
-            list.add("2");
-            list.add("3");
-        }
-
-//        adapter = new WorkAdapter(list);
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
         workLists = new ArrayList<>();
-//        getWorkDate(pageable);
+        adapter = new WorkAdapter(workLists);
+        listView.setAdapter(adapter);
+        adapter.setOnLoadMoreListener(this, listView);
+        adapter.setOnItemChildClickListener(this);
         isOne = false;
         isShowProgress = true;
     }
@@ -89,7 +87,7 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
                         progressHUD.dismiss();
                     }
                 });
-                getWorkDate(pageable);
+                getWorkData(pageable);
                 isOne = true;
             }
 //            listView.setVisibility(VISIBLE);
@@ -100,7 +98,20 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
         }
     }
 
-    private void getWorkDate(final String pageable) {
+    public void updateView(int roadWorkState, String roadWork, int isSafety, int position) {
+        if (workLists.get(position).getIsSafety() != isSafety) {
+            workLists.get(position).setIsSafety(isSafety);
+        }
+        if (workLists.get(position).getRoadWorkState() != roadWorkState) {
+            workLists.get(position).setRoadWorkState(roadWorkState);
+        }
+        if (!roadWork.equals(workLists.get(position).getRoadWork())) {
+            workLists.get(position).setRoadWork(roadWork);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void getWorkData(final String pageable) {
         RequestParameter parameter = new RequestParameter();
         parameter.setType("3");
         parameter.setPagable(pageable);
@@ -109,7 +120,7 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
             @Override
             public void onError(Request request, Error info) {
                 showShortToast(info.getInfo().toString());
-                Log.e("onError",info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
                 closeProgress();
             }
 
@@ -122,8 +133,7 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
                         if ("".equals(pageable)) {
                             workLists.clear();
                             workLists.addAll(workList);
-                            adapter = new WorkAdapter(workList);
-                            listView.setAdapter(adapter);
+                            adapter.setNewData(workList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
@@ -143,16 +153,15 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
                                 WholeContent.this.pageable = "";
                             }
                         }
-                        adapter.setOnLoadMoreListener(WholeContent.this, listView);
-                        adapter.setOnItemChildClickListener(WholeContent.this);
+                        adapter.loadMoreComplete();
                     }
-                                   }
+                }
 
             }
 
             @Override
             public void onOtherError(Request request, Exception exception) {
-                Log.e("",exception.toString());
+                Log.e("", exception.toString());
                 closeProgress();
             }
         }, parameter, QueryWorkRes.class, Application.getInstance().getCurrentActivity().getClass());
@@ -161,14 +170,16 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
 
     @Override
     public void onLoadMoreRequested() {
+        refresh.setEnabled(false);
         listView.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (!hasMore) {//没有数据了
-                    adapter.loadMoreEnd();
+                    adapter.loadMoreEnd(false);
                 } else {
-                    getWorkDate(pageable);
+                    getWorkData(pageable);
                 }
+                refresh.setEnabled(true);
             }
         }, delayMillis);
     }
@@ -177,12 +188,33 @@ public class WholeContent extends BaseLinearLayout implements BaseQuickAdapter.O
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_work__parent:
-                startActivity(new Intent(getContext(), WorkSafetyDisclosureActivity.class)
-                        .putExtra("isLook", true)
-                        .putExtra("id", workLists.get(position).getWorkId() + ""));
+                Intent intent = new Intent();
+                if (workLists.get(position).getIsSafety() == 1) {//已经读过安全交底
+                    intent.setClass(getContext(), WorkPlanActivity.class);
+                } else {
+                    intent.setClass(getContext(), WorkSafetyDisclosureActivity.class);
+                    intent.putExtra("isLook", true);
+                }
+                intent.putExtra("id", workLists.get(position).getWorkId() + "");
+                intent.putExtra("position", position);
+                Application.getInstance().getCurrentActivity().startActivityForResult(intent, Constant.CODE_REQUEST_ONE);
                 break;
         }
     }
 
 
+    @Override
+    public void onRefresh() {
+        adapter.setEnableLoadMore(false);
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                pageable = "";
+                getWorkData(pageable);
+                refresh.setRefreshing(false);
+                adapter.loadMoreEnd(true);
+                adapter.setEnableLoadMore(true);
+            }
+        });
+    }
 }
