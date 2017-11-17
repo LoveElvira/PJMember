@@ -1,11 +1,12 @@
 package com.humming.pjmember.adapter;
 
 import android.support.annotation.Nullable;
-import android.text.Html;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.humming.pjmember.R;
+import com.pjqs.dto.contract.ContractInfoBean;
+import com.pjqs.dto.project.ProjectInfoBean;
 
 import java.util.List;
 
@@ -13,20 +14,21 @@ import java.util.List;
  * Created by Elvira on 2017/9/4.
  */
 
-public class AffairAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class ProjectAdapter extends BaseQuickAdapter<ProjectInfoBean, BaseViewHolder> {
 
-    private int type;//1 合同  2 项目  3 收发文
+    private int type;//1 合同
 
-    public AffairAdapter(@Nullable List<String> data, int type) {
+    public ProjectAdapter(@Nullable List<ProjectInfoBean> data, int type) {
         super(R.layout.item_affair, data);
         this.type = type;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
-        String str = "<font color='#ADADAD'>" + "设备机器损坏，运转不灵记录文字，设备机器损坏，运转不灵。" + "</font>";
-
-        helper.addOnClickListener(R.id.item_affair__parent);
+    protected void convert(BaseViewHolder helper, ProjectInfoBean item) {
+        helper.setText(R.id.item_affair__title, item.getProName())
+                .setText(R.id.item_affair__people_name, item.getCrtUserName())
+                .setText(R.id.item_affair__time, item.getTime())
+                .addOnClickListener(R.id.item_affair__parent);
 
         switch (type) {
             case 1:

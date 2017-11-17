@@ -20,10 +20,10 @@
             android:textSize="@dimen/text_13" />
 
         <TextView
+            android:id="@+id/item_contract_middle__type"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="起草（起草任务）"
             android:textColor="@color/gray_ADADAD"
             android:textSize="@dimen/text_13" />
     </LinearLayout>
@@ -44,10 +44,10 @@
             android:textSize="@dimen/text_13" />
 
         <TextView
+            android:id="@+id/item_contract_middle__time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="2017-08-23 21:23"
             android:textColor="@color/gray_ADADAD"
             android:textSize="@dimen/text_13" />
     </LinearLayout>
@@ -69,10 +69,10 @@
             android:textSize="@dimen/text_13" />
 
         <TextView
+            android:id="@+id/item_contract_middle__name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Admin"
             android:textColor="@color/gray_ADADAD"
             android:textSize="@dimen/text_13" />
     </LinearLayout>
@@ -94,10 +94,10 @@
             android:textSize="@dimen/text_13" />
 
         <TextView
+            android:id="@+id/item_contract_middle__check_idea"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="同意"
             android:textColor="@color/gray_ADADAD"
             android:textSize="@dimen/text_13" />
     </LinearLayout>

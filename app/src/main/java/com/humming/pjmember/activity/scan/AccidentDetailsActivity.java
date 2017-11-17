@@ -21,6 +21,7 @@ import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
+import com.humming.pjmember.utils.StringUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.equipment.EquipmentAcctidentBean;
@@ -64,7 +65,7 @@ public class AccidentDetailsActivity extends BaseActivity implements BaseQuickAd
     private TextView imageTitle;
     //发票图片
     private LinearLayout imageLayout;
-//    private ImageView image;
+    //    private ImageView image;
     private ImageLookAdapter adapter;
 
     private ArrayList<String> path = new ArrayList<>();
@@ -147,14 +148,10 @@ public class AccidentDetailsActivity extends BaseActivity implements BaseQuickAd
                     name.setText(response.getEquipmentName());
                     num.setText(response.getEquipmentNo());
 //                    company.setText(response.getMaintainDepartment());
-                    if (response.getLossFee() != null && !"".equals(response.getLossFee())) {
-                        price.setText("¥ " + String.format("%.2f", Double.parseDouble(response.getLossFee())));
-                    } else {
-                        price.setText("¥ 0.00");
-                    }
+                    price.setText(StringUtils.saveTwoDecimal(response.getLossFee()));
                     time.setText(response.getAccidentTime());
                     content.setText(initHtml("事故原因", response.getRemark()));
-                    if (response.getAccidentImgUrl() != null && response.getAccidentImgUrl().size()>0) {
+                    if (response.getAccidentImgUrl() != null && response.getAccidentImgUrl().size() > 0) {
                         path.clear();
                         path.addAll(response.getAccidentImgUrl());
                         adapter = new ImageLookAdapter(path, getBaseContext());

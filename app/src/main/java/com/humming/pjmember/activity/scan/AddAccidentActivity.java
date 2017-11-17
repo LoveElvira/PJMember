@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,11 +26,10 @@ import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.bean.AccidentNatureModel;
 import com.humming.pjmember.bean.AccidentTypeModel;
 import com.humming.pjmember.requestdate.AddAccidentParameter;
-import com.humming.pjmember.requestdate.AddMaintainParameter;
 import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
@@ -174,12 +172,6 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
 
     //新增设备事故信息
     private void addAccidentLog(String time, String content, String price, List<String> imageList) {
-        progressHUD = ProgressHUD.show(AddAccidentActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressHUD.dismiss();
-            }
-        });
         AddAccidentParameter parameter = new AddAccidentParameter();
         parameter.setEquipmentId(id);
         parameter.setAccidentTime(time);
@@ -278,7 +270,7 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
                 break;
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
-                        = new ImageConfig.Builder(AddAccidentActivity.this, new PicassoLoader())
+                        = new ImageConfig.Builder(AddAccidentActivity.this, new GlideLoader())
                         .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
@@ -326,7 +318,11 @@ public class AddAccidentActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode==RESULT_CANCELED){
+            path.clear();
+            list.clear();
+            return;
+        }
         if (resultCode == Constant.CODE_RESULT) {
 
             switch (requestCode) {

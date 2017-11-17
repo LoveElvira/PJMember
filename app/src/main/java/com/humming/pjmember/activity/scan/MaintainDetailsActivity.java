@@ -21,6 +21,7 @@ import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
+import com.humming.pjmember.utils.StringUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.equipment.EquipmentMaintainBean;
@@ -147,11 +148,7 @@ public class MaintainDetailsActivity extends BaseActivity implements BaseQuickAd
                     name.setText(response.getEquipmentName());
                     num.setText(response.getEquipmentNo());
                     company.setText(response.getMaintainDepartment());
-                    if (response.getMaintainFee() != null && !"".equals(response.getMaintainFee())) {
-                        price.setText("¥ " + String.format("%.2f", Double.parseDouble(response.getMaintainFee())));
-                    } else {
-                        price.setText("¥ 0.00");
-                    }
+                    price.setText(StringUtils.saveTwoDecimal(response.getMaintainFee()));
                     time.setText(response.getMaintainTime());
                     content.setText(initHtml("保养内容", response.getContent()));
                     if (response.getMaintainImg() != null && response.getMaintainImg().size() > 0) {

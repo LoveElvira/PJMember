@@ -13,10 +13,13 @@ public class Constant {
     public static final String PASSWORD = "password";
     public static final String USER_ID = "userId";
     public static final String POSITION = "positon";//职位
+    public static final String COMPANY = "company";//所属公司
     public static final String TOKEN = "token";
+    public static final String APP_VERSION = "app_version";
+    public static final String DEVICE_TYPE = "android";
     public static final String ACCIDENT_TYPE = "accidentType";
     public static final String FILE_NAME = "Humming_PJMember";
-    //    public static String AppDomain = "33040301";//正式 影院ID
+    public static final String AUTHORITY = "com.humming.pjmember.fileprovider";
     //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
     public static final String AppVersion = Build.BRAND + "_" + Build.DISPLAY + "_" + Build.FINGERPRINT + "_" + Build.ID;
 

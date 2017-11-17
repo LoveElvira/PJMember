@@ -176,24 +176,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/size_5"
-                    android:paddingTop="@dimen/size_5">
+                    android:orientation="horizontal">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/activity_add_defect__address"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/size_5"
                         android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="请选择地理位置"
                         android:lineSpacingMultiplier="1.2"
-                        android:text="请选择地理位置"
+                        android:paddingBottom="@dimen/size_5"
+                        android:paddingTop="@dimen/size_5"
                         android:textColor="@color/white"
+                        android:textColorHint="@color/gray"
+                        android:textCursorDrawable="@drawable/cursor_white"
                         android:textSize="@dimen/text_14" />
 
                     <ImageView
+                        android:id="@+id/activity_add_defect__address_image"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/size_15"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/size_10"
                         android:src="@mipmap/address" />
 
                 </LinearLayout>
@@ -202,7 +206,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.5"
-                    android:background="@color/white" />
+                    android:background="@color/white"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -210,7 +214,8 @@
                     android:layout_marginTop="@dimen/size_10"
                     android:text="详细地址（选填）"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_13" />
+                    android:textSize="@dimen/text_13"
+                    android:visibility="gone" />
 
                 <EditText
                     android:id="@+id/activity_add_defect__address_des"
@@ -224,13 +229,15 @@
                     android:textColor="@color/white"
                     android:textColorHint="@color/gray"
                     android:textCursorDrawable="@drawable/cursor_white"
-                    android:textSize="@dimen/text_14" />
+                    android:textSize="@dimen/text_14"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:alpha="0.5"
-                    android:background="@color/white" />
+                    android:background="@color/white"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/activity_add_defect__submit"

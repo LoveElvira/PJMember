@@ -142,7 +142,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
                 case NORMAL:
 //                    requestLocButton.setText("跟随");
                     mode = LocationMode.COMPASS;
-                    baiduMap.setMyLocationConfiguration(
+                    baiduMap.setMyLocationConfigeration(
                             new MyLocationConfiguration(mode, true, marker));
                     MapStatus.Builder builder = new MapStatus.Builder();
                     builder.overlook(0);
@@ -151,7 +151,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
                 case COMPASS:
 //                    requestLocButton.setText("普通");
                     mode = LocationMode.NORMAL;
-                    baiduMap.setMyLocationConfiguration(
+                    baiduMap.setMyLocationConfigeration(
                             new MyLocationConfiguration(mode, true, marker));
                     MapStatus.Builder builder1 = new MapStatus.Builder();
                     builder1.overlook(0);
@@ -160,7 +160,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
                 case FOLLOWING:
 //                    requestLocButton.setText("罗盘");
                     mode = LocationMode.COMPASS;
-                    baiduMap.setMyLocationConfiguration(
+                    baiduMap.setMyLocationConfigeration(
                             new MyLocationConfiguration(mode, true, marker));
                     break;
                 default:
@@ -179,7 +179,7 @@ public class MapActivity extends BaseActivity implements SensorEventListener, Ba
         mode = LocationMode.NORMAL;
         //自定义定位图标
 //      marker = BitmapDescriptorFactory.fromResource(R.drawable.icon_geo);
-        baiduMap.setMyLocationConfiguration(
+        baiduMap.setMyLocationConfigeration(
                 new MyLocationConfiguration(mode, true, marker));
 
         // 开启定位图层

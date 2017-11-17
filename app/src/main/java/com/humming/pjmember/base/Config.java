@@ -6,17 +6,20 @@ package com.humming.pjmember.base;
  */
 
 public class Config {
-//    public static final String URL_SERVICE = "http://pjqs.humming-tech.com/cgi";//正式环境
-    public static final String URL_SERVICE = "http://192.168.1.54:8080/cgi";//本地
+    public static final String URL_SERVICE = "http://pjqs.humming-tech.com/cgi";//正式环境
+    //        public static final String URL_SERVICE = "http://192.168.1.99:8080/cgi";//本地
     //        public static final String URL_SERVICE = "http://116.236.170.93:8008/cgi";//桥隧
 //    public static final String URL_SERVICE_UPLOAD = "http://pjqs.humming-tech.com/uploadFile";//上传文件
-//    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.54:8080/uploadFile";//上传文件
+//    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.99:8080/uploadFile";//上传文件
     public static final String URL_SERVICE_UPLOAD = "http://116.236.170.93:8008/uploadFile";//上传文件
 
     public static final String USER_LOGIN = "newUser/newLogin";//登录
     //    public static final String USER_LOGIN = "user/login";//登录
     public static final String UPDATE_PWD = "user/changePwd";//修改密码
     public static final String UPDATE_IMAGE = "file/uploadImage";//上传图片
+
+
+    /*--------------------------一线员工------------------------------------*/
     public static final String GET_EQUIPMENT_DETAILS = "equipment/queryDetail";//获取设备信息
     public static final String GET_WORK = "work/query";//获取作业信息
     public static final String GET_WORK_DETAILS = "work/detail";//获取作业信息详情
@@ -48,4 +51,11 @@ public class Config {
     public static final String WORK_BIND_PIC = "work/picture";//绑定上传图片
     public static final String WORK_END = "work/end";//绑定上传图片
     public static final String GET_WORK_PIC = "work/findWorkPicture";//获取作业图片
+
+    /*--------------------------管理层------------------------------------*/
+    public static final String GET_CONTRACT = "contract/query";//获取合同列表
+    public static final String GET_CONTRACT_DETAILS = "contract/detail";//获取合同详情
+    public static final String GET_PROJECT = "project/queryOut";//获取项目列表
+    public static final String GET_PROJECT_DETAILS = "project/outDetail";//获取项目详情
+
 }

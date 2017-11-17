@@ -21,7 +21,7 @@ import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
@@ -184,7 +184,7 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
                 break;
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
-                        = new ImageConfig.Builder(DefectActivity.this, new PicassoLoader())
+                        = new ImageConfig.Builder(DefectActivity.this, new GlideLoader())
                         .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
@@ -214,6 +214,12 @@ public class DefectActivity extends BaseActivity implements BaseQuickAdapter.OnI
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode==RESULT_CANCELED){
+            path.clear();
+            list.clear();
+            return;
+        }
 
         if (resultCode == Constant.CODE_RESULT) {
             if (requestCode == Constant.CODE_REQUEST_ONE) {

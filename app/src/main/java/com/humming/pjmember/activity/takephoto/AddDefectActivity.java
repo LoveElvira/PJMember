@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -27,12 +26,11 @@ import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.bean.FacilityInfoModel;
-import com.humming.pjmember.requestdate.AddAccidentParameter;
 import com.humming.pjmember.requestdate.AddDefectParameter;
 import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
@@ -63,8 +61,9 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
     private EditText content;
     //选择位置
     private LinearLayout addressLayout;
+    private ImageView addressImage;
     //位置
-    private TextView address;
+    private EditText address;
     //详细位置描述
     private EditText addressDes;
 
@@ -110,14 +109,16 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
         name = (TextView) findViewById(R.id.activity_add_defect__name);
         content = (EditText) findViewById(R.id.activity_add_defect__content);
         addressLayout = (LinearLayout) findViewById(R.id.activity_add_defect__address_layout);
-        address = (TextView) findViewById(R.id.activity_add_defect__address);
+        addressImage = (ImageView) findViewById(R.id.activity_add_defect__address_image);
+        address = (EditText) findViewById(R.id.activity_add_defect__address);
         addressDes = (EditText) findViewById(R.id.activity_add_defect__address_des);
 
         submit = (TextView) findViewById(R.id.activity_add_defect__submit);
 
         leftArrow.setOnClickListener(this);
         submit.setOnClickListener(this);
-        addressLayout.setOnClickListener(this);
+//        addressLayout.setOnClickListener(this);
+        addressImage.setOnClickListener(this);
         nameLayout.setOnClickListener(this);
 
         listView.addItemDecoration(new SpacesItemDecoration(10));
@@ -137,18 +138,11 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
     }
 
     //添加缺陷
-    private void addDefectWork(String workName, String content, String address, String addressDes, List<String> imageList) {
-        progressHUD = ProgressHUD.show(AddDefectActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressHUD.dismiss();
-            }
-        });
+    private void addDefectWork(String workName, String content, String address, List<String> imageList) {
         AddDefectParameter parameter = new AddDefectParameter();
         parameter.setWorkName(workName);
         parameter.setFacilityId(Long.parseLong(facilityModel.getFacilityId()));
         parameter.setLocation(address);
-        parameter.setRemark(addressDes);
         parameter.setPictureUrls(imageList);
         parameter.setRemark(content);
         OkHttpClientManager.postAsyn(Config.ADD_WORK, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
@@ -240,7 +234,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                                 switch (msg.what) {
                                     case Constant.CODE_SUCCESS:
                                         List<String> imageList = (List<String>) msg.obj;
-                                        addDefectWork(workNameStr, workContent, addressStr, addressDesStr, imageList);
+                                        addDefectWork(workNameStr, workContent, addressStr, imageList);
                                         break;
                                 }
                             }
@@ -258,7 +252,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                 break;
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
-                        = new ImageConfig.Builder(AddDefectActivity.this, new PicassoLoader())
+                        = new ImageConfig.Builder(AddDefectActivity.this, new GlideLoader())
                         .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
@@ -273,6 +267,7 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
                 selectPhotoPopupWindow.gonePopupWindow();
                 break;
             case R.id.activity_add_defect__address_layout:
+            case R.id.activity_add_defect__address_image:
                 startActivityForResult(new Intent(AddDefectActivity.this, MapActivity.class), Constant.CODE_REQUEST_ONE);
                 break;
             case R.id.activity_add_defect__name_layout:
@@ -285,7 +280,11 @@ public class AddDefectActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode==RESULT_CANCELED){
+            path.clear();
+            defectList.clear();
+            return;
+        }
         if (resultCode == Constant.CODE_RESULT) {
 
             if (requestCode == Constant.CODE_REQUEST_ONE) {

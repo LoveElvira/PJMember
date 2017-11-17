@@ -20,6 +20,7 @@ import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
+import com.humming.pjmember.utils.StringUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.pjqs.dto.equipment.EquipmentRepairBean;
@@ -133,14 +134,10 @@ public class RepairDetailsActivity extends BaseActivity implements BaseQuickAdap
                 if (response != null) {
                     name.setText(response.getEquipmentName());
                     num.setText(response.getEquipmentNo());
-                    if (response.getRepairFee() != null && !"".equals(response.getRepairFee())) {
-                        price.setText("¥ " + String.format("%.2f", Double.parseDouble(response.getRepairFee())));
-                    } else {
-                        price.setText("¥ 0.00");
-                    }
+                    price.setText(StringUtils.saveTwoDecimal(response.getRepairFee()));
                     time.setText(response.getRepairTime());
                     content.setText(initHtml("维修内容", response.getReason()));
-                    if (response.getInvoiceUrl() != null && response.getInvoiceUrl().size()>0) {
+                    if (response.getInvoiceUrl() != null && response.getInvoiceUrl().size() > 0) {
                         path.clear();
                         path.addAll(response.getInvoiceUrl());
                         adapter = new ImageLookAdapter(path, getBaseContext());

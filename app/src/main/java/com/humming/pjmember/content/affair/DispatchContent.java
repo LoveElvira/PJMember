@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
-import com.humming.pjmember.adapter.AffairAdapter;
+import com.humming.pjmember.adapter.ContractAdapter;
 import com.humming.pjmember.base.BaseLinearLayout;
 
 /**
@@ -17,7 +17,7 @@ import com.humming.pjmember.base.BaseLinearLayout;
 
 public class DispatchContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener {
 
-    private AffairAdapter adapter;
+    private ContractAdapter adapter;
 
     public DispatchContent(Context context) {
         this(context, null);

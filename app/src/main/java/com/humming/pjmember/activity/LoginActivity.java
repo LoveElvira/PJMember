@@ -2,6 +2,8 @@ package com.humming.pjmember.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -75,7 +77,14 @@ public class LoginActivity extends BaseActivity {
         if (!TextUtils.isEmpty(pwd)) {
             password.setText(pwd);
         }
-
+        PackageInfo pi = null;
+        PackageManager pm = getPackageManager();
+        try {
+            pi = pm.getPackageInfo(getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        SharePrefUtil.putString(Constant.FILE_NAME, Constant.APP_VERSION, pi.versionName, LoginActivity.this);
     }
 
     private boolean isEditNull(String name, String pwd) {
@@ -135,8 +144,10 @@ public class LoginActivity extends BaseActivity {
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.NICKNAME, response.getNickName(), LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.HEADURL, response.getHeadImgUrl(), LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.USER_ID, response.getUserId(), LoginActivity.this);
+                    SharePrefUtil.putString(Constant.FILE_NAME, Constant.COMPANY, response.getCompanyName(), LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.USERNAME, name, LoginActivity.this);
                     SharePrefUtil.putString(Constant.FILE_NAME, Constant.PASSWORD, pwd, LoginActivity.this);
+                    bindAccount();
                     startActivity(response.getLevelBeans());
                 }
             }

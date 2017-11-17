@@ -2,7 +2,7 @@ package com.humming.pjmember.service;
 
 import android.content.Context;
 
-import com.baidu.location.BDAbstractLocationListener;
+//import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
@@ -37,20 +37,20 @@ public class LocationService {
 	 * @return
 	 */
 
-	public boolean registerListener(BDAbstractLocationListener listener){
-		boolean isSuccess = false;
-		if(listener != null){
-			client.registerLocationListener((BDLocationListener) listener);
-			isSuccess = true;
-		}
-		return  isSuccess;
-	}
-
-	public void unregisterListener(BDAbstractLocationListener listener){
-		if(listener != null){
-			client.unRegisterLocationListener((BDLocationListener) listener);
-		}
-	}
+//	public boolean registerListener(BDAbstractLocationListener listener){
+//		boolean isSuccess = false;
+//		if(listener != null){
+//			client.registerLocationListener((BDLocationListener) listener);
+//			isSuccess = true;
+//		}
+//		return  isSuccess;
+//	}
+//
+//	public void unregisterListener(BDAbstractLocationListener listener){
+//		if(listener != null){
+//			client.unRegisterLocationListener((BDLocationListener) listener);
+//		}
+//	}
 
 	/***
 	 *
@@ -111,10 +111,10 @@ public class LocationService {
 		}
 	}
 
-	public boolean requestHotSpotState(){
-
-		return client.requestHotSpotState();
-
-	}
+//	public boolean requestHotSpotState(){
+//
+//		return client.requestHotSpotState();
+//
+//	}
 
 }

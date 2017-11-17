@@ -6,9 +6,9 @@ android {
     defaultConfig {
         applicationId "com.humming.pjmember"
         minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0.0"
+        targetSdkVersion 18
+        versionCode 2
+        versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。为了兼容cpu，查看官网SDK的libs多添加几个
@@ -62,15 +62,18 @@ dependencies {
     compile 'com.google.zxing:core:3.3.0'
     //更改字体 然而没看出啥效果
     compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-
     compile 'com.android.support:cardview-v7:26.0.0-alpha1'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile files('libs/BaiduLBS_Android.jar')
+//    compile files('libs/baidumapapi_base_v4_1_1.jar')
+//    compile files('libs/baidumapapi_map_v4_1_1.jar')
+//    compile files('libs/locSDK_6.13.jar')
+//    compile files('libs/baidumapapi_search_v4_1_1.jar')
+//    compile files('libs/baidumapapi_util_v4_1_1.jar')
     //折线图
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile files('libs/pjmember_dto.jar')
-
     //阿里云推送
     compile 'com.aliyun.ams:alicloud-android-push:3.0.12'
     compile 'com.aliyun.ams:alicloud-android-utdid:1.1.5.3'

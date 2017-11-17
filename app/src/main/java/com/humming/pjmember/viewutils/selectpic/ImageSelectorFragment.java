@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.ListPopupWindow;
 import android.view.LayoutInflater;
@@ -29,6 +30,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.humming.pjmember.R;
+import com.humming.pjmember.base.Application;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.viewutils.selectpic.adapter.FolderAdapter;
 import com.humming.pjmember.viewutils.selectpic.adapter.ImageAdapter;
 import com.humming.pjmember.viewutils.selectpic.bean.Folder;
@@ -323,7 +326,10 @@ public class ImageSelectorFragment extends Fragment {
             // 设置系统相机拍照后的输出路径
             // 创建临时文件
             tempFile = FileUtils.createTmpFile(getActivity(), imageConfig.getFilePath());
-            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(tempFile));
+            Uri uri = Uri.fromFile(tempFile);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                uri = FileProvider.getUriForFile(Application.getInstance().getCurrentActivity(), Constant.AUTHORITY, tempFile);//通过FileProvider创建一个content类型的Uri
+            cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
             startActivityForResult(cameraIntent, REQUEST_CAMERA);
         } else {
             Toast.makeText(context, R.string.msg_no_camera, Toast.LENGTH_SHORT).show();

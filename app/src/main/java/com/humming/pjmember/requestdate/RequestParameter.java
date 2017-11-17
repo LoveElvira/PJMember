@@ -40,6 +40,16 @@ public class RequestParameter implements IRequestMainData {
 
     private List<String> pictureUrls;
 
+    //合同 合同类型 1：收入合同 2：支出合同
+    private String conNature;
+
+    //项目id
+    private String projectId;
+
+    //合同id
+    private String contractId;
+
+
     public RequestParameter() {
     }
 
@@ -145,5 +155,29 @@ public class RequestParameter implements IRequestMainData {
 
     public void setPictureUrls(List<String> pictureUrls) {
         this.pictureUrls = pictureUrls;
+    }
+
+    public String getConNature() {
+        return conNature;
+    }
+
+    public void setConNature(String conNature) {
+        this.conNature = conNature;
+    }
+
+    public String getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
+    }
+
+    public String getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(String contractId) {
+        this.contractId = contractId;
     }
 }

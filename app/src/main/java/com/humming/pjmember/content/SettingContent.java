@@ -65,11 +65,12 @@ public class SettingContent extends BaseLinearLayout {
 
         String nickName = SharePrefUtil.getString(Constant.FILE_NAME, Constant.NICKNAME, "", Application.getInstance().getCurrentActivity());
         String url = SharePrefUtil.getString(Constant.FILE_NAME, Constant.HEADURL, "", Application.getInstance().getCurrentActivity());
-
+        String companyStr = SharePrefUtil.getString(Constant.FILE_NAME, Constant.COMPANY, "", Application.getInstance().getCurrentActivity());
         userName.setText(nickName);
         Glide.with(getContext())
                 .load(url)
                 .into(headImage);
+        company.setText(companyStr);
         updatePositionLayout.setOnClickListener(this);
         updatePwdLayout.setOnClickListener(this);
         exitLogin.setOnClickListener(this);

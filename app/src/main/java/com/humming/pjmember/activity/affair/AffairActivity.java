@@ -2,16 +2,15 @@ package com.humming.pjmember.activity.affair;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.humming.pjmember.R;
 import com.humming.pjmember.base.BaseActivity;
-import com.humming.pjmember.content.affair.ContractContent;
+import com.humming.pjmember.content.affair.ContractExpenditureContent;
+import com.humming.pjmember.content.affair.ContractIncomeContent;
 import com.humming.pjmember.content.affair.DispatchContent;
 import com.humming.pjmember.content.affair.ProjectContent;
 import com.humming.pjmember.viewutils.BaseViewPager;
@@ -31,15 +30,19 @@ public class AffairActivity extends BaseActivity {
     private BaseViewPager viewPager;
     private ContentAdapter adapter;
     private List<View> list;//确定有几个页面
-    private final String[] titles = {"a", "b", "c"};
+    private final String[] titles = {"a", "b", "c", "d"};
 
     //头部按钮 点击事件的布局
     private RelativeLayout contractLayout;
+    private RelativeLayout contractExpenditureLayout;
     private RelativeLayout projectLayout;
     private RelativeLayout dispatchLayout;
 
-    //合同
-    private ContractContent contractContent;
+
+    //收入合同
+    private ContractIncomeContent contractIncomeContent;
+    //收入合同
+    private ContractExpenditureContent contractExpenditureContent;
     //项目
     private ProjectContent projectContent;
     //收发文
@@ -64,15 +67,18 @@ public class AffairActivity extends BaseActivity {
         viewPager = (BaseViewPager) findViewById(R.id.activity_affair__viewpager);
 
         contractLayout = (RelativeLayout) findViewById(R.id.top_button__contract_layout);
+        contractExpenditureLayout = (RelativeLayout) findViewById(R.id.top_button__contract_expenditure_layout);
         projectLayout = (RelativeLayout) findViewById(R.id.top_button__project_layout);
         dispatchLayout = (RelativeLayout) findViewById(R.id.top_button__dispatch_layout);
 
-        contractContent = new ContractContent(this);
+        contractIncomeContent = new ContractIncomeContent(this);
+        contractExpenditureContent = new ContractExpenditureContent(this);
         projectContent = new ProjectContent(this);
         dispatchContent = new DispatchContent(this);
 
         list = new ArrayList<>();
-        list.add(contractContent);
+        list.add(contractIncomeContent);
+        list.add(contractExpenditureContent);
         list.add(projectContent);
         list.add(dispatchContent);
         adapter = new ContentAdapter(list, titles);
@@ -86,7 +92,20 @@ public class AffairActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
-
+                switch (position) {
+                    case 0:
+                        contractIncomeContent.isInitFirst();
+                        break;
+                    case 1:
+                        contractExpenditureContent.isInitFirst();
+                        break;
+                    case 2:
+                        projectContent.isInitFirst();
+                        break;
+                    case 3:
+//                        wholeContent.isInitFirst();
+                        break;
+                }
             }
 
             @Override
@@ -97,9 +116,11 @@ public class AffairActivity extends BaseActivity {
 
         leftArrow.setOnClickListener(this);
         contractLayout.setOnClickListener(this);
+        contractExpenditureLayout.setOnClickListener(this);
         projectLayout.setOnClickListener(this);
         dispatchLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
+        contractIncomeContent.isInitFirst();
     }
 
     @Override
@@ -114,14 +135,19 @@ public class AffairActivity extends BaseActivity {
                     viewPager.setCurrentItem(0);
                 }
                 break;
-            case R.id.top_button__project_layout:
+            case R.id.top_button__contract_expenditure_layout:
                 if (viewPager.getCurrentItem() != 1) {
                     viewPager.setCurrentItem(1);
                 }
                 break;
-            case R.id.top_button__dispatch_layout:
+            case R.id.top_button__project_layout:
                 if (viewPager.getCurrentItem() != 2) {
                     viewPager.setCurrentItem(2);
+                }
+                break;
+            case R.id.top_button__dispatch_layout:
+                if (viewPager.getCurrentItem() != 3) {
+                    viewPager.setCurrentItem(3);
                 }
                 break;
         }

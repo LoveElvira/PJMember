@@ -11,8 +11,8 @@ import android.view.View;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
-import com.humming.pjmember.activity.affair.ProjectDetailsActivity;
-import com.humming.pjmember.adapter.ProjectAdapter;
+import com.humming.pjmember.activity.affair.ContractDetailsActivity;
+import com.humming.pjmember.adapter.ContractAdapter;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
 import com.humming.pjmember.base.Config;
@@ -20,8 +20,8 @@ import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.viewutils.ProgressHUD;
-import com.pjqs.dto.project.ProjectInfoBean;
-import com.pjqs.dto.project.ProjectInfoRes;
+import com.pjqs.dto.contract.ContractInfoBean;
+import com.pjqs.dto.contract.ContractInfoRes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,21 +30,23 @@ import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/9/7.
- * 项目
+ * 合同
  */
 
-public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, SwipeRefreshLayout.OnRefreshListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class ContractExpenditureContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private ProjectAdapter adapter;
+    private String conNature = "2";
 
-    private List<ProjectInfoBean> projectList;
-    private List<ProjectInfoBean> projectLists;
+    private ContractAdapter adapter;
 
-    public ProjectContent(Context context) {
+    private List<ContractInfoBean> contractList;
+    private List<ContractInfoBean> contractLists;
+
+    public ContractExpenditureContent(Context context) {
         this(context, null);
     }
 
-    public ProjectContent(Context context, AttributeSet attrs) {
+    public ContractExpenditureContent(Context context, AttributeSet attrs) {
         super(context, attrs);
         view = inflate(context, R.layout.content_work_, this);
         initView();
@@ -62,13 +64,8 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add("" + i);
-        }
-
-        projectLists = new ArrayList<>();
-        adapter = new ProjectAdapter(projectLists, 2);
+        contractLists = new ArrayList<>();
+        adapter = new ContractAdapter(contractLists, 1);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
         adapter.setOnLoadMoreListener(this, listView);
@@ -79,16 +76,16 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
 
     public void isInitFirst() {
 //        if (inspectNet()) {
-        if (!isOne) {
-            progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    progressHUD.dismiss();
-                }
-            });
-            getContract(pageable);
-            isOne = true;
-        }
+            if (!isOne) {
+                progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        progressHUD.dismiss();
+                    }
+                });
+                getContract(pageable);
+                isOne = true;
+            }
 //            listView.setVisibility(VISIBLE);
 //            noWifiLayout.setVisibility(GONE);
 //        } else {
@@ -99,9 +96,10 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
 
     private void getContract(final String pageable) {
         RequestParameter parameter = new RequestParameter();
+        parameter.setConNature(conNature);
         parameter.setPagable(pageable);
 
-        OkHttpClientManager.postAsyn(Config.GET_PROJECT, new OkHttpClientManager.ResultCallback<ProjectInfoRes>() {
+        OkHttpClientManager.postAsyn(Config.GET_CONTRACT, new OkHttpClientManager.ResultCallback<ContractInfoRes>() {
             @Override
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
@@ -110,32 +108,32 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
             }
 
             @Override
-            public void onResponse(ProjectInfoRes response) {
+            public void onResponse(ContractInfoRes response) {
                 closeProgress();
                 if (response != null) {
-                    projectList = response.getProjects();
-                    if (projectList != null && projectList.size() > 0) {
+                    contractList = response.getContracts();
+                    if (contractList != null && contractList.size() > 0) {
                         if ("".equals(pageable)) {
-                            projectLists.clear();
-                            projectLists.addAll(projectList);
-                            adapter.setNewData(projectList);
+                            contractLists.clear();
+                            contractLists.addAll(contractList);
+                            adapter.setNewData(contractList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
                                 hasMore = false;
                             }
-                            ProjectContent.this.pageable = response.getPagable();
+                            ContractExpenditureContent.this.pageable = response.getPagable();
                         } else {
-                            projectLists.addAll(projectList);
+                            contractLists.addAll(contractList);
 
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
-                                ProjectContent.this.pageable = response.getPagable();
-                                adapter.addData(projectList);
+                                ContractExpenditureContent.this.pageable = response.getPagable();
+                                adapter.addData(contractList);
                             } else {
-                                adapter.addData(projectList);
+                                adapter.addData(contractList);
                                 hasMore = false;
-                                ProjectContent.this.pageable = "";
+                                ContractExpenditureContent.this.pageable = "";
                             }
                         }
                         adapter.loadMoreComplete();
@@ -149,7 +147,7 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
                 Log.e("onError", exception.toString());
                 closeProgress();
             }
-        }, parameter, ProjectInfoRes.class, Application.getInstance().getCurrentActivity().getClass());
+        }, parameter, ContractInfoRes.class, Application.getInstance().getCurrentActivity().getClass());
 
     }
 
@@ -180,8 +178,9 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_affair__parent:
-                Intent intent = new Intent(getContext(), ProjectDetailsActivity.class);
-                intent.putExtra("id", projectLists.get(position).getProId());
+                Intent intent = new Intent(getContext(),ContractDetailsActivity.class);
+                intent.putExtra("id",contractLists.get(position).getConId());
+                intent.putExtra("conNature",conNature);
                 startActivity(intent);
                 break;
         }

@@ -19,7 +19,7 @@ import com.humming.pjmember.activity.BrowseImageViewActivity;
 import com.humming.pjmember.adapter.ImageAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Constant;
-import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
@@ -139,7 +139,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                 break;
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
-                        = new ImageConfig.Builder(AddUseOilActivity.this, new PicassoLoader())
+                        = new ImageConfig.Builder(AddUseOilActivity.this, new GlideLoader())
                         .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
                         .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))

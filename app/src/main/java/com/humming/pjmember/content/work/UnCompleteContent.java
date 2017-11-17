@@ -76,23 +76,23 @@ public class UnCompleteContent extends BaseLinearLayout implements BaseQuickAdap
     }
 
     public void isInitFirst() {
-        if (inspectNet()) {
-            if (!isOne) {
-                progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        progressHUD.dismiss();
-                    }
-                });
-                getWorkData(pageable);
-                isOne = true;
-            }
+//        if (inspectNet()) {
+        if (!isOne) {
+            progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    progressHUD.dismiss();
+                }
+            });
+            getWorkData(pageable);
+            isOne = true;
+        }
 //            listView.setVisibility(VISIBLE);
 //            noWifiLayout.setVisibility(GONE);
-        } else {
+//        } else {
 //            listView.setVisibility(GONE);
 //            noWifiLayout.setVisibility(VISIBLE);
-        }
+//        }
     }
 
     public void updateView(int roadWorkState, String roadWork, int isSafety, int position) {
@@ -174,6 +174,13 @@ public class UnCompleteContent extends BaseLinearLayout implements BaseQuickAdap
                 if (!hasMore) {//没有数据了
                     adapter.loadMoreEnd(false);
                 } else {
+                    isShowProgress = true;
+                    progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            progressHUD.dismiss();
+                        }
+                    });
                     getWorkData(pageable);
                 }
                 refresh.setEnabled(true);

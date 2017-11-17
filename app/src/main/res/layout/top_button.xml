@@ -41,7 +41,50 @@
             android:layout_below="@+id/top_button__contract_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_3"
-            android:text="合同"
+            android:text="收入合同"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_12" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top_button__contract_expenditure_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/size_5">
+
+        <ImageView
+            android:id="@+id/top_button__contract_expenditure_image"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_40"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/affair_contract" />
+
+        <TextView
+            android:id="@+id/top_button__contract_expenditure_tip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/top_button__contract_expenditure_image"
+            android:layout_alignTop="@+id/top_button__contract_expenditure_image"
+            android:background="@drawable/bg_rectangle_red_radius_10"
+            android:paddingBottom="@dimen/size_1"
+            android:paddingLeft="@dimen/size_5"
+            android:paddingRight="@dimen/size_5"
+            android:paddingTop="@dimen/size_1"
+            android:text="12"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_10" />
+
+        <TextView
+            android:id="@+id/bottom_button__contract_expenditure_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/top_button__contract_expenditure_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/size_3"
+            android:text="支出合同"
             android:textColor="@color/white"
             android:textSize="@dimen/text_12" />
 

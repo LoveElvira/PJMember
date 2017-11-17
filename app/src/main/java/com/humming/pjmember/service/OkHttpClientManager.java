@@ -26,6 +26,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
@@ -137,8 +138,18 @@ public class OkHttpClientManager {
         }
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
-        requestData.setAppVersion(Constant.AppVersion);
+        String appVersion = SharePrefUtil.getString(Constant.FILE_NAME, Constant.APP_VERSION, "", Application.getInstance().getApplicationContext());
+        requestData.setAppVersion("pjmember_" + "android_" + appVersion);
         //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
+        requestData.setDeviceType(Constant.DEVICE_TYPE);
+        requestData.setClientIdentifierCode(deviceId);
+        Locale curLocal = Application.getInstance().getResources().getConfiguration().locale;
+        if (curLocal.equals(Locale.SIMPLIFIED_CHINESE)) {
+            requestData.setLanguage("cn");
+        } else {
+            requestData.setLanguage("en");
+        }
+
         String url = Config.URL_SERVICE;
         Request request = buildPostRequest(url, requestData);
         mCall = mOkHttpClient.newCall(request);
@@ -160,8 +171,17 @@ public class OkHttpClientManager {
         }
         requestData.setCmd(cmd);
         requestData.setParameters(requestMainDataData);
-        requestData.setAppVersion(Constant.AppVersion);
+        String appVersion = SharePrefUtil.getString(Constant.FILE_NAME, Constant.APP_VERSION, "", Application.getInstance().getApplicationContext());
+        requestData.setAppVersion("pjmember_" + "android_" + appVersion);
         //设备品牌 设备显示的版本号  设备唯一标示  设备版本号   -上传地址
+        requestData.setDeviceType(Constant.DEVICE_TYPE);
+        requestData.setClientIdentifierCode(deviceId);
+        Locale curLocal = Application.getInstance().getResources().getConfiguration().locale;
+        if (curLocal.equals(Locale.SIMPLIFIED_CHINESE)) {
+            requestData.setLanguage("cn");
+        } else {
+            requestData.setLanguage("en");
+        }
         String url = Config.URL_SERVICE;
         Request request = buildPostRequest(url, requestData);
         mCall = mOkHttpClient.newCall(request);

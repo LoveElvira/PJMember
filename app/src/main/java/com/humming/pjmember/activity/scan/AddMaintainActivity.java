@@ -24,11 +24,10 @@ import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.AddMaintainParameter;
-import com.humming.pjmember.requestdate.AddRepairParameter;
 import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
@@ -161,12 +160,6 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
 
     //新增设备保养信息
     private void addMaintainLog(String time, String company, String type, String content, String price, List<String> imageList) {
-        progressHUD = ProgressHUD.show(AddMaintainActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressHUD.dismiss();
-            }
-        });
         AddMaintainParameter parameter = new AddMaintainParameter();
         parameter.setEquipmentId(id);
         parameter.setMaintainTime(time);
@@ -265,7 +258,7 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
                 break;
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
-                        = new ImageConfig.Builder(AddMaintainActivity.this, new PicassoLoader())
+                        = new ImageConfig.Builder(AddMaintainActivity.this, new GlideLoader())
                         .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
@@ -307,7 +300,11 @@ public class AddMaintainActivity extends BaseActivity implements BaseQuickAdapte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode==RESULT_CANCELED){
+            path.clear();
+            list.clear();
+            return;
+        }
         if (resultCode == Constant.CODE_RESULT) {
             List<String> pathList = null;
             if (requestCode == Constant.CODE_REQUEST_THREE) {

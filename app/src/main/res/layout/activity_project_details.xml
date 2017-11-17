@@ -49,18 +49,18 @@
                                 android:layout_width="@dimen/size_15"
                                 android:layout_height="@dimen/size_15"
                                 android:layout_marginRight="@dimen/size_3"
-                                android:src="@mipmap/affair_contract_small" />
+                                android:src="@mipmap/affair_project_small" />
 
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="合同详情"
+                                android:text="项目详情"
                                 android:textColor="@color/blue_365DFE"
                                 android:textSize="@dimen/text_13" />
 
                             <LinearLayout
-                                android:id="@+id/activity_contract_details__top_open_layout"
+                                android:id="@+id/activity_project_details__top_open_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
@@ -68,7 +68,7 @@
                                 android:padding="@dimen/size_5">
 
                                 <TextView
-                                    android:id="@+id/activity_contract_details__top_open_text"
+                                    android:id="@+id/activity_project_details__top_open_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="展开"
@@ -76,7 +76,7 @@
                                     android:textSize="@dimen/text_13" />
 
                                 <ImageView
-                                    android:id="@+id/activity_contract_details__top_open_image"
+                                    android:id="@+id/activity_project_details__top_open_image"
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/size_10"
                                     android:src="@mipmap/bottom_arrow" />
@@ -86,12 +86,12 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/activity_contract_details__top_parent"
+                            android:id="@+id/activity_project_details__top_parent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
-                            <include layout="@layout/item_contract_top" />
+                            <include layout="@layout/item_project_top" />
 
                         </LinearLayout>
 
@@ -125,7 +125,7 @@
                                 android:src="@mipmap/affair_marking" />
 
                             <TextView
-                                android:id="@+id/activity_contract_details__middle_num"
+                                android:id="@+id/activity_project_details__middle_num"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -134,7 +134,7 @@
                                 android:textSize="@dimen/text_13" />
 
                             <LinearLayout
-                                android:id="@+id/activity_contract_details__middle_open_layout"
+                                android:id="@+id/activity_project_details__middle_open_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center_vertical"
@@ -142,7 +142,7 @@
                                 android:padding="@dimen/size_5">
 
                                 <TextView
-                                    android:id="@+id/activity_contract_details__middle_open_text"
+                                    android:id="@+id/activity_project_details__middle_open_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="展开"
@@ -150,7 +150,7 @@
                                     android:textSize="@dimen/text_13" />
 
                                 <ImageView
-                                    android:id="@+id/activity_contract_details__middle_open_image"
+                                    android:id="@+id/activity_project_details__middle_open_image"
                                     android:layout_width="wrap_content"
                                     android:layout_height="@dimen/size_10"
                                     android:src="@mipmap/bottom_arrow" />
@@ -160,7 +160,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/activity_contract_details__middle_parent"
+                            android:id="@+id/activity_project_details__middle_parent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical" />
@@ -206,7 +206,7 @@
                         </LinearLayout>
 
                         <EditText
-                            android:id="@+id/activity_contract_details__suggestion"
+                            android:id="@+id/activity_project_details__suggestion"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/size_80"
                             android:layout_marginTop="@dimen/size_10"
@@ -230,7 +230,7 @@
                     android:paddingRight="@dimen/size_10">
 
                     <TextView
-                        android:id="@+id/activity_contract_details__agree"
+                        android:id="@+id/activity_project_details__agree"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/size_10"
@@ -243,7 +243,7 @@
                         android:textSize="@dimen/text_14" />
 
                     <TextView
-                        android:id="@+id/activity_contract_details__reject"
+                        android:id="@+id/activity_project_details__reject"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -260,7 +260,6 @@
             </LinearLayout>
 
         </ScrollView>
-
 
     </LinearLayout>
 

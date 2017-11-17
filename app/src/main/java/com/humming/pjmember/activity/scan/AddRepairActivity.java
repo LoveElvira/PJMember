@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
 import com.humming.pjmember.adapter.ImageAdapter;
@@ -25,19 +24,16 @@ import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.AddRepairParameter;
-import com.humming.pjmember.requestdate.RequestParameter;
-import com.humming.pjmember.requestdate.UploadParameter;
 import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.utils.PicassoLoader;
+import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;
 import com.humming.pjmember.viewutils.selectpic.ImageSelectorActivity;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -169,12 +165,6 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
 
     //新增设备维修信息
     private void addRepairLog(String time, String company, String content, String price, List<String> imageList) {
-        progressHUD = ProgressHUD.show(AddRepairActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                progressHUD.dismiss();
-            }
-        });
         AddRepairParameter parameter = new AddRepairParameter();
         parameter.setEquipmentId(id);
         parameter.setRepairTime(time);
@@ -249,7 +239,7 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
                 break;
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
-                        = new ImageConfig.Builder(AddRepairActivity.this, new PicassoLoader())
+                        = new ImageConfig.Builder(AddRepairActivity.this, new GlideLoader())
                         .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
                         .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
@@ -291,7 +281,11 @@ public class AddRepairActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
+        if (resultCode==RESULT_CANCELED){
+            path.clear();
+            list.clear();
+            return;
+        }
         if (resultCode == Constant.CODE_RESULT) {
             List<String> pathList = null;
             if (requestCode == Constant.CODE_REQUEST_THREE) {

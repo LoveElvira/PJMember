@@ -1,11 +1,5 @@
 package com.humming.pjmember.service;
 
-import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import okio.BufferedSink;
-
 /**
  * Created by Elvira on 2017/6/1.
  */
@@ -20,6 +14,7 @@ public class RequestData {
     private String clientIdentifierCode;
     private String locationXy;
     private String resolution;
+    private String deviceType;
 
     public String getAppDomain() {
         return appDomain;
@@ -103,6 +98,13 @@ public class RequestData {
         this.appVersion = appVersion;
     }
 
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
 
     @Override
     public String toString() {

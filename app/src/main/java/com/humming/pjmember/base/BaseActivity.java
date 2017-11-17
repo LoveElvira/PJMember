@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +41,7 @@ import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.humming.pjmember.R;
+import com.humming.pjmember.activity.takephoto.AddDefectActivity;
 import com.humming.pjmember.activity.takephoto.DefectResultActivity;
 import com.humming.pjmember.requestdate.UploadParameter;
 import com.humming.pjmember.service.Error;
@@ -333,7 +335,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }
         // 调用相机拍照
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+
+        Uri uri = Uri.fromFile(file);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            uri =  FileProvider.getUriForFile(this, Constant.AUTHORITY, file);//通过FileProvider创建一个content类型的Uri
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
         try {
             if (mIsKitKat)
@@ -516,6 +522,12 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
 
     protected void upLoadImage(List<Map<String, String>> list, final Handler handler, String type) {
+        progressHUD = ProgressHUD.show(this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
         List<File> files = new ArrayList<File>();
         for (int i = 0; i < list.size(); i++) {
             if ("0".equals(list.get(i).get("isAdd"))) {
@@ -531,6 +543,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             public void onError(Request request, Error info) {
                 showShortToast(info.getInfo().toString());
                 Log.e("onError", info.getInfo().toString());
+                progressHUD.dismiss();
             }
 
             @Override
@@ -547,6 +560,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("onError", exception.toString());
+                progressHUD.dismiss();
             }
         }, upload, files, new TypeReference<List<String>>() {
         }, DefectResultActivity.class);
