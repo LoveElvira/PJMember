@@ -57,5 +57,6 @@ public class Config {
     public static final String GET_CONTRACT_DETAILS = "contract/detail";//获取合同详情
     public static final String GET_PROJECT = "project/queryOut";//获取项目列表
     public static final String GET_PROJECT_DETAILS = "project/outDetail";//获取项目详情
+    public static final String GET_STATISTICS = "statistics/all";//统计
 
 }

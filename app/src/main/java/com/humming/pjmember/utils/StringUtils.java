@@ -3,6 +3,8 @@ package com.humming.pjmember.utils;
 import android.text.TextPaint;
 import android.text.TextUtils;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -321,7 +323,13 @@ public class StringUtils {
         if (TextUtils.isEmpty(s)) {
             return "¥ 0.00";
         } else {
-            return "¥ " + String.format("%.2f", Double.parseDouble(s));
+            DecimalFormat formater = new DecimalFormat(",##0.00");
+            // keep 2 decimal places
+//            formater.setMaximumFractionDigits(2);
+//            formater.setGroupingSize(3);
+            formater.setRoundingMode(false ? RoundingMode.HALF_UP : RoundingMode.FLOOR);
+            return "¥ " + formater.format(Double.parseDouble(s));
+//            return "¥ " + String.format("%.2f", Double.parseDouble(s));
         }
     }
 

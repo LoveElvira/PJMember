@@ -120,11 +120,11 @@ public class AccidentDetailsActivity extends BaseActivity implements BaseQuickAd
 
         leftArrow.setOnClickListener(this);
 //        image.setOnClickListener(this);
-        getMaintainDetails();
+        getAccidentDetails();
     }
 
-    //获取设备保养信息详情
-    private void getMaintainDetails() {
+    //获取设备事故信息详情
+    private void getAccidentDetails() {
         progressHUD = ProgressHUD.show(AccidentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {

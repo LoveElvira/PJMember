@@ -2,7 +2,11 @@ package com.humming.pjmember.viewutils;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -15,11 +19,16 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.github.mikephil.charting.utils.Utils;
 import com.humming.pjmember.R;
+import com.humming.pjmember.viewutils.roundview.RoundedImageView;
+import com.pjqs.dto.statistics.StatisticsCompanyBean;
+import com.pjqs.dto.statistics.StatisticsFacilityBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Elvira on 2017/9/13.
@@ -27,13 +36,16 @@ import java.util.ArrayList;
 
 public class MyMarkerView extends MarkerView {
 
-    private TextView tvContent;
     private PieChart pieChart;
+    private LinearLayout layout;
+    private List<StatisticsCompanyBean> companyBeanList;
+    private ArrayList<Integer> colors;
 
-    public MyMarkerView(Context context, int layoutResource) {
+    public MyMarkerView(Context context, int layoutResource, List<StatisticsCompanyBean> companyBeanList) {
         super(context, layoutResource);
-
+        this.companyBeanList = companyBeanList;
         pieChart = findViewById(R.id.dialog_statistics__pie);
+        layout = findViewById(R.id.dialog_statistics__layout);
         initPieChart(pieChart);
 //        tvContent = (TextView) findViewById(R.id.tvContent);
     }
@@ -46,10 +58,14 @@ public class MyMarkerView extends MarkerView {
         if (e instanceof CandleEntry) {
 
             CandleEntry ce = (CandleEntry) e;
-
+//            initPieChart(pieChart, companyBeanList.get(Integer.parseInt(ce.getX() + "")).getFacilityBeen());
+            Log.i("ee", "ce:" + ce.getX());
 //            tvContent.setText("" + Utils.formatNumber(ce.getHigh(), 0, true));
         } else {
-
+            Log.i("ee", "e:" + (int) e.getX() + companyBeanList.get((int) (e.getX())).getFacilityBeen().size());
+            initPieDate(pieChart, companyBeanList.get((int) (e.getX())).getFacilityBeen(), Float.parseFloat(companyBeanList.get((int) (e.getX())).getNum()));
+            pieChart.invalidate();
+//            notify();
 //            tvContent.setText("" + Utils.formatNumber(e.getY(), 0, true));
         }
 
@@ -62,14 +78,15 @@ public class MyMarkerView extends MarkerView {
         //设置图图表的描述
         pieChart.getDescription().setEnabled(false);
         //设置图表上下左右的偏移，类似于外边距
-//        pieChart.setExtraOffsets(5, 10, 5, 5);
+        pieChart.setExtraOffsets(0, 0, 0, 0);
+        pieChart.setMinOffset(0);
         //设置阻尼系数,范围在[0,1]之间,越小饼状图转动越困难
 //        pieChart.setDragDecelerationFrictionCoef(0.95f);
         //设置PieChart中间文字的内容
         pieChart.setDrawCenterText(true);
-        pieChart.setCenterText("总费用");
+        pieChart.setCenterText("总设施");
         //设置字体大小
-        pieChart.setCenterTextSize(6f);
+        pieChart.setCenterTextSize(8f);
         //是否要将PieChart设为一个圆环状/是否绘制饼状图中间的圆
         pieChart.setDrawHoleEnabled(true);
         //设置PieChart中间圆的颜色
@@ -91,39 +108,72 @@ public class MyMarkerView extends MarkerView {
 
         Legend mLegend = pieChart.getLegend();
         mLegend.setForm(Legend.LegendForm.NONE);//Line线性 square
+        mLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        mLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        mLegend.setOrientation(Legend.LegendOrientation.VERTICAL);
+        mLegend.setDrawInside(false);
+        mLegend.setXEntrySpace(7f);
+        mLegend.setYEntrySpace(0f);
+        mLegend.setYOffset(0f);
 
-        initPieDate(3, 100, pieChart);
     }
 
 
-    private void initPieDate(int count, float range, PieChart pieChart) {
+    private void initPieDate(PieChart pieChart, List<StatisticsFacilityBean> facilityBeanList, float total) {
+
+        colors = new ArrayList<>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
         // 遍历饼状图
 //        List<String> mXList = new ArrayList<String>();
 //        for (int i = 0; i < count; i++) {
 //            mXList.add("业绩所占比例:" + (i + 1));//饼块上显示成业绩比例1 显示成业绩比例2 显示成业绩比例3 显示成业绩比例4
 //        }
-        ArrayList<PieEntry> list = new ArrayList<>();
+        ArrayList<PieEntry> list = new ArrayList<>(facilityBeanList.size());
         /**
          * 将一个饼形图分成四部分， 四部分的数值比例为16:16:32:36
          * 所以 16代表的百分比就是16%
          */
-        float quarterly_one = 30;
-        float quarterly_two = 30;
-        float quarterly_three = 40;
-
-        list.add(new PieEntry(quarterly_one, 0));
-        list.add(new PieEntry(quarterly_two, 1));
-        list.add(new PieEntry(quarterly_three, 2));
+        layout.removeAllViews();
+        for (int i = 0; i < facilityBeanList.size(); i++) {
+            list.add(new PieEntry((Float.parseFloat(facilityBeanList.get(i).getNum()) / total) * 100, i));
+            layout.addView(initLayout(facilityBeanList.get(i), i));
+        }
+//        float quarterly_one = 30;
+//        float quarterly_two = 30;
+//        float quarterly_three = 40;
+//
+//        list.add(new PieEntry(quarterly_one, 0));
+//        list.add(new PieEntry(quarterly_two, 1));
+//        list.add(new PieEntry(quarterly_three, 2));
         //y轴集合
         PieDataSet set = new PieDataSet(list, "");
-        set.setSliceSpace(0f);//设置饼状之间的间隙
-        ArrayList<Integer> mColorIntegers = new ArrayList<Integer>();
-        //饼状的颜色
-        mColorIntegers.add(Color.rgb(54, 93, 254));
-        mColorIntegers.add(Color.rgb(227, 61, 181));
-        mColorIntegers.add(Color.rgb(32, 143, 255));
+        set.setSliceSpace(2f);//设置饼状之间的间隙
+//        ArrayList<Integer> mColorIntegers = new ArrayList<Integer>();
+//        //饼状的颜色
+//        mColorIntegers.add(Color.rgb(54, 93, 254));
+//        mColorIntegers.add(Color.rgb(227, 61, 181));
+//        mColorIntegers.add(Color.rgb(32, 143, 255));
+
+        set.setColors(colors);
         //设置颜色集
-        set.setColors(mColorIntegers);
+//        set.setColors(mColorIntegers);
         //选中态多出的长度
 //        DisplayMetrics dm = getResources().getDisplayMetrics();
 //        float px = 5 * (dm.densityDpi / 160f);
@@ -135,6 +185,19 @@ public class MyMarkerView extends MarkerView {
 
         pieChart.setData(pieData);
 
+    }
+
+    private View initLayout(StatisticsFacilityBean facilityBean, int position) {
+        View view = inflate(pieChart.getContext(), R.layout.item_dialog_statistics, null);
+        RoundedImageView image = view.findViewById(R.id.item_dialog_statistics__image);
+        TextView name = view.findViewById(R.id.item_dialog_statistics__name);
+        TextView num = view.findViewById(R.id.item_dialog_statistics__num);
+
+        image.setBackgroundColor(colors.get(position));
+        name.setText(facilityBean.getFacilityName());
+        num.setText(facilityBean.getNum());
+
+        return view;
     }
 
     /**

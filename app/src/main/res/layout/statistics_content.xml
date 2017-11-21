@@ -36,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_5"
-                    android:text="563"
+                    android:text="0"
                     android:textColor="@color/blue_365DFE"
                     android:textSize="@dimen/text_17" />
 
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/size_5"
-                    android:text="128"
+                    android:text="0"
                     android:textColor="@color/blue_365DFE"
                     android:textSize="@dimen/text_17" />
 
@@ -168,6 +168,46 @@
             android:padding="@dimen/size_10">
 
             <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/statistics_content__work_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_200" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/size_10"
+                android:layout_marginTop="@dimen/size_15"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/size_10"
+                    android:layout_height="@dimen/size_10"
+                    android:layout_marginRight="@dimen/size_5"
+                    android:src="@drawable/bg_rectangle_pink_radius_1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="今日做工作"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10"
+            android:background="@drawable/bg_rectangle_white_radius_3"
+            android:orientation="vertical"
+            android:padding="@dimen/size_10">
+
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/statistics_content__accident_line"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size_200" />
@@ -200,6 +240,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/statistics_content__price_pie_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/size_10"
@@ -211,7 +252,7 @@
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/statistics_content__price_pie"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size_200" />
+                android:layout_height="@dimen/size_260" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
