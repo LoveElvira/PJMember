@@ -603,7 +603,7 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         public PopupWindows(Context mContext, View parent, StatisticsCostBean statisticsCostBean, int color) {
 
             View view = View
-                    .inflate(mContext, R.layout.dialog_statistics, null);
+                    .inflate(mContext, R.layout.dialog_statistics_, null);
 
             setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
             setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -615,14 +615,14 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
 
             TextView name = view.findViewById(R.id.dialog_statistics__name);
             TextView price = view.findViewById(R.id.dialog_statistics__price);
-            if (statisticsCostBean.getCompanyName() != null && !"".equals(statisticsCostBean.getCompanyName())) {
+//            if (statisticsCostBean.getCompanyName() != null && !"".equals(statisticsCostBean.getCompanyName())) {
                 name.setText(statisticsCostBean.getCompanyName());
-            } else {
-                name.setText("未知");
-            }
+//            } else {
+//                name.setText("未知");
+//            }
             price.setText(StringUtils.saveTwoDecimal(statisticsCostBean.getCost()));
 
-            RecyclerView listView = view.findViewById(R.id.common_listview__list);
+            RecyclerView listView = view.findViewById(R.id.dialog_statistics__list);
             GridLayoutManager gridLayoutManager = new GridLayoutManager(StatisticsActivity.this, 2);
             listView.setLayoutManager(gridLayoutManager);
             listView.addItemDecoration(new SpacesItemDecoration(10));

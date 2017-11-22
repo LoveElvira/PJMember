@@ -66,11 +66,6 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile files('libs/BaiduLBS_Android.jar')
-//    compile files('libs/baidumapapi_base_v4_1_1.jar')
-//    compile files('libs/baidumapapi_map_v4_1_1.jar')
-//    compile files('libs/locSDK_6.13.jar')
-//    compile files('libs/baidumapapi_search_v4_1_1.jar')
-//    compile files('libs/baidumapapi_util_v4_1_1.jar')
     //折线图
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
     compile files('libs/pjmember_dto.jar')
