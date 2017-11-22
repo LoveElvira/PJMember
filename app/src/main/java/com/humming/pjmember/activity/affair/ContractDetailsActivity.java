@@ -283,7 +283,7 @@ public class ContractDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, ContractDetailBean.class, Application.getInstance().getCurrentActivity().getClass());
+        }, parameter, ContractDetailBean.class, ContractDetailsActivity.class);
 
     }
 

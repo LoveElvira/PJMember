@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.humming.pjmember.activity.takephoto.DefectDetailsActivity">
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/common_bg" />
 
@@ -17,11 +15,12 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -35,6 +34,41 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:orientation="horizontal">
+
+
+                        <ImageView
+                            android:layout_width="@dimen/size_15"
+                            android:layout_height="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_2"
+                            android:src="@mipmap/meeting_circle_green" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:text="会议名称："
+                            android:textColor="@color/gray_888888"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <TextView
+                            android:id="@+id/activity_meeting_details__name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:textColor="@color/gray_ADADAD"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
                         android:orientation="horizontal">
 
 
@@ -48,22 +82,26 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="缺陷图片："
+                            android:text="公司名称："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
-                    </LinearLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/activity_defect_details__listview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10" />
+                        <TextView
+                            android:id="@+id/activity_meeting_details__company_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray_ADADAD"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_10"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
 
@@ -71,19 +109,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/size_15"
                             android:layout_marginTop="@dimen/size_1_5"
-                            android:src="@mipmap/work_facility_name" />
+                            android:src="@mipmap/work_content" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="作业名称："
+                            android:text="执行部门："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
 
                         <TextView
-                            android:id="@+id/activity_defect_details__work_name"
+                            android:id="@+id/activity_meeting_details__department"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -109,13 +147,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="设施名称："
+                            android:text="主持人名称："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
 
                         <TextView
-                            android:id="@+id/activity_defect_details__name"
+                            android:id="@+id/activity_meeting_details__director"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -141,13 +179,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="通知主管："
+                            android:text="开始时间："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
 
                         <TextView
-                            android:id="@+id/activity_defect_details__director"
+                            android:id="@+id/activity_meeting_details__start_time"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -173,13 +211,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="报修时间："
+                            android:text="结束时间："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
 
                         <TextView
-                            android:id="@+id/activity_defect_details__time"
+                            android:id="@+id/activity_meeting_details__end_time"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -195,6 +233,7 @@
                         android:layout_marginTop="@dimen/size_10"
                         android:orientation="horizontal">
 
+
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/size_15"
@@ -202,7 +241,38 @@
                             android:src="@mipmap/work_content" />
 
                         <TextView
-                            android:id="@+id/activity_defect_details__content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/size_5"
+                            android:text="会议地点："
+                            android:textColor="@color/gray_888888"
+                            android:textSize="@dimen/text_13" />
+
+
+                        <TextView
+                            android:id="@+id/activity_meeting_details__address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="@color/gray_ADADAD"
+                            android:textSize="@dimen/text_13" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/size_15"
+                            android:layout_marginTop="@dimen/size_1_5"
+                            android:src="@mipmap/work_content" />
+
+                        <TextView
+                            android:id="@+id/activity_meeting_details__person"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
@@ -217,7 +287,6 @@
                         android:layout_marginTop="@dimen/size_10"
                         android:orientation="horizontal">
 
-
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/size_15"
@@ -225,79 +294,21 @@
                             android:src="@mipmap/work_content" />
 
                         <TextView
+                            android:id="@+id/activity_meeting_details__content"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="位置描述："
-                            android:textColor="@color/gray_888888"
-                            android:textSize="@dimen/text_13" />
-
-
-                        <TextView
-                            android:id="@+id/activity_defect_details__address"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/gray_ADADAD"
+                            android:lineSpacingMultiplier="1.2"
                             android:textSize="@dimen/text_13" />
 
                     </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/size_15"
-                            android:src="@mipmap/work_content" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/size_5"
-                            android:text="查看定位："
-                            android:textColor="@color/gray_888888"
-                            android:textSize="@dimen/text_13" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/activity_defect_details__address_image"
-                        android:layout_width="@dimen/size_80"
-                        android:layout_height="@dimen/size_80"
-                        android:layout_marginLeft="@dimen/size_20"
-                        android:layout_marginTop="@dimen/size_10"
-                        android:scaleType="centerCrop"
-                        android:src="@mipmap/bg"
-                        android:visibility="gone" />
-
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/activity_defect_details__submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/size_30"
-                    android:layout_marginLeft="@dimen/size_30"
-                    android:layout_marginRight="@dimen/size_30"
-                    android:layout_marginTop="@dimen/size_50"
-                    android:background="@drawable/border_gray_radius_3"
-                    android:gravity="center"
-                    android:padding="@dimen/size_12"
-                    android:text="提交处理结果"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_14"
-                    android:visibility="gone" />
 
             </LinearLayout>
 
         </ScrollView>
-    </LinearLayout>
 
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

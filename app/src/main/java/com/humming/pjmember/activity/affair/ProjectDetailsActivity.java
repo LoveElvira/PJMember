@@ -268,7 +268,7 @@ public class ProjectDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, OutProjectDetailBean.class, Application.getInstance().getCurrentActivity().getClass());
+        }, parameter, OutProjectDetailBean.class, ProjectDetailsActivity.class);
 
     }
 

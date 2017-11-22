@@ -58,7 +58,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_facility_name" />
 
             <TextView
@@ -88,7 +88,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_content" />
 
             <TextView
@@ -149,7 +149,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_content" />
 
             <TextView
@@ -179,7 +179,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_content" />
 
             <TextView
@@ -209,7 +209,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_content" />
 
             <TextView
@@ -231,7 +231,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_content" />
 
             <TextView
@@ -261,7 +261,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/size_15"
-                android:layout_marginTop="@dimen/size_1"
+                android:layout_marginTop="@dimen/size_1_5"
                 android:src="@mipmap/work_content" />
 
             <TextView

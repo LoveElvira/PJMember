@@ -1,32 +1,28 @@
 package com.humming.pjmember.activity.statistics;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -45,17 +41,16 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Utils;
 import com.humming.pjmember.R;
-import com.humming.pjmember.activity.scan.AccidentDetailsActivity;
 import com.humming.pjmember.activity.scan.RepairDetailsActivity;
 import com.humming.pjmember.adapter.DialogStatisticsAdapter;
-import com.humming.pjmember.adapter.TimeAdapter;
+import com.humming.pjmember.base.AppManager;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
-import com.humming.pjmember.bean.TimeModel;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.StringUtils;
+import com.humming.pjmember.utils.TimeUtils;
 import com.humming.pjmember.viewutils.MyMarkerView;
 import com.humming.pjmember.viewutils.MyXFormatter;
 import com.humming.pjmember.viewutils.ProgressHUD;
@@ -74,14 +69,10 @@ import okhttp3.Request;
  * 统计中心
  */
 
-public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, OnChartValueSelectedListener {
+public class StatisticsActivity extends BaseActivity implements OnChartValueSelectedListener {
 
     //头部时间
     private TextView time;
-
-    private TimeAdapter adapter;
-
-    private List<TimeModel> timeModelList;
 
     private TextView personNum;
     private TextView projectNum;
@@ -94,16 +85,10 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
     private LineChart workLineChart;
     //突发事故折线图
     private LineChart accidentLineChart;
-    //饼图父布局
-    private LinearLayout pricePieLayout;
+    //饼图上面的父布局
+    private LinearLayout accidentLayout;
     //费用饼图
     private PieChart pricePieChart;
-    //养护费用
-    private TextView maintainPrice;
-    //人员费用
-    private TextView peoplePrice;
-    //维修费用
-    private TextView repairPrice;
 
     private StatisticsBean statisticsBean;
     private ArrayList<Integer> colors;
@@ -118,15 +103,15 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
     @Override
     protected void initView() {
         super.initView();
+        AppManager.getInstance().initWidthHeight(this);
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("统计中心");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
         time = (TextView) findViewById(R.id.item_time_top__time);
-        time.setVisibility(View.VISIBLE);
-        listView = (RecyclerView) findViewById(R.id.item_time_top__listview);
-        listView.setVisibility(View.GONE);
+        time.setText(TimeUtils.getCurrentDate());
+
 
         personNum = (TextView) findViewById(R.id.statistics_content__people_num);
         projectNum = (TextView) findViewById(R.id.statistics_content__project_num);
@@ -136,32 +121,8 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         workLineChart = (LineChart) findViewById(R.id.statistics_content__work_line);
         accidentLineChart = (LineChart) findViewById(R.id.statistics_content__accident_line);
         pricePieChart = (PieChart) findViewById(R.id.statistics_content__price_pie);
-        pricePieLayout = (LinearLayout) findViewById(R.id.statistics_content__price_pie_layout);
-        maintainPrice = (TextView) findViewById(R.id.statistics_content__price_maintain);
-        peoplePrice = (TextView) findViewById(R.id.statistics_content__price_people);
-        repairPrice = (TextView) findViewById(R.id.statistics_content__price_repair);
+        accidentLayout = (LinearLayout) findViewById(R.id.statistics_content__accident_layout);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7);
-        listView.setLayoutManager(gridLayoutManager);
-
-        timeModelList = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            TimeModel model = new TimeModel();
-            if (i == 0) {
-                model.setSelect(true);
-            } else {
-                model.setSelect(false);
-            }
-            model.setTime((i + 23) + "");
-            timeModelList.add(model);
-        }
-
-        adapter = new TimeAdapter(timeModelList);
-        listView.setAdapter(adapter);
-        adapter.setOnItemChildClickListener(this);
-
-
-//        initLineChart(accidentLineChart);
         leftArrow.setOnClickListener(this);
         pricePieChart.setOnChartValueSelectedListener(this);
 
@@ -263,8 +224,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
 
 
     private void initLineChart(LineChart lineChart, String[] values, float max, List<StatisticsCompanyBean> companyBeanList) {
-//        lineChart.setOnChartGestureListener(this);
-//        lineChart.setOnChartValueSelectedListener(this);
         //chart 绘图区后面的背景矩形将绘制
         lineChart.setDrawGridBackground(false);
         //禁止绘制图表边框的线
@@ -280,10 +239,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         lineChart.setDragEnabled(true);
         // 是否可以缩放 x和y轴, 默认是true
         lineChart.setScaleEnabled(true);
-        //是否可以缩放 仅x轴
-        // mChart.setScaleXEnabled(true);
-        //是否可以缩放 仅y轴
-        // mChart.setScaleYEnabled(true);
 
         //设置x轴和y轴能否同时缩放。默认是否
         lineChart.setPinchZoom(true);
@@ -308,7 +263,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         //设置x轴的显示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setLabelCount(values.length);
-//        String[] value = {"大桥", "隧道", "高速", "浦东", "东海", "嘉青"};
         xAxis.setValueFormatter(new MyXFormatter(values));
 
         //获取左边的轴线
@@ -316,13 +270,10 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         //设置图表右边的y轴禁用
         leftAxis.setEnabled(true);
         leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-//        leftAxis.addLimitLine(ll1);
-//        leftAxis.addLimitLine(ll2);
         //设置Y轴的最大值
         leftAxis.setAxisMaximum(max);
         //设置Y轴的最小值
         leftAxis.setAxisMinimum(0f);
-        //leftAxis.setYOffset(20f);
         //设置网格线为虚线效果
 //        leftAxis.enableGridDashedLine(10f, 10f, 0f);
         //是否绘制0所在的网格线
@@ -334,18 +285,11 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         //获取右边的轴线 让其不显示
         lineChart.getAxisRight().setEnabled(false);
 
-        //mChart.getViewPortHandler().setMaximumScaleY(2f);
-        //mChart.getViewPortHandler().setMaximumScaleX(2f);
-
         // add data
         setLineData(lineChart, companyBeanList);
 
-//        mChart.setVisibleXRange(20);
-//        mChart.setVisibleYRange(20f, AxisDependency.LEFT);
-//        mChart.centerViewTo(20, 50, AxisDependency.LEFT);
         //从左到右绘制图形，参数是int类型的 持续时间
         lineChart.animateX(1000);
-        //mChart.invalidate();
 
         // 设置折线的描述的样式（默认在图表的左下角）
         Legend l = lineChart.getLegend();
@@ -357,8 +301,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
 
-        // // dont forget to refresh the drawing
-        // mChart.invalidate();
 
     }
 
@@ -368,8 +310,8 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
 
         for (int i = 0; i < companyBeanList.size(); i++) {
 
-            float val = /*(float) (Math.random() * range) + 3*/Float.parseFloat(companyBeanList.get(i).getNum());
-            values.add(new Entry(i, val, null/*ContextCompat.getDrawable(getBaseContext(), R.mipmap.address)*/));
+            float val = Float.parseFloat(companyBeanList.get(i).getNum());
+            values.add(new Entry(i, val, null));
         }
 
         //LineDataSet每一个对象就是一条连接线
@@ -389,9 +331,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
             set1 = new LineDataSet(values, "");
             set1.setDrawIcons(false);
 
-            // set the line to be drawn like this "- - - - - -"
-//            set1.enableDashedLine(10f, 5f, 0f);
-//            set1.enableDashedHighlightLine(10f, 5f, 0f);
             //设置该线的颜色
             set1.setColor(ContextCompat.getColor(getBaseContext(), R.color.pink));
             //设置每个点的颜色
@@ -438,8 +377,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         pieChart.setUsePercentValues(true);
         //设置图图表的描述
         pieChart.getDescription().setEnabled(false);
-        //设置图表上下左右的偏移，类似于外边距
-//        pieChart.setExtraOffsets(5, 10, 5, 5);
         //设置阻尼系数,范围在[0,1]之间,越小饼状图转动越困难
 //        pieChart.setDragDecelerationFrictionCoef(0.95f);
         //设置PieChart中间文字的内容
@@ -451,10 +388,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         pieChart.setDrawHoleEnabled(true);
         //设置PieChart中间圆的颜色
         pieChart.setHoleColor(Color.WHITE);
-        //饼状图中间的圆的半径大小
-//        pieChart.setHoleRadius(58f);
-        //设置中间圆的半透明圆环
-//        pieChart.setTransparentCircleRadius(10f);
         //设置图表初始化时第一块数据显示的位置
         pieChart.setRotationAngle(90f);
         pieChart.setRotationEnabled(true);//设置可以手动旋转
@@ -470,12 +403,8 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         mLegend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         mLegend.setTextColor(Color.GRAY);
         mLegend.setTextSize(12f);
-//        mLegend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-//        mLegend.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        mLegend.setDrawInside(false);
-//        mLegend.setXEntrySpace(7f);
-//        mLegend.setYEntrySpace(0f);
-//        mLegend.setYOffset(0f);
+        //设置比例块换行...
+        mLegend.setWordWrapEnabled(true);
 
         initPieDate(pieChart, statisticsCostBeanList, total);
     }
@@ -483,27 +412,11 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
 
     private void initPieDate(PieChart pieChart, List<StatisticsCostBean> statisticsCostBeanList, float total) {
         // 遍历饼状图
-//        List<String> mXList = new ArrayList<String>();
-//        for (int i = 0; i < count; i++) {
-//            mXList.add("业绩所占比例:" + (i + 1));//饼块上显示成业绩比例1 显示成业绩比例2 显示成业绩比例3 显示成业绩比例4
-//        }
         ArrayList<PieEntry> list = new ArrayList<>(statisticsCostBeanList.size());
-        /**
-         * 将一个饼形图分成四部分， 四部分的数值比例为16:16:32:36
-         * 所以 16代表的百分比就是16%
-         */
-
         for (int i = 0; i < statisticsCostBeanList.size(); i++) {
             list.add(new PieEntry((Float.parseFloat(statisticsCostBeanList.get(i).getCost()) / total) * 100, statisticsCostBeanList.get(i).getCompanyName(), i));
         }
 
-//        float quarterly_one = 30;
-//        float quarterly_two = 30;
-//        float quarterly_three = 40;
-//
-//        list.add(new PieEntry(quarterly_one, 0));
-//        list.add(new PieEntry(quarterly_two, 1));
-//        list.add(new PieEntry(quarterly_three, 2));
         //y轴集合
         PieDataSet set = new PieDataSet(list, "");
         set.setSliceSpace(2f);//设置饼状之间的间隙
@@ -528,11 +441,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
 
         colors.add(ColorTemplate.getHoloBlue());
 
-//        ArrayList<Integer> mColorIntegers = new ArrayList<Integer>();
-//        //饼状的颜色
-//        mColorIntegers.add(Color.rgb(54, 93, 254));
-//        mColorIntegers.add(Color.rgb(227, 61, 181));
-//        mColorIntegers.add(Color.rgb(32, 143, 255));
         //设置颜色集
         set.setColors(colors);
         //选中态多出的长度
@@ -545,7 +453,6 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
         pieData.setValueTextSize(10f);//设置百分比的字号
 
         pieChart.setData(pieData);
-
     }
 
     private SpannableString generateCenterSpannableText(String price) {
@@ -572,25 +479,9 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
     }
 
     @Override
-    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-        switch (view.getId()) {
-            case R.id.item_time_top__parent:
-
-                if (!timeModelList.get(position).isSelect()) {
-                    for (int i = 0; i < timeModelList.size(); i++) {
-                        timeModelList.get(i).setSelect(false);
-                    }
-                    timeModelList.get(position).setSelect(true);
-                    adapter.notifyDataSetChanged();
-                }
-                break;
-        }
-    }
-
-    @Override
     public void onValueSelected(Entry e, Highlight h) {
         int position = (int) e.getData();
-        new PopupWindows(StatisticsActivity.this, pricePieLayout, statisticsBean.getCostBeen().get(position), colors.get(position));
+        new PopupWindows(StatisticsActivity.this, accidentLayout, statisticsBean.getCostBeen().get(position), colors.get(position));
     }
 
     @Override
@@ -600,7 +491,8 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
 
 
     class PopupWindows extends PopupWindow {
-        public PopupWindows(Context mContext, View parent, StatisticsCostBean statisticsCostBean, int color) {
+        @TargetApi(Build.VERSION_CODES.KITKAT)
+        public PopupWindows(Context mContext, View parent, final StatisticsCostBean statisticsCostBean, int color) {
 
             View view = View
                     .inflate(mContext, R.layout.dialog_statistics_, null);
@@ -611,15 +503,20 @@ public class StatisticsActivity extends BaseActivity implements BaseQuickAdapter
             setFocusable(true);
             setOutsideTouchable(true);
             setContentView(view);
-            showAtLocation(parent, Gravity.CENTER, 0, 0);
+            showAsDropDown(parent, 0, 200);
+
+            setOnDismissListener(new OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    // undo all highlights
+                    pricePieChart.highlightValues(null);
+                    pricePieChart.invalidate();
+                }
+            });
 
             TextView name = view.findViewById(R.id.dialog_statistics__name);
             TextView price = view.findViewById(R.id.dialog_statistics__price);
-//            if (statisticsCostBean.getCompanyName() != null && !"".equals(statisticsCostBean.getCompanyName())) {
-                name.setText(statisticsCostBean.getCompanyName());
-//            } else {
-//                name.setText("未知");
-//            }
+            name.setText(statisticsCostBean.getCompanyName());
             price.setText(StringUtils.saveTwoDecimal(statisticsCostBean.getCost()));
 
             RecyclerView listView = view.findViewById(R.id.dialog_statistics__list);

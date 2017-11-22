@@ -49,6 +49,12 @@ public class RequestParameter implements IRequestMainData {
     //合同id
     private String contractId;
 
+    //会议日期
+    private String date;
+
+    //会议ID
+    private String conferenceId;
+
 
     public RequestParameter() {
     }
@@ -179,5 +185,21 @@ public class RequestParameter implements IRequestMainData {
 
     public void setContractId(String contractId) {
         this.contractId = contractId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getConferenceId() {
+        return conferenceId;
+    }
+
+    public void setConferenceId(String conferenceId) {
+        this.conferenceId = conferenceId;
     }
 }

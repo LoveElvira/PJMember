@@ -58,5 +58,7 @@ public class Config {
     public static final String GET_PROJECT = "project/queryOut";//获取项目列表
     public static final String GET_PROJECT_DETAILS = "project/outDetail";//获取项目详情
     public static final String GET_STATISTICS = "statistics/all";//统计
+    public static final String GET_MEETING = "conference/date";//会议
+    public static final String GET_MEETING_DETAILS = "conference/delate";//会议详情
 
 }

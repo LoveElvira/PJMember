@@ -12,13 +12,14 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
 import com.humming.pjmember.adapter.TimeAdapter;
 import com.humming.pjmember.base.BaseActivity;
-import com.humming.pjmember.bean.TimeModel;
 import com.humming.pjmember.content.meeting.MeetingContent;
+import com.humming.pjmember.utils.TimeUtils;
 import com.humming.pjmember.viewutils.BaseViewPager;
 import com.humming.pjmember.viewutils.ContentAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Elvira on 2017/9/7.
@@ -30,7 +31,7 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
     //头部时间
     private TextView time;
     private TimeAdapter timeAdapter;
-    private List<TimeModel> timeModelList;
+    private List<Map<String, String>> timeModelList;
 
     //管理切换的界面
     private BaseViewPager viewPager;
@@ -64,17 +65,8 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7);
         listView.setLayoutManager(gridLayoutManager);
 
-        timeModelList = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            TimeModel model = new TimeModel();
-            if (i == 0) {
-                model.setSelect(true);
-            } else {
-                model.setSelect(false);
-            }
-            model.setTime((i + 23) + "");
-            timeModelList.add(model);
-        }
+        timeModelList = TimeUtils.getDateAfter();
+        timeModelList.get(0).put("isSelect", "true");
 
         timeAdapter = new TimeAdapter(timeModelList);
         listView.setAdapter(timeAdapter);
@@ -110,6 +102,13 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
         rightImage.setOnClickListener(this);
         viewPager.setCurrentItem(0);
 
+        time.setText(timeModelList.get(0).get("year") + "-" + timeModelList.get(0).get("month"));
+        meetingContent.getMeetingList(getDate(0));
+
+    }
+
+    private String getDate(int position) {
+        return timeModelList.get(position).get("year") + "-" + timeModelList.get(position).get("month") + "-" + timeModelList.get(position).get("day");
     }
 
     @Override
@@ -117,12 +116,14 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
         switch (view.getId()) {
             case R.id.item_time_top__parent:
 
-                if (!timeModelList.get(position).isSelect()) {
+                if ("false".equals(timeModelList.get(position).get("isSelect"))) {
                     for (int i = 0; i < timeModelList.size(); i++) {
-                        timeModelList.get(i).setSelect(false);
+                        timeModelList.get(i).put("isSelect", "false");
                     }
-                    timeModelList.get(position).setSelect(true);
+                    time.setText(timeModelList.get(position).get("year") + "-" + timeModelList.get(position).get("month"));
+                    timeModelList.get(position).put("isSelect", "true");
                     adapter.notifyDataSetChanged();
+                    meetingContent.getMeetingList(getDate(position));
                 }
                 break;
         }

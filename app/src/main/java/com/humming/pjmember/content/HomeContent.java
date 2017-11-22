@@ -28,6 +28,7 @@ import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.SharePrefUtil;
+import com.humming.pjmember.utils.TimeUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.weather.WeatherBean;
 
@@ -239,11 +240,19 @@ public class HomeContent extends BaseLinearLayout {
             public void onResponse(WeatherBean response) {
                 progressHUD.dismiss();
                 if (response != null) {
-                    weatherTemp.setText(response.getTempDay() + "°");
-                    weatherTime.setText(response.getPredictDate() + " " + response.getConditionDay());
-                    Glide.with(getContext())
-                            .load(response.getConditionDayImg())
-                            .into(weatherImage);
+                    if (!TimeUtils.getCurrentTime()) {//白天
+                        weatherTemp.setText(response.getTempDay() + "°");
+                        weatherTime.setText(response.getPredictDate() + " " + response.getConditionDay());
+                        Glide.with(getContext())
+                                .load(response.getConditionDayImg())
+                                .into(weatherImage);
+                    } else {//夜晚
+                        weatherTemp.setText(response.getTempNight() + "°");
+                        weatherTime.setText(response.getPredictDate() + " " + response.getConditionNight());
+                        Glide.with(getContext())
+                                .load(response.getConditionNightImg())
+                                .into(weatherImage);
+                    }
                 }
 
             }
