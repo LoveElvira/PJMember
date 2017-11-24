@@ -1,7 +1,9 @@
 package com.humming.pjmember.activity.affair;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import com.humming.pjmember.R;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.content.affair.ContractExpenditureContent;
 import com.humming.pjmember.content.affair.ContractIncomeContent;
 import com.humming.pjmember.content.affair.DispatchContent;
@@ -121,6 +124,25 @@ public class AffairActivity extends BaseActivity {
         dispatchLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
         contractIncomeContent.isInitFirst();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Constant.CODE_RESULT)
+            return;
+        int position = data.getIntExtra("position", -1);
+        switch (requestCode) {
+            case Constant.CODE_REQUEST_ONE:
+                contractIncomeContent.updateData();
+                break;
+            case Constant.CODE_REQUEST_TWO:
+                contractExpenditureContent.updateData();
+                break;
+            case Constant.CODE_REQUEST_THREE:
+                projectContent.updateData();
+                break;
+        }
     }
 
     @Override

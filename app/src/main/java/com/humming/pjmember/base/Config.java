@@ -6,8 +6,8 @@ package com.humming.pjmember.base;
  */
 
 public class Config {
-    public static final String URL_SERVICE = "http://pjqs.humming-tech.com/cgi";//正式环境
-    //        public static final String URL_SERVICE = "http://192.168.1.99:8080/cgi";//本地
+        public static final String URL_SERVICE = "http://pjqs.humming-tech.com/cgi";//正式环境
+//    public static final String URL_SERVICE = "http://192.168.1.63:8080/cgi";//本地
     //        public static final String URL_SERVICE = "http://116.236.170.93:8008/cgi";//桥隧
 //    public static final String URL_SERVICE_UPLOAD = "http://pjqs.humming-tech.com/uploadFile";//上传文件
 //    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.99:8080/uploadFile";//上传文件
@@ -60,5 +60,7 @@ public class Config {
     public static final String GET_STATISTICS = "statistics/all";//统计
     public static final String GET_MEETING = "conference/date";//会议
     public static final String GET_MEETING_DETAILS = "conference/delate";//会议详情
+    public static final String GET_DEPARTMENT = "company/department";//获取用户公司部门列表
+    public static final String CHECK_CONTRACT = "check/checkContract";//审核接口
 
 }

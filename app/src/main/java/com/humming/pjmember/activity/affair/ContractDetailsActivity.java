@@ -1,7 +1,9 @@
 package com.humming.pjmember.activity.affair;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,8 +15,10 @@ import com.humming.pjmember.R;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.content.affair.ContractIncomeContent;
 import com.humming.pjmember.requestdate.RequestParameter;
+import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.StringUtils;
@@ -112,6 +116,7 @@ public class ContractDetailsActivity extends BaseActivity {
     private ContractDetailBean contractDetailBean;
 
     private String conNature;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +131,8 @@ public class ContractDetailsActivity extends BaseActivity {
 
         id = getIntent().getStringExtra("id");
         conNature = getIntent().getStringExtra("conNature");
-
+        position = getIntent().getIntExtra("position", -1);
+        Log.i("ee", "activity-----" + position);
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("合同详情");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
@@ -209,6 +215,7 @@ public class ContractDetailsActivity extends BaseActivity {
     }
 
 
+    //获取合同详情
     private void getContractDetail() {
 
         progressHUD = ProgressHUD.show(ContractDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
@@ -287,6 +294,56 @@ public class ContractDetailsActivity extends BaseActivity {
 
     }
 
+    //审核 status 审核类型 1：同意 2：退回
+    private void checkContract(String status, String opinion) {
+
+        progressHUD = ProgressHUD.show(ContractDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                progressHUD.dismiss();
+            }
+        });
+
+        RequestParameter parameter = new RequestParameter();
+        parameter.setId(id);
+        parameter.setStatus(status);
+        parameter.setNature(conNature);
+        if (!TextUtils.isEmpty(opinion)) {
+            parameter.setOpinion(opinion);
+        }
+
+        OkHttpClientManager.postAsyn(Config.CHECK_CONTRACT, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
+            @Override
+            public void onError(Request request, Error info) {
+                Log.e("onError", info.getInfo().toString());
+                showShortToast(info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(SuccessResponse response) {
+                progressHUD.dismiss();
+                if (response != null) {
+                    showShortToast(response.getMsg());
+                    if (response.getCode() == 1) {
+                        setResult(Constant.CODE_RESULT, new Intent()
+                                .putExtra("position", position));
+                        ContractDetailsActivity.this.finish();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, SuccessResponse.class, ContractDetailsActivity.class);
+
+    }
+
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -317,10 +374,10 @@ public class ContractDetailsActivity extends BaseActivity {
                 }
                 break;
             case R.id.activity_contract_details__agree://同意
-                ContractDetailsActivity.this.finish();
+                checkContract("1", mySuggestion.getText().toString().trim());
                 break;
             case R.id.activity_contract_details__reject://驳回
-                ContractDetailsActivity.this.finish();
+                checkContract("2", mySuggestion.getText().toString().trim());
                 break;
         }
     }

@@ -155,13 +155,7 @@ public class MyMarkerView extends MarkerView {
             list.add(new PieEntry((Float.parseFloat(facilityBeanList.get(i).getNum()) / total) * 100, i));
             layout.addView(initLayout(facilityBeanList.get(i), i));
         }
-//        float quarterly_one = 30;
-//        float quarterly_two = 30;
-//        float quarterly_three = 40;
-//
-//        list.add(new PieEntry(quarterly_one, 0));
-//        list.add(new PieEntry(quarterly_two, 1));
-//        list.add(new PieEntry(quarterly_three, 2));
+
         //y轴集合
         PieDataSet set = new PieDataSet(list, "");
         set.setSliceSpace(2f);//设置饼状之间的间隙

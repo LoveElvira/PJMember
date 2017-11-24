@@ -59,14 +59,6 @@ public class MaterialActivity extends BaseActivity implements BaseQuickAdapter.O
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
-//        List<String> list = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            list.add(i + "");
-//        }
-//        adapter = new MaterialAdapter(list);
-//        listView.setAdapter(adapter);
-//        adapter.setOnItemChildClickListener(this);
-
         leftArrow.setOnClickListener(this);
         getMaterialList();
     }

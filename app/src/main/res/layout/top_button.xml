@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_40"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/affair_contract" />
+            android:src="@mipmap/affair_income" />
 
         <TextView
             android:id="@+id/top_button__contract_tip"
@@ -32,7 +32,8 @@
             android:paddingTop="@dimen/size_1"
             android:text="12"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_10" />
+            android:textSize="@dimen/text_10"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/bottom_button__contract_text"
@@ -60,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_40"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/affair_contract" />
+            android:src="@mipmap/affair_expenditure" />
 
         <TextView
             android:id="@+id/top_button__contract_expenditure_tip"
@@ -75,7 +76,8 @@
             android:paddingTop="@dimen/size_1"
             android:text="12"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_10" />
+            android:textSize="@dimen/text_10"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/bottom_button__contract_expenditure_text"

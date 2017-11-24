@@ -37,18 +37,22 @@ public class TimeUtils {
         String mYear; // 当前年
         String mMonth; // 月
         String mDay;
+        String mWeek;
+        int current_week;
         int current_day;
         int current_month;
         int current_year;
 
         final Calendar c = Calendar.getInstance();
         c.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        current_week = c.get(Calendar.DAY_OF_WEEK);
         current_day = c.get(Calendar.DAY_OF_MONTH);
         current_month = c.get(Calendar.MONTH);
         current_year = c.get(Calendar.YEAR);
         for (int i = 0; i < 7; i++) {
             Map<String, String> map = new HashMap<>();
             c.clear();//记住一定要clear一次
+            c.set(Calendar.DAY_OF_WEEK, current_week);
             c.set(Calendar.MONTH, current_month);
             c.set(Calendar.DAY_OF_MONTH, current_day);
             c.set(Calendar.YEAR, current_year);
@@ -56,10 +60,38 @@ public class TimeUtils {
             mMonth = String.valueOf(c.get(Calendar.MONTH) + 1);// 获取当前月份
             mDay = String.valueOf(c.get(Calendar.DAY_OF_MONTH));// 获取当前日份的日期号码
             mYear = String.valueOf(c.get(Calendar.YEAR));// 获取当前年份
+
+            String week = "";
+            switch (c.get(Calendar.DAY_OF_WEEK)) {
+                case 1:
+                    week = "天";
+                    break;
+                case 2:
+                    week = "一";
+                    break;
+                case 3:
+                    week = "二";
+                    break;
+                case 4:
+                    week = "三";
+                    break;
+                case 5:
+                    week = "四";
+                    break;
+                case 6:
+                    week = "五";
+                    break;
+                case 7:
+                    week = "六";
+                    break;
+            }
+
+            mWeek = "星期" + week;
             String date = mYear + "年" + mMonth + "月" + mDay + "日";
             map.put("year", mYear);
             map.put("month", mMonth);
             map.put("day", mDay);
+            map.put("week", mWeek);
             map.put("isSelect", "false");
             dateList.add(map);
         }

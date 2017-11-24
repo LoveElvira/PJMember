@@ -16,6 +16,7 @@ import com.humming.pjmember.adapter.ProjectAdapter;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
 import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
@@ -68,11 +69,10 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
         }
 
         projectLists = new ArrayList<>();
-        adapter = new ProjectAdapter(projectLists, 2);
+        adapter = new ProjectAdapter(projectLists);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
         adapter.setOnLoadMoreListener(this, listView);
-        adapter.setOnItemChildClickListener(this);
         isOne = false;
         isShowProgress = true;
     }
@@ -86,7 +86,7 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
                     progressHUD.dismiss();
                 }
             });
-            getContract(pageable);
+            getProject(pageable);
             isOne = true;
         }
 //            listView.setVisibility(VISIBLE);
@@ -97,7 +97,21 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
 //        }
     }
 
-    private void getContract(final String pageable) {
+
+    public void updateData() {
+//        isShowProgress = true;
+//        progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//                progressHUD.dismiss();
+//            }
+//        });
+        pageable = "";
+        getProject(pageable);
+    }
+
+
+    private void getProject(final String pageable) {
         RequestParameter parameter = new RequestParameter();
         parameter.setPagable(pageable);
 
@@ -113,10 +127,10 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
             public void onResponse(ProjectInfoRes response) {
                 closeProgress();
                 if (response != null) {
+                    projectLists.clear();
                     projectList = response.getProjects();
                     if (projectList != null && projectList.size() > 0) {
                         if ("".equals(pageable)) {
-                            projectLists.clear();
                             projectLists.addAll(projectList);
                             adapter.setNewData(projectList);
                             if (response.getHasMore() == 1) {
@@ -139,8 +153,11 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
                             }
                         }
                         adapter.loadMoreComplete();
+                    } else {
+                        adapter.setNewData(projectLists);
                     }
                 }
+
 
             }
 
@@ -169,7 +186,7 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
                             progressHUD.dismiss();
                         }
                     });
-                    getContract(pageable);
+                    getProject(pageable);
                 }
                 refresh.setEnabled(true);
             }
@@ -182,7 +199,8 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
             case R.id.item_affair__parent:
                 Intent intent = new Intent(getContext(), ProjectDetailsActivity.class);
                 intent.putExtra("id", projectLists.get(position).getProId());
-                startActivity(intent);
+                intent.putExtra("position", position);
+                Application.getInstance().getCurrentActivity().startActivityForResult(intent, Constant.CODE_REQUEST_THREE);
                 break;
         }
     }
@@ -194,7 +212,7 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
             @Override
             public void run() {
                 pageable = "";
-                getContract(pageable);
+                getProject(pageable);
                 refresh.setRefreshing(false);
                 adapter.loadMoreEnd(true);
                 adapter.setEnableLoadMore(true);

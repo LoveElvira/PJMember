@@ -16,6 +16,7 @@ import com.humming.pjmember.adapter.ContractAdapter;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseLinearLayout;
 import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
@@ -30,7 +31,7 @@ import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/9/7.
- * 合同
+ * 支出合同
  */
 
 public class ContractExpenditureContent extends BaseLinearLayout implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
@@ -65,27 +66,26 @@ public class ContractExpenditureContent extends BaseLinearLayout implements Base
         listView.setLayoutManager(linearLayoutManager);
 
         contractLists = new ArrayList<>();
-        adapter = new ContractAdapter(contractLists, 1);
+        adapter = new ContractAdapter(contractLists);
         listView.setAdapter(adapter);
         adapter.setOnItemChildClickListener(this);
         adapter.setOnLoadMoreListener(this, listView);
-        adapter.setOnItemChildClickListener(this);
         isOne = false;
         isShowProgress = true;
     }
 
     public void isInitFirst() {
 //        if (inspectNet()) {
-            if (!isOne) {
-                progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        progressHUD.dismiss();
-                    }
-                });
-                getContract(pageable);
-                isOne = true;
-            }
+        if (!isOne) {
+            progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    progressHUD.dismiss();
+                }
+            });
+            getContract(pageable);
+            isOne = true;
+        }
 //            listView.setVisibility(VISIBLE);
 //            noWifiLayout.setVisibility(GONE);
 //        } else {
@@ -93,6 +93,19 @@ public class ContractExpenditureContent extends BaseLinearLayout implements Base
 //            noWifiLayout.setVisibility(VISIBLE);
 //        }
     }
+
+    public void updateData() {
+//        isShowProgress = true;
+//        progressHUD = ProgressHUD.show(Application.getInstance().getCurrentActivity(), getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+//            @Override
+//            public void onCancel(DialogInterface dialog) {
+//                progressHUD.dismiss();
+//            }
+//        });
+        pageable = "";
+        getContract(pageable);
+    }
+
 
     private void getContract(final String pageable) {
         RequestParameter parameter = new RequestParameter();
@@ -111,10 +124,11 @@ public class ContractExpenditureContent extends BaseLinearLayout implements Base
             public void onResponse(ContractInfoRes response) {
                 closeProgress();
                 if (response != null) {
+                    contractLists.clear();
                     contractList = response.getContracts();
+                    Log.i("ee", "----" + contractList);
                     if (contractList != null && contractList.size() > 0) {
                         if ("".equals(pageable)) {
-                            contractLists.clear();
                             contractLists.addAll(contractList);
                             adapter.setNewData(contractList);
                             if (response.getHasMore() == 1) {
@@ -137,6 +151,8 @@ public class ContractExpenditureContent extends BaseLinearLayout implements Base
                             }
                         }
                         adapter.loadMoreComplete();
+                    }else{
+                        adapter.setNewData(contractLists);
                     }
                 }
 
@@ -178,10 +194,11 @@ public class ContractExpenditureContent extends BaseLinearLayout implements Base
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_affair__parent:
-                Intent intent = new Intent(getContext(),ContractDetailsActivity.class);
-                intent.putExtra("id",contractLists.get(position).getConId());
-                intent.putExtra("conNature",conNature);
-                startActivity(intent);
+                Intent intent = new Intent(getContext(), ContractDetailsActivity.class);
+                intent.putExtra("id", contractLists.get(position).getConId());
+                intent.putExtra("conNature", conNature);
+                intent.putExtra("position", position);
+                Application.getInstance().getCurrentActivity().startActivityForResult(intent, Constant.CODE_REQUEST_TWO);
                 break;
         }
     }

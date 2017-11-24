@@ -16,11 +16,8 @@ import java.util.List;
 
 public class ContractAdapter extends BaseQuickAdapter<ContractInfoBean, BaseViewHolder> {
 
-    private int type;//1 合同
-
-    public ContractAdapter(@Nullable List<ContractInfoBean> data, int type) {
+    public ContractAdapter(@Nullable List<ContractInfoBean> data) {
         super(R.layout.item_affair, data);
-        this.type = type;
     }
 
     @Override
@@ -28,18 +25,8 @@ public class ContractAdapter extends BaseQuickAdapter<ContractInfoBean, BaseView
         helper.setText(R.id.item_affair__title, item.getConName())
                 .setText(R.id.item_affair__people_name, item.getCrtUserName())
                 .setText(R.id.item_affair__time, item.getCrtTime())
-                .addOnClickListener(R.id.item_affair__parent);
-
-        switch (type) {
-            case 1:
-                helper.setImageResource(R.id.item_affair__image, R.mipmap.affair_contract_small);
-                break;
-            case 2:
-                helper.setImageResource(R.id.item_affair__image, R.mipmap.affair_project_small);
-                break;
-            case 3:
-                break;
-        }
+                .addOnClickListener(R.id.item_affair__parent)
+                .setImageResource(R.id.item_affair__image, R.mipmap.affair_contract_small);
 
     }
 }

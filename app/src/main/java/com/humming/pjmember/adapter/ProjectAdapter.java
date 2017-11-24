@@ -16,11 +16,9 @@ import java.util.List;
 
 public class ProjectAdapter extends BaseQuickAdapter<ProjectInfoBean, BaseViewHolder> {
 
-    private int type;//1 合同
 
-    public ProjectAdapter(@Nullable List<ProjectInfoBean> data, int type) {
+    public ProjectAdapter(@Nullable List<ProjectInfoBean> data) {
         super(R.layout.item_affair, data);
-        this.type = type;
     }
 
     @Override
@@ -28,18 +26,8 @@ public class ProjectAdapter extends BaseQuickAdapter<ProjectInfoBean, BaseViewHo
         helper.setText(R.id.item_affair__title, item.getProName())
                 .setText(R.id.item_affair__people_name, item.getCrtUserName())
                 .setText(R.id.item_affair__time, item.getTime())
-                .addOnClickListener(R.id.item_affair__parent);
-
-        switch (type) {
-            case 1:
-                helper.setImageResource(R.id.item_affair__image, R.mipmap.affair_contract_small);
-                break;
-            case 2:
-                helper.setImageResource(R.id.item_affair__image, R.mipmap.affair_project_small);
-                break;
-            case 3:
-                break;
-        }
+                .addOnClickListener(R.id.item_affair__parent)
+                .setImageResource(R.id.item_affair__image, R.mipmap.affair_project_small);
 
     }
 }

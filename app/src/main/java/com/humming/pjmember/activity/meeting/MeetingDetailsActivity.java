@@ -21,6 +21,7 @@ import okhttp3.Request;
 
 /**
  * Created by Elvira on 2017/11/22.
+ * 会议详情
  */
 
 public class MeetingDetailsActivity extends BaseActivity {

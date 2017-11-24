@@ -56,7 +56,8 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
         rightImage = (ImageView) findViewById(R.id.base_toolbar__right_image);
-        rightImage.setImageResource(R.mipmap.meeting_search);
+//        rightImage.setImageResource(R.mipmap.meeting_search);
+        rightText = findViewById(R.id.base_toolbar__right_text);
 
         time = (TextView) findViewById(R.id.item_time_top__time);
         time.setVisibility(View.VISIBLE);
@@ -103,6 +104,7 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
         viewPager.setCurrentItem(0);
 
         time.setText(timeModelList.get(0).get("year") + "-" + timeModelList.get(0).get("month"));
+        rightText.setText(timeModelList.get(0).get("week"));
         meetingContent.getMeetingList(getDate(0));
 
     }
@@ -121,6 +123,7 @@ public class MeetingActivity extends BaseActivity implements BaseQuickAdapter.On
                         timeModelList.get(i).put("isSelect", "false");
                     }
                     time.setText(timeModelList.get(position).get("year") + "-" + timeModelList.get(position).get("month"));
+                    rightText.setText(timeModelList.get(position).get("week"));
                     timeModelList.get(position).put("isSelect", "true");
                     adapter.notifyDataSetChanged();
                     meetingContent.getMeetingList(getDate(position));

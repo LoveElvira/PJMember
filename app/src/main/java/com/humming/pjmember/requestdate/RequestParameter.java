@@ -55,6 +55,12 @@ public class RequestParameter implements IRequestMainData {
     //会议ID
     private String conferenceId;
 
+    //审核
+    private String status;
+    private String id;
+    private String nature;
+    private String opinion;
+
 
     public RequestParameter() {
     }
@@ -201,5 +207,37 @@ public class RequestParameter implements IRequestMainData {
 
     public void setConferenceId(String conferenceId) {
         this.conferenceId = conferenceId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNature() {
+        return nature;
+    }
+
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+
+    public String getOpinion() {
+        return opinion;
+    }
+
+    public void setOpinion(String opinion) {
+        this.opinion = opinion;
     }
 }

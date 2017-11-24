@@ -21,7 +21,7 @@
             android:layout_width="@dimen/size_15"
             android:layout_height="@dimen/size_15"
             android:layout_marginRight="@dimen/size_5"
-            android:src="@mipmap/affair_contract_small" />
+            android:layout_marginTop="@dimen/size_1_5" />
 
         <TextView
             android:id="@+id/item_affair__title"

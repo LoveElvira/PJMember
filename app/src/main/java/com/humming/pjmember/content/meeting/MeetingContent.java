@@ -89,13 +89,14 @@ public class MeetingContent extends BaseLinearLayout implements BaseQuickAdapter
             @Override
             public void onResponse(ConferenceInfoResp response) {
                 progressHUD.dismiss();
+                meetingLists.clear();
                 if (response != null) {
                     if (response.getConferences() != null && response.getConferences().size() > 0) {
-                        meetingLists.clear();
                         meetingLists.addAll(response.getConferences());
                         adapter.setNewData(meetingLists);
                     }
                 }
+                adapter.notifyDataSetChanged();
 
             }
 
