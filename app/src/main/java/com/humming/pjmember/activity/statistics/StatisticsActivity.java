@@ -152,13 +152,15 @@ public class StatisticsActivity extends BaseActivity implements OnChartValueSele
                 statisticsBean = response;
                 if (response != null) {
 
-                    projectNum.setText(statisticsBean.getSumProjectNum().toString());
-                    personNum.setText(statisticsBean.getSumUserNum().toString());
+                    projectNum.setText(statisticsBean.getSumProjectNum() == null ? "0" : statisticsBean.getSumProjectNum().toString());
+                    personNum.setText(statisticsBean.getSumUserNum() == null ? "0" : statisticsBean.getSumUserNum().toString());
                     if (statisticsBean.getProjectBeen() != null && statisticsBean.getProjectBeen().size() > 0) {
                         String[] values = new String[statisticsBean.getProjectBeen().size()];
                         int max = 0;
                         for (int i = 0; i < statisticsBean.getProjectBeen().size(); i++) {
-                            values[i] = statisticsBean.getProjectBeen().get(i).getCompanyName().substring(0, 2);
+                            values[i] = "".equals(statisticsBean.getProjectBeen().get(i).getCompanyName())
+                                    || statisticsBean.getProjectBeen().get(i).getCompanyName() == null ?
+                                    "未知" : statisticsBean.getProjectBeen().get(i).getCompanyName().substring(0, 2);
                             int num = Integer.parseInt(statisticsBean.getProjectBeen().get(i).getNum());
                             if (max < num) {
                                 max = num;

@@ -1,6 +1,5 @@
 package com.humming.pjmember.activity.scan;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,12 +24,11 @@ import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.bean.AccidentNatureModel;
 import com.humming.pjmember.bean.AccidentTypeModel;
-import com.humming.pjmember.requestdate.AddAccidentParameter;
+import com.humming.pjmember.requestdate.add.AddAccidentParameter;
 import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.GlideLoader;
-import com.humming.pjmember.viewutils.ProgressHUD;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
 import com.humming.pjmember.viewutils.selectpic.ImageSelector;

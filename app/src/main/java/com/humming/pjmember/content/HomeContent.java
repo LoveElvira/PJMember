@@ -157,8 +157,8 @@ public class HomeContent extends BaseLinearLayout {
                 case 0:
                     leftImage.setImageResource(R.mipmap.affair);
                     leftText.setText("事务管理");
-                    rightImage.setImageResource(R.mipmap.equipment);
-                    rightText.setText("设备管理");
+                    rightImage.setImageResource(R.mipmap.scan);
+                    rightText.setText("扫一扫");
                     break;
                 case 2:
                     leftImage.setImageResource(R.mipmap.meeting);
@@ -169,8 +169,8 @@ public class HomeContent extends BaseLinearLayout {
                 case 4:
                     leftImage.setImageResource(R.mipmap.notify);
                     leftText.setText("通知");
-                    rightImage.setImageResource(R.mipmap.video);
-                    rightText.setText("视频管理");
+                    rightImage.setImageResource(R.mipmap.equipment);
+                    rightText.setText("业务管理");
                     leftTip.setVisibility(VISIBLE);
                     break;
             }
@@ -205,14 +205,11 @@ public class HomeContent extends BaseLinearLayout {
                     .putExtra("workId", ""));
         } else if ("事务管理".equals(name)) {
             startActivity(AffairActivity.class);
-        } else if ("设备管理".equals(name)) {
-            startActivity(CaptureActivity.class);
-//            startActivity(CaptureActivity.class);
         } else if ("会议安排".equals(name)) {
             startActivity(MeetingActivity.class);
         } else if ("统计中心".equals(name)) {
             startActivity(StatisticsActivity.class);
-        } else if ("视频管理".equals(name)) {
+        } else if ("业务管理".equals(name)) {
 //            startActivity(CaptureActivity.class);
         }
     }

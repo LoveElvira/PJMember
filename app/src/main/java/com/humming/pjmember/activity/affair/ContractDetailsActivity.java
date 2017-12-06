@@ -247,8 +247,8 @@ public class ContractDetailsActivity extends BaseActivity {
                     contractName.setText(contractDetailBean.getConName());
                     contractType.setText(contractDetailBean.getConType());
                     contractDetailType.setText(contractDetailBean.getDetailType());
-                    startTime.setText(contractDetailBean.getStarDate());
-                    planCompleteTime.setText(contractDetailBean.getScheFinishDatel());
+                    startTime.setText(contractDetailBean.getStartDate());
+                    planCompleteTime.setText(contractDetailBean.getScheFinishDate());
                     budgetPrice.setText(StringUtils.saveTwoDecimal(contractDetailBean.getBudgetCost()));
                     planPrice.setText(StringUtils.saveTwoDecimal(contractDetailBean.getPlanCost()));
                     projectName.setText(contractDetailBean.getProName());

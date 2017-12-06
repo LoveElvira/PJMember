@@ -41,6 +41,32 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/bottom_button__video_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/bottom_button__video_image"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/size_20"
+                android:src="@mipmap/home_default" />
+
+            <TextView
+                android:id="@+id/bottom_button__video_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_3"
+                android:text="视频"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_11" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/bottom_button__setting_layout"
             android:layout_width="0dp"
             android:layout_height="match_parent"

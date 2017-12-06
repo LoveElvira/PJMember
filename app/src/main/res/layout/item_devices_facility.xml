@@ -299,7 +299,6 @@
                 android:id="@+id/activity_device_manage__phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="12354435546"
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 

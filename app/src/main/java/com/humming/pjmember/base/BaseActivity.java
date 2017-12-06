@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -60,10 +61,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Request;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 /**
  * Created by Elvira on 2017/5/31.
@@ -338,7 +347,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
         Uri uri = Uri.fromFile(file);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            uri =  FileProvider.getUriForFile(this, Constant.AUTHORITY, file);//通过FileProvider创建一个content类型的Uri
+            uri = FileProvider.getUriForFile(this, Constant.AUTHORITY, file);//通过FileProvider创建一个content类型的Uri
         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 
         try {
@@ -532,6 +541,8 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < list.size(); i++) {
             if ("0".equals(list.get(i).get("isAdd"))) {
                 File file = new File(list.get(i).get("imagePath"));
+                Log.i("ee", "压缩图片前：-------" + file.length() / 1024 + "KB");
+//                files.add(compressFile(file));
                 files.add(file);
             }
         }
@@ -566,5 +577,34 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }, DefectResultActivity.class);
     }
 
+
+    private File compressFile(File file) {
+
+        final File[] newFile = {null};
+        Luban.with(this)
+                .load(file)                                   // 传人要压缩的图片列表
+                .ignoreBy(100)                                  // 忽略不压缩图片的大小
+//                .setTargetDir(getPath())                        // 设置压缩后文件存储位置
+                .setCompressListener(new OnCompressListener() { //设置回调
+                    @Override
+                    public void onStart() {
+                        // 压缩开始前调用，可以在方法内启动 loading UI
+                    }
+
+                    @Override
+                    public void onSuccess(File file) {
+                        // 压缩成功后调用，返回压缩后的图片文件
+                        Log.i("ee", "压缩图片后：-------" + file.length() / 1024 + "KB");
+                        newFile[0] = file;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        // 当压缩过程出现问题时调用
+                    }
+                }).launch();    //启动压缩
+
+        return newFile[0];
+    }
 
 }

@@ -16,6 +16,7 @@ import com.humming.pjmember.content.affair.ContractExpenditureContent;
 import com.humming.pjmember.content.affair.ContractIncomeContent;
 import com.humming.pjmember.content.affair.DispatchContent;
 import com.humming.pjmember.content.affair.ProjectContent;
+import com.humming.pjmember.content.affair.ProjectFileContent;
 import com.humming.pjmember.viewutils.BaseViewPager;
 import com.humming.pjmember.viewutils.ContentAdapter;
 
@@ -33,12 +34,13 @@ public class AffairActivity extends BaseActivity {
     private BaseViewPager viewPager;
     private ContentAdapter adapter;
     private List<View> list;//确定有几个页面
-    private final String[] titles = {"a", "b", "c", "d"};
+    private final String[] titles = {"a", "b", "c", "d", "e"};
 
     //头部按钮 点击事件的布局
     private RelativeLayout contractLayout;
     private RelativeLayout contractExpenditureLayout;
     private RelativeLayout projectLayout;
+    private RelativeLayout projectFileLayout;
     private RelativeLayout dispatchLayout;
 
 
@@ -46,8 +48,10 @@ public class AffairActivity extends BaseActivity {
     private ContractIncomeContent contractIncomeContent;
     //收入合同
     private ContractExpenditureContent contractExpenditureContent;
-    //项目
+    //支出项目
     private ProjectContent projectContent;
+    //项目文件
+    private ProjectFileContent projectFileContent;
     //收发文
     private DispatchContent dispatchContent;
 
@@ -72,17 +76,20 @@ public class AffairActivity extends BaseActivity {
         contractLayout = (RelativeLayout) findViewById(R.id.top_button__contract_layout);
         contractExpenditureLayout = (RelativeLayout) findViewById(R.id.top_button__contract_expenditure_layout);
         projectLayout = (RelativeLayout) findViewById(R.id.top_button__project_layout);
+        projectFileLayout = (RelativeLayout) findViewById(R.id.top_button__project_file_layout);
         dispatchLayout = (RelativeLayout) findViewById(R.id.top_button__dispatch_layout);
 
         contractIncomeContent = new ContractIncomeContent(this);
         contractExpenditureContent = new ContractExpenditureContent(this);
         projectContent = new ProjectContent(this);
+        projectFileContent = new ProjectFileContent(this);
         dispatchContent = new DispatchContent(this);
 
         list = new ArrayList<>();
         list.add(contractIncomeContent);
         list.add(contractExpenditureContent);
         list.add(projectContent);
+        list.add(projectFileContent);
         list.add(dispatchContent);
         adapter = new ContentAdapter(list, titles);
 //        viewPager.setEnabled(true);
@@ -108,6 +115,9 @@ public class AffairActivity extends BaseActivity {
                     case 3:
 //                        wholeContent.isInitFirst();
                         break;
+                    case 4:
+//                        wholeContent.isInitFirst();
+                        break;
                 }
             }
 
@@ -121,6 +131,7 @@ public class AffairActivity extends BaseActivity {
         contractLayout.setOnClickListener(this);
         contractExpenditureLayout.setOnClickListener(this);
         projectLayout.setOnClickListener(this);
+        projectFileLayout.setOnClickListener(this);
         dispatchLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
         contractIncomeContent.isInitFirst();
@@ -167,9 +178,14 @@ public class AffairActivity extends BaseActivity {
                     viewPager.setCurrentItem(2);
                 }
                 break;
-            case R.id.top_button__dispatch_layout:
+            case R.id.top_button__project_file_layout:
                 if (viewPager.getCurrentItem() != 3) {
                     viewPager.setCurrentItem(3);
+                }
+                break;
+            case R.id.top_button__dispatch_layout:
+                if (viewPager.getCurrentItem() != 4) {
+                    viewPager.setCurrentItem(4);
                 }
                 break;
         }

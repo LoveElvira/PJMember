@@ -2,10 +2,13 @@ package com.humming.pjmember.activity.scan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -16,9 +19,16 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
 import com.humming.pjmember.activity.BrowseImageViewActivity;
+import com.humming.pjmember.activity.MapActivity;
 import com.humming.pjmember.adapter.ImageAdapter;
 import com.humming.pjmember.base.BaseActivity;
+import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
+import com.humming.pjmember.requestdate.add.AddRepairParameter;
+import com.humming.pjmember.requestdate.add.AddUserOilParameter;
+import com.humming.pjmember.responsedate.SuccessResponse;
+import com.humming.pjmember.service.Error;
+import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.GlideLoader;
 import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.selectpic.ImageConfig;
@@ -30,6 +40,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Request;
+
 /**
  * Created by Elvira on 2017/9/3.
  * 添加用油记录
@@ -37,22 +49,30 @@ import java.util.Map;
 
 public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
-    //维修时间标题
+    //用油时间标题
     private TextView timeTitle;
-    //维修时间
+    //用油时间
     private TextView time;
-    //设备名称
-//    private EditText name;
-    //设备编号
-//    private EditText num;
-    //维修内容标题
+    //加油卡号标题
+    private LinearLayout cardLayout;
+    private TextView cardTitle;
+    //加油卡号
+    private EditText card;
+    //加油地点标题
+    private LinearLayout addressLayout;
+    private TextView addressTitle;
+    //加油地点
+    private EditText address;
+    private ImageView addressImage;
+    //用油内容标题
     private TextView contentTitle;
-    //维修内容
+    //用油内容
     private EditText content;
-    //维修金额标题
+    //用油金额标题
     private TextView priceTitle;
-    //维修金额
+    //用油金额
     private EditText price;
+    private TextView listViewTitle;
     //发票上传 listview
     //提交
     private TextView submit;
@@ -73,6 +93,10 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void initView() {
         super.initView();
+
+        id = getIntent().getStringExtra("id");
+        popupParent = View.inflate(getBaseContext(), R.layout.activity_add_log, null);
+
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("添加用油记录");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
@@ -82,20 +106,34 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
 
         timeTitle = (TextView) findViewById(R.id.activity_add_log__time_title);
         time = (TextView) findViewById(R.id.activity_add_log__time);
-//        name = (EditText) findViewById(R.id.activity_add_repair__name);
-//        num = (EditText) findViewById(R.id.activity_add_repair__num);
+        cardLayout = (LinearLayout) findViewById(R.id.activity_add_log__company_layout);
+        cardTitle = (TextView) findViewById(R.id.activity_add_log__company_title);
+        card = (EditText) findViewById(R.id.activity_add_log__company);
+        addressLayout = (LinearLayout) findViewById(R.id.activity_add_log__address_layout);
+        addressTitle = (TextView) findViewById(R.id.activity_add_log__address_title);
+        address = (EditText) findViewById(R.id.activity_add_log__address);
+        addressImage = (ImageView) findViewById(R.id.activity_add_log__address_image);
         contentTitle = (TextView) findViewById(R.id.activity_add_log__content_title);
         content = (EditText) findViewById(R.id.activity_add_log__content);
         priceTitle = (TextView) findViewById(R.id.activity_add_log__price_title);
         price = (EditText) findViewById(R.id.activity_add_log__price);
+        listViewTitle = (TextView) findViewById(R.id.activity_add_log__listview_title);
 
-        timeTitle.setText("用油时间");
-        time.setHint("2017-08-04 16:58");
-        contentTitle.setText("加油数（L）");
-        content.setHint("请输入加油数");
+
+        timeTitle.setText("加油时间");
+        time.setHint("请选择加油时间");
+        cardLayout.setVisibility(View.VISIBLE);
+        cardTitle.setText("加油卡号");
+        card.setHint("请输入加油卡号");
+        addressLayout.setVisibility(View.VISIBLE);
+        addressTitle.setText("加油地点");
+        address.setHint("请输入加油地点");
+        contentTitle.setText("加油量（L）");
+        content.setHint("请输入加油量");
         content.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         priceTitle.setText("加油金额");
         price.setHint("请输入加油金额");
+        listViewTitle.setText("发票上传");
 
 
         listView = (RecyclerView) findViewById(R.id.activity_add_log__listview);
@@ -113,6 +151,8 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
 
         leftArrow.setOnClickListener(this);
         submit.setOnClickListener(this);
+        time.setOnClickListener(this);
+        addressImage.setOnClickListener(this);
     }
 
 
@@ -120,6 +160,65 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
         Map<String, String> map = new HashMap<>();
         map.put("isAdd", "1");
         list.add(map);
+    }
+
+    private boolean isNull(String time, String card, String address, String content, String price) {
+        if (TextUtils.isEmpty(time)) {
+            showShortToast("加油时间不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(card)) {
+            showShortToast("加油卡号不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(address)) {
+            showShortToast("加油地点不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(content)) {
+            showShortToast("加油量不能为空");
+            return false;
+        } else if (TextUtils.isEmpty(price)) {
+            showShortToast("加油金额不能为空");
+            return false;
+        }
+        return true;
+    }
+
+    //新增设备用油信息
+    private void addUseOilLog(String time, String card, String address, String content, String price, List<String> imageList) {
+        AddUserOilParameter parameter = new AddUserOilParameter();
+        parameter.setEquipmentId(id);
+        parameter.setMakeupOilTime(time);
+        parameter.setMakeupOilCard(card);
+        parameter.setMakeupOilAddr(address);
+        parameter.setMakeupOilQuantity(content);
+        parameter.setMoney(price);
+        parameter.setOilImgs(imageList);
+
+        OkHttpClientManager.postAsyn(Config.ADD_OIL_LOG, new OkHttpClientManager.ResultCallback<SuccessResponse>() {
+            @Override
+            public void onError(Request request, Error info) {
+                showShortToast(info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
+                progressHUD.dismiss();
+            }
+
+            @Override
+            public void onResponse(SuccessResponse response) {
+                progressHUD.dismiss();
+                if (response != null) {
+                    showShortToast(response.getMsg());
+                    if (response.getCode() == 1) {
+                        AddUseOilActivity.this.finish();
+                    }
+                }
+            }
+
+            @Override
+            public void onOtherError(Request request, Exception exception) {
+                Log.e("onError", exception.toString());
+                progressHUD.dismiss();
+            }
+        }, parameter, SuccessResponse.class, DeviceManageActivity.class);
+
     }
 
 
@@ -131,7 +230,39 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                 AddUseOilActivity.this.finish();
                 break;
             case R.id.activity_add_log__submit:
-                AddUseOilActivity.this.finish();
+                final String timeStr = time.getText().toString().trim();
+                final String cardStr = card.getText().toString().trim();
+                final String addressStr = address.getText().toString().trim();
+                final String contentStr = content.getText().toString().trim();
+                final String priceStr = price.getText().toString().trim();
+                if (isNull(timeStr, cardStr, addressStr, contentStr, priceStr)) {
+                    if (list.size() > 0) {
+                        handler = new Handler() {
+                            @Override
+                            public void handleMessage(Message msg) {
+                                super.handleMessage(msg);
+                                switch (msg.what) {
+                                    case Constant.CODE_SUCCESS:
+                                        List<String> imageList = (List<String>) msg.obj;
+                                        addUseOilLog(timeStr, cardStr, addressStr, contentStr, priceStr, imageList);
+                                        break;
+                                }
+                            }
+                        };
+                        upLoadImage(list, handler, "addUseOil");
+                    } else {
+                        showShortToast("请先选择图片");
+                    }
+                }
+                break;
+            case R.id.activity_add_log__address_image:
+                startActivityForResult(new Intent(AddUseOilActivity.this, MapActivity.class), Constant.CODE_REQUEST_ONE);
+                break;
+            case R.id.activity_add_log__time:
+                showPopWindowDatePicker(popupParent);
+                break;
+            case R.id.date_submit://获取时间
+                time.setText(getDate());
                 break;
             case R.id.popup_photo__take://拍摄
                 getCamerePhoto();
@@ -140,12 +271,12 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
             case R.id.popup_photo__select://选择图片
                 ImageConfig imageConfig
                         = new ImageConfig.Builder(AddUseOilActivity.this, new GlideLoader())
-                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleBgColor(ContextCompat.getColor(getBaseContext(),R.color.black))
-                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
-                        .titleTextColor(ContextCompat.getColor(getBaseContext(),R.color.white))
+                        .steepToolBarColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleBgColor(ContextCompat.getColor(getBaseContext(), R.color.black))
+                        .titleSubmitTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
+                        .titleTextColor(ContextCompat.getColor(getBaseContext(), R.color.white))
                         .mutiSelect()
-                        .mutiSelectMaxSize(1)
+                        .mutiSelectMaxSize(6)
                         .pathList(path)
                         .filePath("/ImageSelector/Pictures")
 //                        .showCamera()//显示拍摄按钮
@@ -177,6 +308,15 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Constant.CODE_RESULT) {
+
+            if (requestCode == Constant.CODE_REQUEST_ONE) {
+                String addressStr = data.getStringExtra("address");
+                if (!"".equals(addressStr)) {
+                    address.setText(addressStr);
+                }
+                return;
+            }
+
             List<String> pathList = null;
             if (requestCode == Constant.CODE_REQUEST_THREE) {
                 pathList = (List<String>) data.getSerializableExtra("imagePath");
@@ -196,7 +336,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                 map.put("isAdd", "0");
                 list.add(map);
             }
-            if (list.size() < 1) {
+            if (list.size() < 6) {
                 initData();//添加最后一个 add
             }
             adapter.notifyDataSetChanged();
@@ -216,7 +356,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                         map.put("imagePath", mPublishPhotoPath);
                         map.put("isAdd", "0");
                         list.add(0, map);
-                        if (list.size() < 1) {
+                        if (list.size() < 6) {
                             initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();
@@ -235,7 +375,7 @@ public class AddUseOilActivity extends BaseActivity implements BaseQuickAdapter.
                         map.put("imagePath", mPublishPhotoPath);
                         map.put("isAdd", "0");
                         list.add(0, map);
-                        if (list.size() < 1) {
+                        if (list.size() < 6) {
                             initData();//添加最后一个 add
                         }
                         adapter.notifyDataSetChanged();

@@ -119,8 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/size_10"
                         android:background="@drawable/bg_rectangle_white_radius_3_alpha"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:id="@+id/activity_device_manage__use_oil_log_layout"
@@ -192,6 +191,79 @@
                             android:layout_height="@dimen/size_50"
                             android:padding="@dimen/size_15"
                             android:src="@mipmap/add" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:background="@drawable/bg_rectangle_white_radius_3_alpha"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/activity_device_manage__running_log_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="@dimen/size_30"
+                                android:layout_marginLeft="@dimen/size_12"
+                                android:src="@mipmap/work_accident" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/size_10"
+                                android:layout_weight="1"
+                                android:text="出车记录"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_14" />
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/activity_device_manage__add_running"
+                            android:layout_width="@dimen/size_50"
+                            android:layout_height="@dimen/size_50"
+                            android:padding="@dimen/size_15"
+                            android:src="@mipmap/add" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size_50"
+                        android:layout_marginTop="@dimen/size_10"
+                        android:background="@drawable/bg_rectangle_white_radius_3_alpha"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/activity_device_manage__insurance_log_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical">
+
+                            <ImageView
+                                android:layout_width="@dimen/size_30"
+                                android:layout_height="@dimen/size_30"
+                                android:layout_marginLeft="@dimen/size_12"
+                                android:src="@mipmap/work_accident" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/size_10"
+                                android:layout_weight="1"
+                                android:text="保险记录"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_14" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 

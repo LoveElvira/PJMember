@@ -7,9 +7,9 @@ package com.humming.pjmember.base;
 
 public class Config {
         public static final String URL_SERVICE = "http://pjqs.humming-tech.com/cgi";//正式环境
-//    public static final String URL_SERVICE = "http://192.168.1.63:8080/cgi";//本地
-    //        public static final String URL_SERVICE = "http://116.236.170.93:8008/cgi";//桥隧
-//    public static final String URL_SERVICE_UPLOAD = "http://pjqs.humming-tech.com/uploadFile";//上传文件
+//    public static final String URL_SERVICE = "http://192.168.1.128:8080/cgi";//本地
+    //    public static final String URL_SERVICE = "http://116.236.170.93:8008/cgi";//桥隧
+    //    public static final String URL_SERVICE_UPLOAD = "http://pjqs.humming-tech.com/uploadFile";//上传文件
 //    public static final String URL_SERVICE_UPLOAD = "http://192.168.1.99:8080/uploadFile";//上传文件
     public static final String URL_SERVICE_UPLOAD = "http://116.236.170.93:8008/uploadFile";//上传文件
 
@@ -27,13 +27,18 @@ public class Config {
     public static final String GET_MAINTAIN_DETAILS = "equipment/maintainDetail";//获取设备保养记录详情
     public static final String GET_ACCIDENT_DETAILS = "equipment/accidentDetail";//获取设备事故记录详情
     public static final String GET_OIL_DETAILS = "equipment/oilDetail";//获取设备用油记录详情
+    public static final String GET_INSURANCE_DETAILS = "equipment/insuranceDetail";//获取设备保险记录详情
     public static final String GET_REPAIR_LOG = "equipment/repair";//获取设备维修记录
     public static final String GET_MAINTAIN_LOG = "equipment/maintain";//获取设备保养记录
     public static final String GET_ACCIDENT_LOG = "equipment/accident";//获取设备事故记录
     public static final String GET_OIL_LOG = "equipment/oil";//获取设备用油记录
+    public static final String GET_INSURANCE_LOG = "equipment/insurance";//获取设备保险记录
+    public static final String GET_RUNNING_LOG = "equipment/running";//获取设备出车记录
     public static final String ADD_REPAIR_LOG = "equipment/addRepair";//新增设备维修信息
     public static final String ADD_MAINTAIN_LOG = "equipment/addMaintain";//新增设备保养信息
     public static final String ADD_ACCIDENT_LOG = "equipment/addAccident";//新增设备事故信息
+    public static final String ADD_OIL_LOG = "equipment/oilAdd";//新增设备用油信息
+    public static final String ADD_RUNNING_LOG = "equipment/addRun";//新增设备保险信息
     public static final String GET_WORK_PERSON = "user/byWork";//获取作业人员信息
     public static final String GET_ACCIDENT_TYPE = "equipment/allAccidentType";//获取全部事故类型和性质
     public static final String GET_WORK_EQUIPMENT = "equipment/byWork";//获作业设备列表

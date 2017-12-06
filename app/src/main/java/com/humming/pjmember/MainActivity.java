@@ -11,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.humming.pjmember.activity.work.PersonActivity;
+import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.content.HomeContent;
 import com.humming.pjmember.content.SettingContent;
+import com.humming.pjmember.content.VideoContent;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
@@ -39,19 +41,24 @@ public class MainActivity extends BaseActivity {
 
     //首页
     private HomeContent homeContent;
+    //视频
+    private VideoContent videoContent;
     //设置
     private SettingContent settingContent;
 
     //底部按钮 点击事件的布局
     private LinearLayout homeLayout;
+    private LinearLayout videoLayout;
     private LinearLayout settingLayout;
 
     //底部按钮 图片
     private ImageView homeImage;
+    private ImageView videoImage;
     private ImageView settingImage;
 
     //底部按钮 文字
     private TextView homeText;
+    private TextView videoText;
     private TextView settingText;
 
     private long mExitTime; //退出时间
@@ -66,23 +73,32 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        onLinePosition = SharePrefUtil.getString(Constant.FILE_NAME, Constant.POSITION, "0", Application.getInstance().getCurrentActivity());
 
         viewPager = (BaseViewPager) findViewById(R.id.activity_main__viewpager);
 
         homeLayout = (LinearLayout) findViewById(R.id.bottom_button__home_layout);
+        videoLayout = (LinearLayout) findViewById(R.id.bottom_button__video_layout);
         settingLayout = (LinearLayout) findViewById(R.id.bottom_button__setting_layout);
 
         homeImage = (ImageView) findViewById(R.id.bottom_button__home_image);
+        videoImage = (ImageView) findViewById(R.id.bottom_button__video_image);
         settingImage = (ImageView) findViewById(R.id.bottom_button__setting_image);
 
         homeText = (TextView) findViewById(R.id.bottom_button__home_text);
+        videoText = (TextView) findViewById(R.id.bottom_button__video_text);
         settingText = (TextView) findViewById(R.id.bottom_button__setting_text);
 
         homeContent = new HomeContent(this);
+        videoContent = new VideoContent(this);
         settingContent = new SettingContent(this);
-
+        videoLayout.setVisibility(View.GONE);
         list = new ArrayList<>();
         list.add(homeContent);
+        if (onLinePosition.equals("2")) {
+            videoLayout.setVisibility(View.VISIBLE);
+            list.add(videoContent);
+        }
         list.add(settingContent);
         adapter = new ContentAdapter(list, titles);
         viewPager.setAdapter(adapter);
@@ -95,13 +111,20 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onPageSelected(int position) {
                 initBottomView();
-
                 if (position == 0) {
                     homeImage.setImageResource(R.mipmap.home_select);
                     homeText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
+                    return;
                 } else if (position == list.size() - 1) {
                     settingImage.setImageResource(R.mipmap.setting_select);
                     settingText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
+                    return;
+                }
+                if (onLinePosition.equals("2")) {
+                    if (position == 1) {
+                        videoImage.setImageResource(R.mipmap.home_select);
+                        videoText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.blue));
+                    }
                 }
 
             }
@@ -113,6 +136,7 @@ public class MainActivity extends BaseActivity {
         });
 
         homeLayout.setOnClickListener(this);
+        videoLayout.setOnClickListener(this);
         settingLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
 
@@ -122,6 +146,8 @@ public class MainActivity extends BaseActivity {
     private void initBottomView() {
         homeImage.setImageResource(R.mipmap.home_default);
         homeText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
+        videoImage.setImageResource(R.mipmap.home_default);
+        videoText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
         settingImage.setImageResource(R.mipmap.setting_default);
         settingText.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.white));
     }
@@ -160,6 +186,11 @@ public class MainActivity extends BaseActivity {
             case R.id.bottom_button__home_layout:
                 if (viewPager.getCurrentItem() != 0) {
                     viewPager.setCurrentItem(0);
+                }
+                break;
+            case R.id.bottom_button__video_layout:
+                if (viewPager.getCurrentItem() != 1) {
+                    viewPager.setCurrentItem(1);
                 }
                 break;
             case R.id.bottom_button__setting_layout:

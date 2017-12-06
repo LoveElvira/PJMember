@@ -13,9 +13,11 @@ import com.humming.pjmember.R;
 import com.humming.pjmember.base.Application;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
+import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
+import com.humming.pjmember.utils.SharePrefUtil;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.equipment.QueryEquipmentRes;
 
@@ -64,6 +66,12 @@ public class DeviceManageActivity extends BaseActivity {
     private LinearLayout accidentLogLayout;
     //添加事故记录
     private ImageView addAccident;
+    //保险记录
+    private LinearLayout insuranceLogLayout;
+    //出车记录
+    private LinearLayout runningLogLayout;
+    //添加出车记录
+    private ImageView addRunning;
 
     private QueryEquipmentRes equipmentRes;
 
@@ -77,6 +85,8 @@ public class DeviceManageActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
+        onLinePosition = SharePrefUtil.getString(Constant.FILE_NAME, Constant.POSITION, "0", Application.getInstance().getCurrentActivity());
+
         id = getIntent().getStringExtra("id");
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("设备管理");
@@ -104,7 +114,23 @@ public class DeviceManageActivity extends BaseActivity {
         addUseOil = (ImageView) findViewById(R.id.activity_device_manage__add_use_oil);
         accidentLogLayout = (LinearLayout) findViewById(R.id.activity_device_manage__accident_log_layout);
         addAccident = (ImageView) findViewById(R.id.activity_device_manage__add_accident);
+        insuranceLogLayout = (LinearLayout) findViewById(R.id.activity_device_manage__insurance_log_layout);
+        runningLogLayout = findViewById(R.id.activity_device_manage__running_log_layout);
+        addRunning = findViewById(R.id.activity_device_manage__add_running);
 
+        addRepair.setVisibility(View.VISIBLE);
+        addMaintain.setVisibility(View.VISIBLE);
+        addUseOil.setVisibility(View.VISIBLE);
+        addAccident.setVisibility(View.VISIBLE);
+        addRunning.setVisibility(View.VISIBLE);
+
+        if ("2".equals(onLinePosition)) {
+            addRepair.setVisibility(View.GONE);
+            addMaintain.setVisibility(View.GONE);
+            addUseOil.setVisibility(View.GONE);
+            addAccident.setVisibility(View.GONE);
+            addRunning.setVisibility(View.GONE);
+        }
 
         leftArrow.setOnClickListener(this);
         repairLogLayout.setOnClickListener(this);
@@ -115,6 +141,9 @@ public class DeviceManageActivity extends BaseActivity {
         addUseOil.setOnClickListener(this);
         accidentLogLayout.setOnClickListener(this);
         addAccident.setOnClickListener(this);
+        insuranceLogLayout.setOnClickListener(this);
+        runningLogLayout.setOnClickListener(this);
+        addRunning.setOnClickListener(this);
 
         getDeviceDate();
     }
@@ -134,7 +163,7 @@ public class DeviceManageActivity extends BaseActivity {
             @Override
             public void onError(Request request, Error info) {
                 showShortToast(info.getInfo().toString());
-                Log.e("onError",info.getInfo().toString());
+                Log.e("onError", info.getInfo().toString());
                 progressHUD.dismiss();
             }
 
@@ -148,10 +177,17 @@ public class DeviceManageActivity extends BaseActivity {
                     bigType.setText(response.getDeviceBroadType());
                     smallType.setText(response.getDeviceSubType());
                     model.setText(response.getBrand());
+                    userName.setText(response.getFormanUserName());
+                    facility.setText(response.getUseFacilityName());
                     if (response.getLicenseTag() != null && !"".equals(response.getLicenseTag())) {
                         plateNum.setText(response.getLicenseTag());
                     } else {
                         plateNum.setText("暂无数据");
+                    }
+
+                    if (response.getFormanPhone() != null && !"".equals(response.getFormanPhone())) {
+                        phoneLayout.setVisibility(View.VISIBLE);
+                        phone.setText(response.getFormanPhone());
                     }
                 }
 
@@ -159,7 +195,7 @@ public class DeviceManageActivity extends BaseActivity {
 
             @Override
             public void onOtherError(Request request, Exception exception) {
-                Log.e("onError",exception.toString());
+                Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
         }, parameter, QueryEquipmentRes.class, DeviceManageActivity.class);
@@ -185,13 +221,22 @@ public class DeviceManageActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.activity_device_manage__use_oil_log_layout://用油记录
-//                intent.setClass(DeviceManageActivity.this, UseOilLogActivity.class)
-//                        .putExtra("id", equipmentRes.getEquipmentId() + "");
-//                startActivity(intent);
-                startActivity(UseOilLogActivity.class);
+                intent.setClass(DeviceManageActivity.this, UseOilLogActivity.class)
+                        .putExtra("id", equipmentRes.getEquipmentId() + "");
+                startActivity(intent);
                 break;
             case R.id.activity_device_manage__accident_log_layout://事故记录
                 intent.setClass(DeviceManageActivity.this, AccidentLogActivity.class)
+                        .putExtra("id", equipmentRes.getEquipmentId() + "");
+                startActivity(intent);
+                break;
+            case R.id.activity_device_manage__insurance_log_layout://保险记录
+                intent.setClass(DeviceManageActivity.this, InsuranceLogActivity.class)
+                        .putExtra("id", equipmentRes.getEquipmentId() + "");
+                startActivity(intent);
+                break;
+            case R.id.activity_device_manage__running_log_layout://出车记录
+                intent.setClass(DeviceManageActivity.this, RunningLogActivity.class)
                         .putExtra("id", equipmentRes.getEquipmentId() + "");
                 startActivity(intent);
                 break;
@@ -206,13 +251,17 @@ public class DeviceManageActivity extends BaseActivity {
                 startActivity(intent);
                 break;
             case R.id.activity_device_manage__add_use_oil://添加用油记录
-//                intent.setClass(DeviceManageActivity.this, AddUseOilActivity.class)
-//                        .putExtra("id", equipmentRes.getEquipmentId() + "");
-//                startActivity(intent);
-                startActivity(AddUseOilActivity.class);
+                intent.setClass(DeviceManageActivity.this, AddUseOilActivity.class)
+                        .putExtra("id", equipmentRes.getEquipmentId() + "");
+                startActivity(intent);
                 break;
             case R.id.activity_device_manage__add_accident://添加事故记录
                 intent.setClass(DeviceManageActivity.this, AddAccidentActivity.class)
+                        .putExtra("id", equipmentRes.getEquipmentId() + "");
+                startActivity(intent);
+                break;
+            case R.id.activity_device_manage__add_running://添加出车记录
+                intent.setClass(DeviceManageActivity.this, AddRunningActivity.class)
                         .putExtra("id", equipmentRes.getEquipmentId() + "");
                 startActivity(intent);
                 break;

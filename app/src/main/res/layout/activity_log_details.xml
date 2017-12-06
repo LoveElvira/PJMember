@@ -137,7 +137,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_5"
-                    android:text="维修单位："
                     android:textColor="@color/gray_888888"
                     android:textSize="@dimen/text_13" />
 
@@ -147,7 +146,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="维修单位"
                     android:textColor="@color/gray_ADADAD"
                     android:textSize="@dimen/text_13" />
 
@@ -172,7 +170,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/size_5"
-                    android:text="维修单位："
                     android:textColor="@color/gray_888888"
                     android:textSize="@dimen/text_13" />
 
@@ -182,7 +179,39 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="维修单位"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_13" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/activity_log_details__address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/size_15"
+                    android:src="@mipmap/work_content" />
+
+                <TextView
+                    android:id="@+id/activity_log_details__address_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_5"
+                    android:textColor="@color/gray_888888"
+                    android:textSize="@dimen/text_13" />
+
+
+                <TextView
+                    android:id="@+id/activity_log_details__address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textColor="@color/gray_ADADAD"
                     android:textSize="@dimen/text_13" />
 
@@ -270,14 +299,6 @@
                         android:textColor="@color/gray_888888"
                         android:textSize="@dimen/text_13" />
                 </LinearLayout>
-
-                <!--<ImageView-->
-                    <!--android:id="@+id/activity_log_details__listview"-->
-                    <!--android:layout_width="@dimen/size_80"-->
-                    <!--android:layout_height="@dimen/size_80"-->
-                    <!--android:layout_marginLeft="@dimen/size_20"-->
-                    <!--android:layout_marginTop="@dimen/size_10"-->
-                    <!--android:scaleType="centerCrop" />-->
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/activity_log_details__listview"

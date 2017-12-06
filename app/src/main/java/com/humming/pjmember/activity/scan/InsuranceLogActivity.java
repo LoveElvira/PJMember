@@ -12,17 +12,15 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
-import com.humming.pjmember.adapter.RepairAdapter;
-import com.humming.pjmember.adapter.UseOilAdapter;
+import com.humming.pjmember.adapter.InsuranceAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.viewutils.ProgressHUD;
-import com.pjqs.dto.equipment.EquipmentOilRecInfo;
-import com.pjqs.dto.equipment.EquipmentOilRecInfoRes;
-import com.pjqs.dto.equipment.EquipmentRepairRes;
+import com.pjqs.dto.equipment.EquipmentInsuranceInfo;
+import com.pjqs.dto.equipment.EquipmentInsuranceInfoRes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +28,15 @@ import java.util.List;
 import okhttp3.Request;
 
 /**
- * Created by Elvira on 2017/9/3.
- * 用油记录
+ * Created by Elvira on 2017/12/6.
+ * 获取保险记录
  */
 
-public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class InsuranceLogActivity extends BaseActivity implements BaseQuickAdapter.RequestLoadMoreListener, BaseQuickAdapter.OnItemChildClickListener {
+    private InsuranceAdapter adapter;
 
-    private UseOilAdapter adapter;
-
-    private List<EquipmentOilRecInfo> oilList;
-    private List<EquipmentOilRecInfo> oilLists;
+    private List<EquipmentInsuranceInfo> insuranceList;
+    private List<EquipmentInsuranceInfo> insuranceLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +53,7 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
         id = getIntent().getStringExtra("id");
 
         title = (TextView) findViewById(R.id.base_toolbar__title);
-        title.setText("用油记录");
+        title.setText("保险记录");
         leftArrow = (ImageView) findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
@@ -64,20 +61,20 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(linearLayoutManager);
 
-
-        oilLists = new ArrayList<>();
-        adapter = new UseOilAdapter(oilLists);
+        insuranceLists = new ArrayList<>();
+        adapter = new InsuranceAdapter(insuranceLists);
         listView.setAdapter(adapter);
         adapter.setOnLoadMoreListener(this, listView);
         adapter.setOnItemChildClickListener(this);
 
         leftArrow.setOnClickListener(this);
-        getUseOilLog(pageable);
+
+        getInsuranceLog(pageable);
     }
 
-    //获取用油记录
-    private void getUseOilLog(final String pageable) {
-        progressHUD = ProgressHUD.show(UseOilLogActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+    //获取保险记录
+    private void getInsuranceLog(final String pageable) {
+        progressHUD = ProgressHUD.show(InsuranceLogActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -86,7 +83,7 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
         RequestParameter parameter = new RequestParameter();
         parameter.setEquipmentId(id);
         parameter.setPagable(pageable);
-        OkHttpClientManager.postAsyn(Config.GET_OIL_LOG, new OkHttpClientManager.ResultCallback<EquipmentOilRecInfoRes>() {
+        OkHttpClientManager.postAsyn(Config.GET_INSURANCE_LOG, new OkHttpClientManager.ResultCallback<EquipmentInsuranceInfoRes>() {
             @Override
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
@@ -95,32 +92,32 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
             }
 
             @Override
-            public void onResponse(EquipmentOilRecInfoRes response) {
+            public void onResponse(EquipmentInsuranceInfoRes response) {
                 progressHUD.dismiss();
                 if (response != null) {
-                    oilList = response.getOilRecInfoList();
-                    if (oilList != null && oilList.size() > 0) {
+                    insuranceList = response.getInsuranceInfos();
+                    if (insuranceList != null && insuranceList.size() > 0) {
                         if ("".equals(pageable)) {
-                            oilLists.clear();
-                            oilLists.addAll(oilList);
-                            adapter.setNewData(oilList);
+                            insuranceLists.clear();
+                            insuranceLists.addAll(insuranceList);
+                            adapter.setNewData(insuranceList);
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
                             } else {
                                 hasMore = false;
                             }
-                            UseOilLogActivity.this.pageable = response.getPagable();
+                            InsuranceLogActivity.this.pageable = response.getPagable();
                         } else {
-                            oilLists.addAll(oilList);
+                            insuranceLists.addAll(insuranceList);
 
                             if (response.getHasMore() == 1) {
                                 hasMore = true;
-                                UseOilLogActivity.this.pageable = response.getPagable();
-                                adapter.addData(oilList);
+                                InsuranceLogActivity.this.pageable = response.getPagable();
+                                adapter.addData(insuranceList);
                             } else {
-                                adapter.addData(oilList);
+                                adapter.addData(insuranceList);
                                 hasMore = false;
-                                UseOilLogActivity.this.pageable = "";
+                                InsuranceLogActivity.this.pageable = "";
                             }
                         }
                         adapter.loadMoreComplete();
@@ -134,7 +131,7 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, EquipmentOilRecInfoRes.class, UseOilLogActivity.class);
+        }, parameter, EquipmentInsuranceInfoRes.class, InsuranceLogActivity.class);
     }
 
     @Override
@@ -145,7 +142,7 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
                 if (!hasMore) {//没有数据了
                     adapter.loadMoreEnd();
                 } else {
-                    getUseOilLog(pageable);
+                    getInsuranceLog(pageable);
                 }
             }
         }, delayMillis);
@@ -157,7 +154,7 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
-                UseOilLogActivity.this.finish();
+                InsuranceLogActivity.this.finish();
                 break;
         }
     }
@@ -165,9 +162,9 @@ public class UseOilLogActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
-            case R.id.item_use_oil__parent:
-                startActivity(new Intent(UseOilLogActivity.this, UseOilDetailsActivity.class)
-                        .putExtra("id", oilLists.get(position).getOilId()));
+            case R.id.item_log__parent:
+                startActivity(new Intent(InsuranceLogActivity.this, InsuranceDetailsActivity.class)
+                        .putExtra("id", insuranceLists.get(position).getId().toString()));
                 break;
         }
     }

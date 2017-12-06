@@ -35,6 +35,10 @@ public class RequestParameter implements IRequestMainData {
     private String maintainId;
     //获取事故记录详情 id
     private String accidentId;
+    //获取用油记录详情 id
+    private String oilId;
+    //获取保养记录详情 id
+    private String insuranceId;
 
     private String userId;
 
@@ -239,5 +243,21 @@ public class RequestParameter implements IRequestMainData {
 
     public void setOpinion(String opinion) {
         this.opinion = opinion;
+    }
+
+    public String getOilId() {
+        return oilId;
+    }
+
+    public void setOilId(String oilId) {
+        this.oilId = oilId;
+    }
+
+    public String getInsuranceId() {
+        return insuranceId;
+    }
+
+    public void setInsuranceId(String insuranceId) {
+        this.insuranceId = insuranceId;
     }
 }

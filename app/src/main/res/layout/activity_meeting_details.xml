@@ -147,7 +147,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/size_5"
-                            android:text="主持人名称："
+                            android:text="主持人："
                             android:textColor="@color/gray_888888"
                             android:textSize="@dimen/text_13" />
 
