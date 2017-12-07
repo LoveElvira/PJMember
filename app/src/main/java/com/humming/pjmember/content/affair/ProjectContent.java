@@ -63,11 +63,6 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         listView.setLayoutManager(linearLayoutManager);
 
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add("" + i);
-        }
-
         projectLists = new ArrayList<>();
         adapter = new ProjectAdapter(projectLists);
         listView.setAdapter(adapter);

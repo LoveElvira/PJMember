@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.os.Vibrator;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.alibaba.sdk.android.push.CloudPushService;
@@ -79,6 +80,12 @@ public class Application extends android.app.Application {
 
     public static synchronized Application getInstance() {
         return sInstance;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public Activity getCurrentActivity() {

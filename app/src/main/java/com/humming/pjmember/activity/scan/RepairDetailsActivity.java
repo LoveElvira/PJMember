@@ -165,15 +165,15 @@ public class RepairDetailsActivity extends BaseActivity implements BaseQuickAdap
             case R.id.base_toolbar__left_image:
                 RepairDetailsActivity.this.finish();
                 break;
-            case R.id.activity_log_details__listview://查看发票大图
-                if (path.size() > 0) {
-                    Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
-                    intent.putExtra("position", 0);
-                    intent.putExtra("imageUrl", path);
-                    intent.putExtra("isShowDelete", "false");
-                    startActivity(intent);
-                }
-                break;
+//            case R.id.activity_log_details__listview://查看发票大图
+//                if (path.size() > 0) {
+//                    Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
+//                    intent.putExtra("position", 0);
+//                    intent.putExtra("imageUrl", path);
+//                    intent.putExtra("isShowDelete", "false");
+//                    startActivity(intent);
+//                }
+//                break;
         }
     }
 

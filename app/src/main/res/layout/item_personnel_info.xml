@@ -288,6 +288,37 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/item_personnel_info__insurance_list_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/size_15"
+            android:src="@mipmap/work_content_blue" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="相关保险："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_personnel_info__insurance_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/item_personnel_info__list_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/size_10"
@@ -311,11 +342,11 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_personnel_info__list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/size_10"
         android:layout_marginLeft="@dimen/size_10"
         android:layout_marginTop="@dimen/size_10"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </LinearLayout>

@@ -3,14 +3,20 @@ package com.humming.pjmember.activity.scan;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.humming.pjmember.R;
+import com.humming.pjmember.activity.BrowseImageViewActivity;
 import com.humming.pjmember.activity.work.WorkSafetyDisclosureActivity;
+import com.humming.pjmember.adapter.CertificateAdapter;
 import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Config;
 import com.humming.pjmember.base.Constant;
@@ -19,9 +25,15 @@ import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.SharePrefUtil;
 import com.humming.pjmember.viewutils.ProgressHUD;
+import com.humming.pjmember.viewutils.SpacesItemDecoration;
 import com.humming.pjmember.viewutils.roundview.RoundedImageView;
+import com.pjqs.dto.certificate.InsuranceBean;
 import com.pjqs.dto.equipment.Response;
 import com.pjqs.dto.user.UserBean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Request;
 
@@ -30,7 +42,7 @@ import okhttp3.Request;
  * 人员信息
  */
 
-public class PersonnelInfoActivity extends BaseActivity {
+public class PersonnelInfoActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
 
     //人员照片
     private RoundedImageView headImage;
@@ -56,6 +68,16 @@ public class PersonnelInfoActivity extends BaseActivity {
     private TextView insurance;
     //人员保险
     private TextView safety;
+
+    //相关保险
+    private LinearLayout insuranceListLayout;
+    private LinearLayout insuranceList;
+
+    //相关证书 listview
+    private LinearLayout listLayout;
+    private CertificateAdapter adapter;
+    private ArrayList<String> path;
+
     //添加人员
     private TextView addPerson;
 
@@ -95,6 +117,15 @@ public class PersonnelInfoActivity extends BaseActivity {
         safety = (TextView) findViewById(R.id.item_personnel_info__safety);
         addPerson = (TextView) findViewById(R.id.item_personnel_info__add);
 
+        insuranceListLayout = findViewById(R.id.item_personnel_info__insurance_list_layout);
+        insuranceList = findViewById(R.id.item_personnel_info__insurance_list);
+
+        listLayout = findViewById(R.id.item_personnel_info__list_layout);
+        listView = (RecyclerView) findViewById(R.id.item_personnel_info__list);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        listView.setLayoutManager(gridLayoutManager);
+        listView.addItemDecoration(new SpacesItemDecoration(10));
+
         if (isAddPerson) {
             addPerson.setVisibility(View.VISIBLE);
         } else {
@@ -106,6 +137,29 @@ public class PersonnelInfoActivity extends BaseActivity {
 
         getPersonnelInfo();
     }
+
+    //相关保险 条目
+    private View getItemInsurance(InsuranceBean insuranceBean, int position) {
+        View view = View.inflate(this, R.layout.item_insurance, null);
+
+        TextView several = view.findViewById(R.id.item_insurance__several);
+        TextView name = view.findViewById(R.id.item_insurance__name);
+        TextView num = view.findViewById(R.id.item_insurance__num);
+        TextView type = view.findViewById(R.id.item_insurance__type);
+        TextView applicantMan = view.findViewById(R.id.item_insurance__applicant_man);
+        TextView time = view.findViewById(R.id.item_insurance__time);
+
+        several.setText("第 " + (position+1) + " 份保险");
+
+        name.setText(insuranceBean.getInsuranceName());
+        num.setText(insuranceBean.getOrderNo());
+        type.setText(insuranceBean.getType());
+        applicantMan.setText(insuranceBean.getApplicantMan());
+        time.setText(insuranceBean.getStartTime() + "~" + insuranceBean.getEndTime());
+
+        return view;
+    }
+
 
     //获取人员详细信息
     private void getPersonnelInfo() {
@@ -158,6 +212,27 @@ public class PersonnelInfoActivity extends BaseActivity {
                         safety.setText("通过三级安全教育");
                     } else {
                         safety.setText("未通过三级安全教育");
+                    }
+
+                    if (response.getInsuracnes() != null && response.getInsuracnes().size() > 0) {
+                        insuranceListLayout.setVisibility(View.VISIBLE);
+                        insuranceList.setVisibility(View.VISIBLE);
+                        insuranceList.removeAllViews();
+                        for (int i = 0; i < response.getInsuracnes().size(); i++) {
+                            insuranceList.addView(getItemInsurance(response.getInsuracnes().get(i), i));
+                        }
+                    }
+
+                    if (response.getCertificates() != null && response.getCertificates().size() > 0) {
+                        listLayout.setVisibility(View.VISIBLE);
+                        listView.setVisibility(View.VISIBLE);
+                        path = new ArrayList<>(response.getCertificates().size());
+                        for (int i = 0; i < response.getCertificates().size(); i++) {
+                            path.add(response.getCertificates().get(i).getAccessory());
+                        }
+                        adapter = new CertificateAdapter(response.getCertificates(), getBaseContext());
+                        listView.setAdapter(adapter);
+                        adapter.setOnItemChildClickListener(PersonnelInfoActivity.this);
                     }
 
                 }
@@ -224,6 +299,18 @@ public class PersonnelInfoActivity extends BaseActivity {
                 break;
             case R.id.item_personnel_info__add:
                 addPerson();
+                break;
+        }
+    }
+
+    @Override
+    public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+        switch (view.getId()) {
+            case R.id.item_certificate__image:
+                Intent intent = new Intent(getBaseContext(), BrowseImageViewActivity.class);
+                intent.putExtra("position", position);
+                intent.putExtra("imageUrl", path);
+                startActivity(intent);
                 break;
         }
     }

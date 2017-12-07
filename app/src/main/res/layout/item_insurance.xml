@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/size_20"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/item_insurance__several"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_5"
+        android:textColor="@color/gray_888888"
+        android:textSize="@dimen/text_13" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="• 保险名称："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_insurance__name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="• 保险单号："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_insurance__num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="• 投保人："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_insurance__applicant_man"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="• 保险种类："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_insurance__type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10"
+        android:layout_marginLeft="@dimen/size_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_5"
+            android:text="• 有效时间："
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+
+        <TextView
+            android:id="@+id/item_insurance__time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray_888888"
+            android:textSize="@dimen/text_13" />
+
+    </LinearLayout>
+
+</LinearLayout>

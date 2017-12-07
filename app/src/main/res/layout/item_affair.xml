@@ -42,6 +42,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/item_affair__people_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="发起人："
@@ -67,6 +68,7 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/item_affair__time_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="日期："

@@ -212,7 +212,7 @@
                                 android:layout_width="@dimen/size_30"
                                 android:layout_height="@dimen/size_30"
                                 android:layout_marginLeft="@dimen/size_12"
-                                android:src="@mipmap/work_accident" />
+                                android:src="@mipmap/car" />
 
                             <TextView
                                 android:layout_width="0dp"
@@ -252,7 +252,7 @@
                                 android:layout_width="@dimen/size_30"
                                 android:layout_height="@dimen/size_30"
                                 android:layout_marginLeft="@dimen/size_12"
-                                android:src="@mipmap/work_accident" />
+                                android:src="@mipmap/insurance" />
 
                             <TextView
                                 android:layout_width="0dp"

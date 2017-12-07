@@ -7,6 +7,7 @@ android {
         applicationId "com.humming.pjmember"
         minSdkVersion 15
         targetSdkVersion 18
+        multiDexEnabled true
         versionCode 2
         versionName "1.0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -113,7 +113,7 @@ public class AffairActivity extends BaseActivity {
                         projectContent.isInitFirst();
                         break;
                     case 3:
-//                        wholeContent.isInitFirst();
+                        projectFileContent.isInitFirst();
                         break;
                     case 4:
 //                        wholeContent.isInitFirst();
