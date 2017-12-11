@@ -546,65 +546,69 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
                 files.add(file);
             }
         }
-        UploadParameter upload = new UploadParameter();
-        upload.setType(type);
-        OkHttpClientManager.postAsyn(Config.UPDATE_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
 
-            @Override
-            public void onError(Request request, Error info) {
-                showShortToast(info.getInfo().toString());
-                Log.e("onError", info.getInfo().toString());
-                progressHUD.dismiss();
-            }
-
-            @Override
-            public void onResponse(List<String> response) {
-                if (response != null) {
-                    Log.i("ee", response.toString());
-                    Message msg = new Message();
-                    msg.what = Constant.CODE_SUCCESS;
-                    msg.obj = response;
-                    handler.sendMessage(msg);
-                }
-            }
-
-            @Override
-            public void onOtherError(Request request, Exception exception) {
-                Log.e("onError", exception.toString());
-                progressHUD.dismiss();
-            }
-        }, upload, files, new TypeReference<List<String>>() {
-        }, DefectResultActivity.class);
+        compressFile(files, handler, type);
     }
 
-
-    private File compressFile(File file) {
-
-        final File[] newFile = {null};
-        Luban.with(this)
-                .load(file)                                   // 传人要压缩的图片列表
-                .ignoreBy(100)                                  // 忽略不压缩图片的大小
+    //压缩图片
+    private void compressFile(final List<File> files, final Handler handler, final String type) {
+        final List<File> newFileList = new ArrayList<>();
+        for (File file : files) {
+            Luban.with(this)
+                    .load(file)                                   // 传人要压缩的图片列表
+//                .ignoreBy(100)                                  // 忽略不压缩图片的大小
 //                .setTargetDir(getPath())                        // 设置压缩后文件存储位置
-                .setCompressListener(new OnCompressListener() { //设置回调
-                    @Override
-                    public void onStart() {
-                        // 压缩开始前调用，可以在方法内启动 loading UI
-                    }
+                    .setCompressListener(new OnCompressListener() { //设置回调
+                        @Override
+                        public void onStart() {
+                            // 压缩开始前调用，可以在方法内启动 loading UI
+                        }
 
-                    @Override
-                    public void onSuccess(File file) {
-                        // 压缩成功后调用，返回压缩后的图片文件
-                        Log.i("ee", "压缩图片后：-------" + file.length() / 1024 + "KB");
-                        newFile[0] = file;
-                    }
+                        @Override
+                        public void onSuccess(File file) {
+                            // 压缩成功后调用，返回压缩后的图片文件
+                            Log.i("ee", "压缩图片后：-------" + file.length() / 1024 + "KB");
+                            newFileList.add(file);
 
-                    @Override
-                    public void onError(Throwable e) {
-                        // 当压缩过程出现问题时调用
-                    }
-                }).launch();    //启动压缩
+                            if (newFileList.size() == files.size()) {
+                                UploadParameter upload = new UploadParameter();
+                                upload.setType(type);
+                                OkHttpClientManager.postAsyn(Config.UPDATE_IMAGE, new OkHttpClientManager.ResultCallback<List<String>>() {
 
-        return newFile[0];
+                                    @Override
+                                    public void onError(Request request, Error info) {
+                                        showShortToast(info.getInfo().toString());
+                                        Log.e("onError", info.getInfo().toString());
+                                        progressHUD.dismiss();
+                                    }
+
+                                    @Override
+                                    public void onResponse(List<String> response) {
+                                        if (response != null) {
+//                                            Log.i("ee", response.toString());
+                                            Message msg = new Message();
+                                            msg.what = Constant.CODE_SUCCESS;
+                                            msg.obj = response;
+                                            handler.sendMessage(msg);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onOtherError(Request request, Exception exception) {
+                                        Log.e("onError", exception.toString());
+                                        progressHUD.dismiss();
+                                    }
+                                }, upload, newFileList, new TypeReference<List<String>>() {
+                                }, DefectResultActivity.class);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            // 当压缩过程出现问题时调用
+                        }
+                    }).launch();//启动压缩
+        }
     }
 
 }

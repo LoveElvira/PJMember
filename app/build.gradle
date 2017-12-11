@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
         targetSdkVersion 18
         multiDexEnabled true
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
             //选择要添加的对应cpu类型的.so库。为了兼容cpu，查看官网SDK的libs多添加几个
