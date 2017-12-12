@@ -34,6 +34,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -238,12 +239,12 @@ public class StatisticsActivity extends BaseActivity implements OnChartValueSele
         lineChart.setTouchEnabled(true);
 
         // 是否可以拖拽
-        lineChart.setDragEnabled(true);
+        lineChart.setDragEnabled(false);
         // 是否可以缩放 x和y轴, 默认是true
-        lineChart.setScaleEnabled(true);
+        lineChart.setScaleEnabled(false);
 
         //设置x轴和y轴能否同时缩放。默认是否
-        lineChart.setPinchZoom(true);
+        lineChart.setPinchZoom(false);
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
@@ -264,8 +265,9 @@ public class StatisticsActivity extends BaseActivity implements OnChartValueSele
 //        xAxis.setLabelRotationAngle(10f);
         //设置x轴的显示位置
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelCount(values.length);
+        xAxis.setLabelCount(values.length,true);
         xAxis.setValueFormatter(new MyXFormatter(values));
+//        xAxis.setValueFormatter(new IndexAxisValueFormatter(values));
 
         //获取左边的轴线
         YAxis leftAxis = lineChart.getAxisLeft();
