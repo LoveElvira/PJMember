@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -164,16 +165,13 @@ public class FileUtils {
     }
 
     /**
-     *
      * @param uri
      * @param resolver
      * @return
      */
-    public static Bitmap getBitmapUseUri(Uri uri, ContentResolver resolver)
-    {
+    public static Bitmap getBitmapUseUri(Uri uri, ContentResolver resolver) {
         Bitmap bitmap = null;
-        try
-        {
+        try {
             BitmapFactory.Options options = new BitmapFactory.Options();
             // 开始读入图片，此时把options.inJustDecodeBounds 设回true了,不加载到内存中
             options.inJustDecodeBounds = true;
@@ -187,12 +185,10 @@ public class FileUtils {
 
             //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
             int be = 1;//be=1表示不缩放
-            if (w > h && w > ww)
-            {
+            if (w > h && w > ww) {
                 //如果宽度大的话根据宽度固定大小缩放
                 be = (int) (options.outWidth / ww);
-            } else if (w < h && h > hh)
-            {
+            } else if (w < h && h > hh) {
                 //如果高度高的话根据宽度固定大小缩放
                 be = (int) (options.outHeight / hh);
             }
@@ -201,8 +197,7 @@ public class FileUtils {
                 be = 1;
             options.inSampleSize = be;//设置缩放比例
             bitmap = BitmapFactory.decodeStream(resolver.openInputStream(uri), null, options);
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
         }
@@ -288,7 +283,7 @@ public class FileUtils {
 
         Cursor cursor = null;
         final String column = "_data";
-        final String[] projection = { column };
+        final String[] projection = {column};
 
         try {
             cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
@@ -570,6 +565,7 @@ public class FileUtils {
             }
         }
     }
+
     public static void deleteCacheFile2TS(String f) {
         if (f != null && f.length() > 0) {
             File files = new File(f);
@@ -583,6 +579,7 @@ public class FileUtils {
             }
         }
     }
+
     public static void deleteDir(String f) {
         if (f != null && f.length() > 0) {
             deleteDir(new File(f));
@@ -691,4 +688,177 @@ public class FileUtils {
         }
         return result;
     }
+
+    //用不同的app打开不同的文件
+    public static Intent openFile(String filePath) {
+
+        File file = new File(filePath);
+        if (!file.exists()) return null;
+        /* 取得扩展名 */
+        String end = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length()).toLowerCase();
+        /* 依扩展名的类型决定MimeType */
+        if (end.equals("m4a") || end.equals("mp3") || end.equals("mid") ||
+                end.equals("xmf") || end.equals("ogg") || end.equals("wav")) {
+            return getAudioFileIntent(filePath);
+        } else if (end.equals("3gp") || end.equals("mp4")) {
+            return getAudioFileIntent(filePath);
+        } else if (end.equals("jpg") || end.equals("gif") || end.equals("png") ||
+                end.equals("jpeg") || end.equals("bmp")) {
+            return getImageFileIntent(filePath);
+        } else if (end.equals("apk")) {
+            return getApkFileIntent(filePath);
+        } else if (end.equals("ppt")) {
+            return getPptFileIntent(filePath);
+        } else if (end.equals("xls")) {
+            return getExcelFileIntent(filePath);
+        } else if (end.equals("doc")) {
+            return getWordFileIntent(filePath);
+        } else if (end.equals("pdf")) {
+            return getPdfFileIntent(filePath);
+        } else if (end.equals("chm")) {
+            return getChmFileIntent(filePath);
+        } else if (end.equals("txt")) {
+            return getTextFileIntent(filePath, false);
+        } else {
+            return getAllIntent(filePath);
+        }
+    }
+
+    //Android获取一个用于打开APK文件的intent
+    public static Intent getAllIntent(String param) {
+
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "*/*");
+        return intent;
+    }
+
+    //Android获取一个用于打开APK文件的intent
+    public static Intent getApkFileIntent(String param) {
+
+        Intent intent = new Intent();
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setAction(android.content.Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
+        return intent;
+    }
+
+    //Android获取一个用于打开VIDEO文件的intent
+    public static Intent getVideoFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("oneshot", 0);
+        intent.putExtra("configchange", 0);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "video/*");
+        return intent;
+    }
+
+    //Android获取一个用于打开AUDIO文件的intent
+    public static Intent getAudioFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("oneshot", 0);
+        intent.putExtra("configchange", 0);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "audio/*");
+        return intent;
+    }
+
+    //Android获取一个用于打开Html文件的intent
+    public static Intent getHtmlFileIntent(String param) {
+
+        Uri uri = Uri.parse(param).buildUpon().encodedAuthority("com.android.htmlfileprovider").scheme("content").encodedPath(param).build();
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.setDataAndType(uri, "text/html");
+        return intent;
+    }
+
+    //Android获取一个用于打开图片文件的intent
+    public static Intent getImageFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "image/*");
+        return intent;
+    }
+
+    //Android获取一个用于打开PPT文件的intent
+    public static Intent getPptFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+        return intent;
+    }
+
+    //Android获取一个用于打开Excel文件的intent
+    public static Intent getExcelFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "application/vnd.ms-excel");
+        return intent;
+    }
+
+    //Android获取一个用于打开Word文件的intent
+    public static Intent getWordFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "application/msword");
+        return intent;
+    }
+
+    //Android获取一个用于打开CHM文件的intent
+    public static Intent getChmFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "application/x-chm");
+        return intent;
+    }
+
+    //Android获取一个用于打开文本文件的intent
+    public static Intent getTextFileIntent(String param, boolean paramBoolean) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (paramBoolean) {
+            Uri uri1 = Uri.parse(param);
+            intent.setDataAndType(uri1, "text/plain");
+        } else {
+            Uri uri2 = Uri.fromFile(new File(param));
+            intent.setDataAndType(uri2, "text/plain");
+        }
+        return intent;
+    }
+
+    //Android获取一个用于打开PDF文件的intent
+    public static Intent getPdfFileIntent(String param) {
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param));
+        intent.setDataAndType(uri, "application/pdf");
+        return intent;
+    }
+
 }
