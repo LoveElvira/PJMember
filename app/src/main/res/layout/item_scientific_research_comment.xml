@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="选题（12~20）"
+        android:textColor="@color/gray_888888"
+        android:textSize="@dimen/text_13" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginTop="@dimen/size_5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/progress_no_select" />
+
+        <SeekBar
+            android:id="@+id/item_comment__select_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:max="9"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingTop="@dimen/size_5"
+            android:progressDrawable="@drawable/progressbar_style"
+            android:thumb="@null"/>
+
+        <TextView
+            android:id="@+id/item_comment__select_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textColor="@color/gray_888888" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="原因分析（12~20）"
+        android:textColor="@color/gray_888888"
+        android:textSize="@dimen/text_13" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginTop="@dimen/size_5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/progress_no_select" />
+
+        <SeekBar
+            android:id="@+id/item_comment__reason_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:max="9"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingTop="@dimen/size_5"
+            android:progressDrawable="@drawable/progressbar_style"
+            android:thumb="@null" />
+
+        <TextView
+            android:id="@+id/item_comment__reason_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textColor="@color/gray_888888" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="对策与措施（12~20）"
+        android:textColor="@color/gray_888888"
+        android:textSize="@dimen/text_13" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginTop="@dimen/size_5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/progress_no_select" />
+
+        <SeekBar
+            android:id="@+id/item_comment__measure_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:max="9"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingTop="@dimen/size_5"
+            android:progressDrawable="@drawable/progressbar_style"
+            android:thumb="@null" />
+
+        <TextView
+            android:id="@+id/item_comment__measure_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textColor="@color/gray_888888" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="效果（12~20）"
+        android:textColor="@color/gray_888888"
+        android:textSize="@dimen/text_13" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginTop="@dimen/size_5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/progress_no_select" />
+
+        <SeekBar
+            android:id="@+id/item_comment__effect_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:max="9"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingTop="@dimen/size_5"
+            android:progressDrawable="@drawable/progressbar_style"
+            android:thumb="@null" />
+
+        <TextView
+            android:id="@+id/item_comment__effect_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textColor="@color/gray_888888" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_10"
+        android:layout_marginTop="@dimen/size_10"
+        android:text="特点（12~20）"
+        android:textColor="@color/gray_888888"
+        android:textSize="@dimen/text_13" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5"
+        android:layout_marginTop="@dimen/size_5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:adjustViewBounds="true"
+            android:src="@drawable/progress_no_select" />
+
+        <SeekBar
+            android:id="@+id/item_comment__characteristic_progress"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20"
+            android:layout_marginLeft="@dimen/size_5"
+            android:layout_marginRight="@dimen/size_20"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            android:max="9"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingTop="@dimen/size_5"
+            android:progressDrawable="@drawable/progressbar_style"
+            android:thumb="@null" />
+
+        <TextView
+            android:id="@+id/item_comment__characteristic_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="0"
+            android:textColor="@color/gray_888888" />
+
+    </RelativeLayout>
+
+</LinearLayout>

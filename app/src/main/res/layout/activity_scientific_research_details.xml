@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/common_bg" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/base_toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/size_15"
+                android:paddingLeft="@dimen/size_15"
+                android:paddingRight="@dimen/size_15">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_rectangle_white_radius_3"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size_15">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/size_15"
+                                android:layout_height="@dimen/size_15"
+                                android:layout_marginRight="@dimen/size_3"
+                                android:src="@mipmap/affair_project_small" />
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="项目详情"
+                                android:textColor="@color/orange"
+                                android:textSize="@dimen/text_13" />
+
+                            <LinearLayout
+                                android:id="@+id/activity_project_details__top_open_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal"
+                                android:padding="@dimen/size_5">
+
+                                <TextView
+                                    android:id="@+id/activity_project_details__top_open_text"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="展开"
+                                    android:textColor="@color/orange"
+                                    android:textSize="@dimen/text_13" />
+
+                                <ImageView
+                                    android:id="@+id/activity_project_details__top_open_image"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="@dimen/size_10"
+                                    android:tint="@color/orange"
+                                    android:src="@mipmap/bottom_arrow" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/activity_project_details__top_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/item_scientific_research_top" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10"
+                    android:background="@drawable/bg_rectangle_white_radius_3"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size_15">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/size_15"
+                                android:layout_height="@dimen/size_15"
+                                android:layout_marginRight="@dimen/size_3"
+                                android:tint="@color/orange"
+                                android:src="@mipmap/affair_suggestion" />
+
+                            <TextView
+                                android:id="@+id/activity_project_details__middle_num"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="项目评分"
+                                android:textColor="@color/orange"
+                                android:textSize="@dimen/text_13" />
+
+                        </LinearLayout>
+
+                        <include layout="@layout/item_scientific_research_comment"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/activity_project_details__submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_20"
+                    android:layout_marginRight="@dimen/size_10"
+                    android:layout_marginLeft="@dimen/size_10"
+                    android:background="@drawable/border_gray_radius_3"
+                    android:gravity="center"
+                    android:padding="@dimen/size_12"
+                    android:text="提交评分"
+                    android:textColor="@color/gray_ADADAD"
+                    android:textSize="@dimen/text_14" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

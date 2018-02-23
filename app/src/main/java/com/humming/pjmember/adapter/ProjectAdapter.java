@@ -25,7 +25,7 @@ public class ProjectAdapter extends BaseQuickAdapter<ProjectInfoBean, BaseViewHo
     protected void convert(BaseViewHolder helper, ProjectInfoBean item) {
         helper.setText(R.id.item_affair__title, item.getProName())
                 .setText(R.id.item_affair__people_name, item.getCrtUserName())
-                .setText(R.id.item_affair__time, item.getTime())
+                .setText(R.id.item_affair__time, item.getCrtTime())
                 .addOnClickListener(R.id.item_affair__parent)
                 .setImageResource(R.id.item_affair__image, R.mipmap.affair_project_small);
 

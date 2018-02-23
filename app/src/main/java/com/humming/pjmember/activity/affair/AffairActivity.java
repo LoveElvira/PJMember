@@ -41,7 +41,7 @@ public class AffairActivity extends BaseActivity {
     private RelativeLayout contractExpenditureLayout;
     private RelativeLayout projectLayout;
     private RelativeLayout projectFileLayout;
-    private RelativeLayout dispatchLayout;
+    private RelativeLayout moreLayout;
 
 
     //收入合同
@@ -53,7 +53,7 @@ public class AffairActivity extends BaseActivity {
     //项目文件
     private ProjectFileContent projectFileContent;
     //收发文
-    private DispatchContent dispatchContent;
+//    private DispatchContent dispatchContent;
 
 
     @Override
@@ -77,20 +77,20 @@ public class AffairActivity extends BaseActivity {
         contractExpenditureLayout = (RelativeLayout) findViewById(R.id.top_button__contract_expenditure_layout);
         projectLayout = (RelativeLayout) findViewById(R.id.top_button__project_layout);
         projectFileLayout = (RelativeLayout) findViewById(R.id.top_button__project_file_layout);
-        dispatchLayout = (RelativeLayout) findViewById(R.id.top_button__dispatch_layout);
+        moreLayout = (RelativeLayout) findViewById(R.id.top_button__more_layout);
 
         contractIncomeContent = new ContractIncomeContent(this);
         contractExpenditureContent = new ContractExpenditureContent(this);
         projectContent = new ProjectContent(this);
         projectFileContent = new ProjectFileContent(this);
-        dispatchContent = new DispatchContent(this);
+//        dispatchContent = new DispatchContent(this);
 
         list = new ArrayList<>();
         list.add(contractIncomeContent);
         list.add(contractExpenditureContent);
         list.add(projectContent);
         list.add(projectFileContent);
-        list.add(dispatchContent);
+//        list.add(dispatchContent);
         adapter = new ContentAdapter(list, titles);
 //        viewPager.setEnabled(true);
         viewPager.setAdapter(adapter);
@@ -115,9 +115,9 @@ public class AffairActivity extends BaseActivity {
                     case 3:
                         projectFileContent.isInitFirst();
                         break;
-                    case 4:
+//                    case 4:
 //                        wholeContent.isInitFirst();
-                        break;
+//                        break;
                 }
             }
 
@@ -132,7 +132,7 @@ public class AffairActivity extends BaseActivity {
         contractExpenditureLayout.setOnClickListener(this);
         projectLayout.setOnClickListener(this);
         projectFileLayout.setOnClickListener(this);
-        dispatchLayout.setOnClickListener(this);
+        moreLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
         contractIncomeContent.isInitFirst();
     }
@@ -183,10 +183,11 @@ public class AffairActivity extends BaseActivity {
                     viewPager.setCurrentItem(3);
                 }
                 break;
-            case R.id.top_button__dispatch_layout:
-                if (viewPager.getCurrentItem() != 4) {
-                    viewPager.setCurrentItem(4);
-                }
+            case R.id.top_button__more_layout:
+//                if (viewPager.getCurrentItem() != 4) {
+//                    viewPager.setCurrentItem(4);
+//                }
+                startActivity(MoreAffairActivity.class);
                 break;
         }
     }

@@ -21,12 +21,15 @@
     <color name="black_alpha_77">#77000000</color>
     <color name="gray">#cccccc</color>
     <color name="gray_888888">#888888</color>
+    <color name="gray_F1F1F1">#F1F1F1</color>
     <color name="gray_ADADAD">#ADADAD</color>
     <color name="red">#F63030</color>
     <color name="blue">#345CFF</color>
     <color name="blue_365DFE">#365DFE</color>
     <color name="blue_208FFF">#208FFF</color>
     <color name="orange">#F4A620</color>
+    <color name="orange_88">#88ffa100</color>
+    <color name="orange_FBEDD4">#FBEDD4</color>
     <color name="pink">#E33DB5</color>
     <color name="green">#10b42e</color>
 

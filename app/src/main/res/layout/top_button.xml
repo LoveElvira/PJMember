@@ -23,8 +23,8 @@
             android:id="@+id/top_button__contract_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/top_button__contract_image"
-            android:layout_alignTop="@+id/top_button__contract_image"
+            android:layout_alignRight="@id/top_button__contract_image"
+            android:layout_alignTop="@id/top_button__contract_image"
             android:background="@drawable/bg_rectangle_red_radius_10"
             android:paddingBottom="@dimen/size_1"
             android:paddingLeft="@dimen/size_5"
@@ -39,7 +39,7 @@
             android:id="@+id/bottom_button__contract_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top_button__contract_image"
+            android:layout_below="@id/top_button__contract_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_3"
             android:text="收入合同"
@@ -67,8 +67,8 @@
             android:id="@+id/top_button__contract_expenditure_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/top_button__contract_expenditure_image"
-            android:layout_alignTop="@+id/top_button__contract_expenditure_image"
+            android:layout_alignRight="@id/top_button__contract_expenditure_image"
+            android:layout_alignTop="@id/top_button__contract_expenditure_image"
             android:background="@drawable/bg_rectangle_red_radius_10"
             android:paddingBottom="@dimen/size_1"
             android:paddingLeft="@dimen/size_5"
@@ -83,7 +83,7 @@
             android:id="@+id/bottom_button__contract_expenditure_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top_button__contract_expenditure_image"
+            android:layout_below="@id/top_button__contract_expenditure_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_3"
             android:text="支出合同"
@@ -111,8 +111,8 @@
             android:id="@+id/top_button__project_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/top_button__project_image"
-            android:layout_alignTop="@+id/top_button__project_image"
+            android:layout_alignRight="@id/top_button__project_image"
+            android:layout_alignTop="@id/top_button__project_image"
             android:background="@drawable/bg_rectangle_red_radius_10"
             android:paddingBottom="@dimen/size_1"
             android:paddingLeft="@dimen/size_5"
@@ -127,7 +127,7 @@
             android:id="@+id/bottom_button__project_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top_button__project_image"
+            android:layout_below="@id/top_button__project_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_3"
             android:text="支出项目"
@@ -149,14 +149,14 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_40"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/affair_project" />
+            android:src="@mipmap/affair_dispatch" />
 
         <TextView
             android:id="@+id/top_button__project_file_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/top_button__project_file_image"
-            android:layout_alignTop="@+id/top_button__project_file_image"
+            android:layout_alignRight="@id/top_button__project_file_image"
+            android:layout_alignTop="@id/top_button__project_file_image"
             android:background="@drawable/bg_rectangle_red_radius_10"
             android:paddingBottom="@dimen/size_1"
             android:paddingLeft="@dimen/size_5"
@@ -171,7 +171,7 @@
             android:id="@+id/bottom_button__project_file_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top_button__project_file_image"
+            android:layout_below="@id/top_button__project_file_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_3"
             android:text="项目文件"
@@ -181,7 +181,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/top_button__dispatch_layout"
+        android:id="@+id/top_button__more_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -189,18 +189,18 @@
         android:padding="@dimen/size_5">
 
         <ImageView
-            android:id="@+id/top_button__dispatch_image"
+            android:id="@+id/top_button__more_image"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/size_40"
             android:layout_centerHorizontal="true"
-            android:src="@mipmap/affair_dispatch" />
+            android:src="@mipmap/affair_more" />
 
         <TextView
-            android:id="@+id/top_button__dispatch_tip"
+            android:id="@+id/top_button__more_tip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/top_button__dispatch_image"
-            android:layout_alignTop="@+id/top_button__dispatch_image"
+            android:layout_alignRight="@id/top_button__more_image"
+            android:layout_alignTop="@id/top_button__more_image"
             android:background="@drawable/bg_rectangle_red_radius_10"
             android:paddingBottom="@dimen/size_1"
             android:paddingLeft="@dimen/size_5"
@@ -212,13 +212,13 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/bottom_button__dispatch_text"
+            android:id="@+id/bottom_button__more_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/top_button__dispatch_image"
+            android:layout_below="@id/top_button__more_image"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/size_3"
-            android:text="收发文"
+            android:text="更多"
             android:textColor="@color/white"
             android:textSize="@dimen/text_12" />
 

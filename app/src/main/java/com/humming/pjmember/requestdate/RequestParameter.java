@@ -65,6 +65,14 @@ public class RequestParameter implements IRequestMainData {
     private String nature;
     private String opinion;
 
+    //科研打分
+    private String scienceGradeId;//待打分记录id
+    private String selectTopic;//选题评分
+    private String reasonAnalyze;//原因分析评分
+    private String countermeasure;//对策与措施评分
+    private String effect;//效果评分
+    private String characteristic;//特点评分
+
 
     public RequestParameter() {
     }
@@ -259,5 +267,53 @@ public class RequestParameter implements IRequestMainData {
 
     public void setInsuranceId(String insuranceId) {
         this.insuranceId = insuranceId;
+    }
+
+    public String getScienceGradeId() {
+        return scienceGradeId;
+    }
+
+    public void setScienceGradeId(String scienceGradeId) {
+        this.scienceGradeId = scienceGradeId;
+    }
+
+    public String getSelectTopic() {
+        return selectTopic;
+    }
+
+    public void setSelectTopic(String selectTopic) {
+        this.selectTopic = selectTopic;
+    }
+
+    public String getReasonAnalyze() {
+        return reasonAnalyze;
+    }
+
+    public void setReasonAnalyze(String reasonAnalyze) {
+        this.reasonAnalyze = reasonAnalyze;
+    }
+
+    public String getCountermeasure() {
+        return countermeasure;
+    }
+
+    public void setCountermeasure(String countermeasure) {
+        this.countermeasure = countermeasure;
+    }
+
+    public String getEffect() {
+        return effect;
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
+    }
+
+    public String getCharacteristic() {
+        return characteristic;
+    }
+
+    public void setCharacteristic(String characteristic) {
+        this.characteristic = characteristic;
     }
 }
