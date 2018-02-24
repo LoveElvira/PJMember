@@ -22,16 +22,16 @@ import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.StringUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.contract.FloNodeExeRecordBean;
+import com.pjqs.dto.flow.CostDetailBean;
 import com.pjqs.dto.flow.EquipmentApplyBean;
 
 import okhttp3.Request;
 
 /**
  * Created by Elvira on 2018/2/23.
- * 设备详情
  */
 
-public class EquipmentDetailsActivity extends BaseActivity {
+public class PriceDetailsActivity extends BaseActivity {
 
     //展开项目详情
     private LinearLayout openDetailsLayout;
@@ -42,33 +42,44 @@ public class EquipmentDetailsActivity extends BaseActivity {
     //展开项目详情 图片
     private ImageView openDetailsImage;
 
-    //申请编号
-    private TextView applyNo;
-    //申请人
-    private TextView applyUser;
-    //申请部门
-    private TextView applyDepartment;
-    //计划编号
-    private TextView planNo;
-    //申报部门
+    //费用编号
+    private TextView num;
+    //申报单位
     private TextView department;
-    //设备名称
-    private TextView equipmentName;
-    //规格型号
-    private TextView equipmentSpecial;
-    //单价
-    private TextView price;
-    //总数量
-    private TextView count;
-    //合计
-    private TextView totalPrice;
-    //购置类别
+    //年份
+    private TextView year;
+    //月份
+    private TextView month;
+    //费用类型
     private TextView type;
-    //购置原因
-    private TextView reason;
-    //采购方式
-    private TextView way;
-
+    //收款单位
+    private TextView receiptDepartment;
+    //合同名称
+    private TextView conName;
+    //项目名称
+    private TextView projectName;
+    //成本类型名称
+    private TextView compositionName;
+    //合同完成比例
+    private TextView finishRatio;
+    //上期支付
+    private TextView lastPayPrice;
+    //上期付款时间
+    private TextView lastPayPriceTime;
+    //累计支付
+    private TextView totalPayPrice;
+    //累计支付次数
+    private TextView totalPayPriceNum;
+    //上期计划
+    private TextView lastPlan;
+    //上月实际支付
+    private TextView lastMonthPayPrice;
+    //计划完成比例
+    private TextView planFinishRatio;
+    //本次申请费用金额
+    private TextView applyPrice;
+    //备注
+    private TextView remark;
 
     //展开相关审批意见
     private LinearLayout openMiddleLayout;
@@ -92,12 +103,12 @@ public class EquipmentDetailsActivity extends BaseActivity {
 
     private LinearLayout visibleLayout;
     private int position;
-    private EquipmentApplyBean projectDetailBean;
+    private CostDetailBean projectDetailBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_equipment_details);
+        setContentView(R.layout.activity_price_details);
         initView();
     }
 
@@ -109,7 +120,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         position = getIntent().getIntExtra("position", -1);
 
         title = findViewById(R.id.base_toolbar__title);
-        title.setText("设备详情");
+        title.setText("费用详情");
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
@@ -118,19 +129,25 @@ public class EquipmentDetailsActivity extends BaseActivity {
         openDetailsText = findViewById(R.id.activity_project_details__top_open_text);
         openDetailsImage = findViewById(R.id.activity_project_details__top_open_image);
 
-        applyNo = findViewById(R.id.item_equipment_top__apply_num);
-        applyUser = findViewById(R.id.item_equipment_top__apply_user);
-        applyDepartment = findViewById(R.id.item_equipment_top__apply_department);
-        planNo = findViewById(R.id.item_equipment_top__plan_num);
-        department = findViewById(R.id.item_equipment_top__department);
-        equipmentName = findViewById(R.id.item_equipment_top__name);
-        equipmentSpecial = findViewById(R.id.item_equipment_top__special);
-        price = findViewById(R.id.item_equipment_top__price);
-        count = findViewById(R.id.item_equipment_top__count);
-        totalPrice = findViewById(R.id.item_equipment_top__total_price);
-        type = findViewById(R.id.item_equipment_top__type);
-        reason = findViewById(R.id.item_equipment_top__reason);
-        way = findViewById(R.id.item_equipment_top__way);
+        num = findViewById(R.id.item_price_top__num);
+        department = findViewById(R.id.item_price_top__department);
+        year = findViewById(R.id.item_price_top__year);
+        month = findViewById(R.id.item_price_top__month);
+        type = findViewById(R.id.item_price_top__type);
+        receiptDepartment = findViewById(R.id.item_price_top__receipt_department);
+        conName = findViewById(R.id.item_price_top__con_name);
+        projectName = findViewById(R.id.item_price_top__project_name);
+        compositionName = findViewById(R.id.item_price_top__composition_name);
+        finishRatio = findViewById(R.id.item_price_top__finish_ratio);
+        lastPayPrice = findViewById(R.id.item_price_top__last_pay);
+        lastPayPriceTime = findViewById(R.id.item_price_top__last_pay_time);
+        totalPayPrice = findViewById(R.id.item_price_top__total_pay);
+        totalPayPriceNum = findViewById(R.id.item_price_top__total_pay_num);
+        lastPlan = findViewById(R.id.item_price_top__last_plan);
+        lastMonthPayPrice = findViewById(R.id.item_price_top__last_month_pay);
+        planFinishRatio = findViewById(R.id.item_price_top__plan_finish_ratio);
+        applyPrice = findViewById(R.id.item_price_top__apply_price);
+        remark = findViewById(R.id.item_price_top__remark);
 
         openMiddleLayout = findViewById(R.id.activity_project_details__middle_open_layout);
         middleParentLayout = findViewById(R.id.activity_project_details__middle_parent);
@@ -143,7 +160,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         agreeBtn = findViewById(R.id.activity_project_details__agree);
         rejectBtn = findViewById(R.id.activity_project_details__reject);
 
-        visibleLayout = findViewById(R.id.item_equipment__top_visible_layout);
+        visibleLayout = findViewById(R.id.item_price__top_visible_layout);
         visibleLayout.setVisibility(View.GONE);
 
         middleParentLayout.setVisibility(View.GONE);
@@ -154,7 +171,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         agreeBtn.setOnClickListener(this);
         rejectBtn.setOnClickListener(this);
 
-        getEquipmentDetail();
+        getPriceDetail();
     }
 
     //相关审批意见 条目
@@ -179,9 +196,9 @@ public class EquipmentDetailsActivity extends BaseActivity {
         return view;
     }
 
-    private void getEquipmentDetail() {
+    private void getPriceDetail() {
 
-        progressHUD = ProgressHUD.show(EquipmentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+        progressHUD = ProgressHUD.show(PriceDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -191,7 +208,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         RequestParameter parameter = new RequestParameter();
         parameter.setProjectId(id);
 
-        OkHttpClientManager.postAsyn(Config.GET_PROJECT_EQUIPMENT_DETAILS, new OkHttpClientManager.ResultCallback<EquipmentApplyBean>() {
+        OkHttpClientManager.postAsyn(Config.GET_PROJECT_PRICE_DETAILS, new OkHttpClientManager.ResultCallback<CostDetailBean>() {
             @Override
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
@@ -200,24 +217,30 @@ public class EquipmentDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(EquipmentApplyBean response) {
+            public void onResponse(CostDetailBean response) {
                 progressHUD.dismiss();
                 projectDetailBean = response;
                 if (response != null) {
 
-                    applyNo.setText(projectDetailBean.getApplyNo());
-                    applyUser.setText(projectDetailBean.getApplyUser());
-                    applyDepartment.setText(projectDetailBean.getApplyDepartment());
-                    planNo.setText(projectDetailBean.getPlanNo());
-                    department.setText(projectDetailBean.getReportDepartment());
-                    equipmentName.setText(projectDetailBean.getEquipmentName());
-                    equipmentSpecial.setText(StringUtils.saveTwoDecimal(projectDetailBean.getSpecification()));
-                    price.setText(StringUtils.saveTwoDecimal(projectDetailBean.getPrice()));
-                    count.setText(projectDetailBean.getCount().toString());
-                    totalPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getTotal()));
-                    type.setText(projectDetailBean.getSourcingType());
-                    reason.setText(initHtml("购置原因", projectDetailBean.getSourcingReason()));
-                    way.setText(projectDetailBean.getSourcingWay());
+                    num.setText(projectDetailBean.getCostNo());
+                    department.setText(projectDetailBean.getDecDepartment());
+                    year.setText(projectDetailBean.getYear());
+                    month.setText(projectDetailBean.getMonth());
+                    type.setText(projectDetailBean.getCostType());
+                    receiptDepartment.setText(projectDetailBean.getReceiptDepartment());
+                    conName.setText(projectDetailBean.getConName());
+                    projectName.setText(projectDetailBean.getProjectName());
+                    compositionName.setText(projectDetailBean.getCompositionName());
+                    finishRatio.setText(projectDetailBean.getCosFinishRatio());
+                    lastPayPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getLastMonthPay()));
+                    lastPayPriceTime.setText(projectDetailBean.getLastMonthPayTime());
+                    totalPayPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getTotalPay()));
+                    totalPayPriceNum.setText(projectDetailBean.getTotalPayNumber());
+                    lastPlan.setText(projectDetailBean.getPriorPeriodPlay());
+                    lastMonthPayPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getLastMonthActualPay()));
+                    planFinishRatio.setText(projectDetailBean.getFinishRatioPlay());
+                    applyPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getApplyCost()));
+                    remark.setText(projectDetailBean.getRemark());
 
                     if (projectDetailBean.getFlos() != null && projectDetailBean.getFlos().size() > 0) {
                         middleParentLayout.removeAllViews();
@@ -241,7 +264,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, EquipmentApplyBean.class, EquipmentDetailsActivity.class);
+        }, parameter, CostDetailBean.class, PriceDetailsActivity.class);
 
     }
 
@@ -249,7 +272,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
     //审核 status 审核类型 1：同意 2：退回
     private void checkContract(String status, String opinion) {
 
-        progressHUD = ProgressHUD.show(EquipmentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+        progressHUD = ProgressHUD.show(PriceDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -259,7 +282,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         RequestParameter parameter = new RequestParameter();
         parameter.setId(id);
         parameter.setStatus(status);
-        parameter.setNature("10");
+        parameter.setNature("4");
         if (!TextUtils.isEmpty(opinion)) {
             parameter.setOpinion(opinion);
         }
@@ -280,7 +303,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                     if (response.getCode() == 1) {
                         setResult(Constant.CODE_RESULT, new Intent()
                                 .putExtra("position", position));
-                        EquipmentDetailsActivity.this.finish();
+                        PriceDetailsActivity.this.finish();
                     }
                 }
 
@@ -291,7 +314,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, SuccessResponse.class, EquipmentDetailsActivity.class);
+        }, parameter, SuccessResponse.class, PriceDetailsActivity.class);
 
     }
 
@@ -300,7 +323,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
-                EquipmentDetailsActivity.this.finish();
+                PriceDetailsActivity.this.finish();
                 break;
             case R.id.activity_project_details__top_open_layout://合同详情  展开 及  关闭
                 if (visibleLayout.getVisibility() == View.GONE) {

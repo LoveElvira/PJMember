@@ -43,6 +43,11 @@ public class AffairActivity extends BaseActivity {
     private RelativeLayout projectFileLayout;
     private RelativeLayout moreLayout;
 
+    //选中的线
+    private View contractLine;
+    private View contractExpenditureLine;
+    private View projectLine;
+    private View projectFileLine;
 
     //收入合同
     private ContractIncomeContent contractIncomeContent;
@@ -79,6 +84,11 @@ public class AffairActivity extends BaseActivity {
         projectFileLayout = (RelativeLayout) findViewById(R.id.top_button__project_file_layout);
         moreLayout = (RelativeLayout) findViewById(R.id.top_button__more_layout);
 
+        contractLine = findViewById(R.id.bottom_button__contract_line);
+        contractExpenditureLine = findViewById(R.id.bottom_button__contract_expenditure_line);
+        projectLine = findViewById(R.id.bottom_button__project_line);
+        projectFileLine = findViewById(R.id.bottom_button__project_file_line);
+
         contractIncomeContent = new ContractIncomeContent(this);
         contractExpenditureContent = new ContractExpenditureContent(this);
         projectContent = new ProjectContent(this);
@@ -102,6 +112,9 @@ public class AffairActivity extends BaseActivity {
 
             @Override
             public void onPageSelected(int position) {
+                if (position != 4) {
+                    initLine(position);
+                }
                 switch (position) {
                     case 0:
                         contractIncomeContent.isInitFirst();
@@ -135,6 +148,27 @@ public class AffairActivity extends BaseActivity {
         moreLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
         contractIncomeContent.isInitFirst();
+    }
+
+    private void initLine(int position) {
+        contractLine.setVisibility(View.GONE);
+        contractExpenditureLine.setVisibility(View.GONE);
+        projectLine.setVisibility(View.GONE);
+        projectFileLine.setVisibility(View.GONE);
+        switch (position) {
+            case 0:
+                contractLine.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                contractExpenditureLine.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                projectLine.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                projectFileLine.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 
     @Override

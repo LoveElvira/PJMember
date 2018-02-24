@@ -150,7 +150,7 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         switch (view.getId()) {
             case R.id.item_affair_price__parent:
-                startActivityForResult(new Intent(PriceActivity.this, ScientificResearchDetailsActivity.class)
+                startActivityForResult(new Intent(PriceActivity.this, PriceDetailsActivity.class)
                         .putExtra("id", projectLists.get(position).getCostDetailId())
                         .putExtra("position", position), Constant.CODE_REQUEST_ONE);
                 break;
