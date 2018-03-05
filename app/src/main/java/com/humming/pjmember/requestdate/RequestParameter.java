@@ -73,6 +73,17 @@ public class RequestParameter implements IRequestMainData {
     private String effect;//效果评分
     private String characteristic;//特点评分
 
+    //费用详情
+    private String costDetailId;
+
+    //收文详情
+    private String recFileId;
+    //发文详情
+    private String disFileId;
+
+    //设备详情
+    private String applyId;
+
 
     public RequestParameter() {
     }
@@ -315,5 +326,37 @@ public class RequestParameter implements IRequestMainData {
 
     public void setCharacteristic(String characteristic) {
         this.characteristic = characteristic;
+    }
+
+    public String getCostDetailId() {
+        return costDetailId;
+    }
+
+    public void setCostDetailId(String costDetailId) {
+        this.costDetailId = costDetailId;
+    }
+
+    public String getRecFileId() {
+        return recFileId;
+    }
+
+    public void setRecFileId(String recFileId) {
+        this.recFileId = recFileId;
+    }
+
+    public String getDisFileId() {
+        return disFileId;
+    }
+
+    public void setDisFileId(String disFileId) {
+        this.disFileId = disFileId;
+    }
+
+    public String getApplyId() {
+        return applyId;
+    }
+
+    public void setApplyId(String applyId) {
+        this.applyId = applyId;
     }
 }

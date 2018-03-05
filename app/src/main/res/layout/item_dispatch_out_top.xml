@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/item_price_top__parent"
+    android:id="@+id/item_dispatch_out_top__parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -17,12 +17,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="费用编号："
+            android:text="发文编号："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__num"
+            android:id="@+id/item_dispatch_out_top__code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -42,12 +42,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="申报部门："
+            android:text="发文文号："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__department"
+            android:id="@+id/item_dispatch_out_top__num"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,12 +67,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="年份："
+            android:text="发文主题："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__year"
+            android:id="@+id/item_dispatch_out_top__title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -92,12 +92,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="月份："
+            android:text="签发："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__month"
+            android:id="@+id/item_dispatch_out_top__signer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -117,12 +117,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="费用类型："
+            android:text="密级："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__type"
+            android:id="@+id/item_dispatch_out_top__confidential"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -142,12 +142,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="收款单位："
+            android:text="核稿："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__receipt_department"
+            android:id="@+id/item_dispatch_out_top__nuclear_draft"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -167,12 +167,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="合同名称："
+            android:text="主送："
             android:textColor="@color/gray_888888"
             android:textSize="@dimen/text_13" />
 
         <TextView
-            android:id="@+id/item_price_top__con_name"
+            android:id="@+id/item_dispatch_out_top__main_send"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -182,58 +182,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_10"
-        android:layout_marginTop="@dimen/size_5"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="项目名称："
-            android:textColor="@color/gray_888888"
-            android:textSize="@dimen/text_13" />
-
-        <TextView
-            android:id="@+id/item_price_top__project_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/gray_ADADAD"
-            android:textSize="@dimen/text_13" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/size_10"
-        android:layout_marginTop="@dimen/size_5"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="成本类型："
-            android:textColor="@color/gray_888888"
-            android:textSize="@dimen/text_13" />
-
-        <TextView
-            android:id="@+id/item_price_top__composition_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="@color/gray_ADADAD"
-            android:textSize="@dimen/text_13" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/item_price__top_visible_layout"
+        android:id="@+id/item_dispatch_out__top_visible_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -250,12 +199,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="合同完成比例："
+                android:text="抄送："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__finish_ratio"
+                android:id="@+id/item_dispatch_out_top__copy_send"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -275,12 +224,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上期支付："
+                android:text="内发："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__last_pay"
+                android:id="@+id/item_dispatch_out_top__inner_deliver"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -300,12 +249,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上期付款时间："
+                android:text="会签："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__last_pay_time"
+                android:id="@+id/item_dispatch_out_top__counter_sign"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -325,12 +274,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="累计支付："
+                android:text="主题词："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__total_pay"
+                android:id="@+id/item_dispatch_out_top__subject_term"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -350,12 +299,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="累计支付次数："
+                android:text="拟办部门："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__total_pay_num"
+                android:id="@+id/item_dispatch_out_top__imitate_org_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -375,12 +324,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上期计划："
+                android:text="拟办人："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__last_plan"
+                android:id="@+id/item_dispatch_out_top__imitate_user_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -400,12 +349,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="上月实际支付："
+                android:text="负责人："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__last_month_pay"
+                android:id="@+id/item_dispatch_out_top__principal_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -425,12 +374,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="计划完成比例："
+                android:text="打字："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__plan_finish_ratio"
+                android:id="@+id/item_dispatch_out_top__typewriting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -450,12 +399,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="本次申请费用："
+                android:text="校对："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__apply_price"
+                android:id="@+id/item_dispatch_out_top__proofread"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -475,12 +424,55 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="备注："
+                android:text="监印："
                 android:textColor="@color/gray_888888"
                 android:textSize="@dimen/text_13" />
 
             <TextView
-                android:id="@+id/item_price_top__remark"
+                android:id="@+id/item_dispatch_out_top__inspect_seal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/gray_ADADAD"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="封发日期："
+                android:textColor="@color/gray_888888"
+                android:textSize="@dimen/text_13" />
+
+            <TextView
+                android:id="@+id/item_dispatch_out_top__time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/gray_ADADAD"
+                android:textSize="@dimen/text_13" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_10"
+            android:layout_marginTop="@dimen/size_5"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/item_dispatch_out_top__content"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

@@ -153,6 +153,9 @@ public class ContractIncomeContent extends BaseLinearLayout implements BaseQuick
                     } else {
                         adapter.setNewData(contractLists);
                     }
+                }else{
+                    contractLists.clear();
+                    adapter.setNewData(contractLists);
                 }
             }
 

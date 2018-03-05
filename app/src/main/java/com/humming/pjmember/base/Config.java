@@ -74,7 +74,11 @@ public class Config {
     public static final String SET_PROJECT_SCIENCE_GRADE = "project/grade";//科研打分
     public static final String GET_PROJECT_PRICE = "flow/cost";//获取费用待审批项目列表
     public static final String GET_PROJECT_PRICE_DETAILS = "flow/costDetail";//获取费用待审批项目详情
-    public static final String GET_PROJECT_EQUIPMENT = "flow/equipment";//获取设备待审批项目详情
+    public static final String GET_PROJECT_EQUIPMENT = "flow/equipment";//获取设备待审批列表
     public static final String GET_PROJECT_EQUIPMENT_DETAILS = "flow/equipmentDetail";//获取设备待审批项目详情
+    public static final String GET_PROJECT_IN_DISPATCH = "flow/recFile";//获取收文记录
+    public static final String GET_PROJECT_IN_DISPATCH_DETAILS = "flow/recFileDetail";//获取收文详情
+    public static final String GET_PROJECT_OUT_DISPATCH = "flow/disFile";//获取发文记录
+    public static final String GET_PROJECT_OUT_DISPATCH_DETAILS = "flow/disFileDetail";//获取发文详情
 
 }

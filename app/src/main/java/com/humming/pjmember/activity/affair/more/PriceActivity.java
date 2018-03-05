@@ -3,6 +3,7 @@ package com.humming.pjmember.activity.affair.more;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,7 @@ import okhttp3.Request;
  * 费用审批列表
  */
 
-public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private AffairPriceAdapter adapter;
 
@@ -40,7 +41,7 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview);
+        setContentView(R.layout.activity_notify);
         initView();
     }
 
@@ -51,6 +52,10 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
         title.setText("费用");
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
+
+        refresh = findViewById(R.id.common_refresh);
+        refresh.setColorSchemeColors(getResources().getColor(R.color.blue));
+        refresh.setOnRefreshListener(this);
 
         listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -83,12 +88,12 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
                 showShortToast(info.getInfo().toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
 
             @Override
             public void onResponse(CostDetailResp response) {
-                closeProgress();
+                progressHUD.dismiss();
                 if (response != null) {
                     projectLists.clear();
                     projectList = response.getCostDetailInfoBeen();
@@ -119,6 +124,9 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
                     } else {
                         adapter.setNewData(projectLists);
                     }
+                } else {
+                    projectLists.clear();
+                    adapter.setNewData(projectLists);
                 }
 
             }
@@ -126,7 +134,7 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("onError", exception.toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
         }, parameter, CostDetailResp.class, PriceActivity.class);
 
@@ -169,6 +177,21 @@ public class PriceActivity extends BaseActivity implements BaseQuickAdapter.OnIt
                 getProject(pageable);
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        adapter.setEnableLoadMore(false);
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                pageable = "";
+                getProject(pageable);
+                refresh.setRefreshing(false);
+                adapter.loadMoreEnd(true);
+                adapter.setEnableLoadMore(true);
+            }
+        });
     }
 
     @Override

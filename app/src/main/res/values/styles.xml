@@ -21,7 +21,7 @@
     </style>
 
     <style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">@dimen/text_40</item>
+        <item name="android:textSize">@dimen/text_14</item>
         <!--<item name="textColor">@color/white</item>-->
         <item name="textAllCaps">false</item>   <!--英文大写,默认true-->
     </style>

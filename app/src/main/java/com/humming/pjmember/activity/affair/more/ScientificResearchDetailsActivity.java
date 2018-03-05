@@ -96,6 +96,7 @@ public class ScientificResearchDetailsActivity extends BaseActivity {
     private TextView submit;
     private OutProjectDetailScienceGradeBean projectDetailBean;
     private int position;
+    private String projectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,7 @@ public class ScientificResearchDetailsActivity extends BaseActivity {
         super.initView();
 
         id = getIntent().getStringExtra("id");
+        projectId = getIntent().getStringExtra("projectId");
         position = getIntent().getIntExtra("position", -1);
 
         title = findViewById(R.id.base_toolbar__title);
@@ -175,7 +177,7 @@ public class ScientificResearchDetailsActivity extends BaseActivity {
         });
 
         RequestParameter parameter = new RequestParameter();
-        parameter.setProjectId(id);
+        parameter.setProjectId(projectId);
 
         OkHttpClientManager.postAsyn(Config.GET_PROJECT_SCIENCE_DETAILS, new OkHttpClientManager.ResultCallback<OutProjectDetailScienceGradeBean>() {
             @Override

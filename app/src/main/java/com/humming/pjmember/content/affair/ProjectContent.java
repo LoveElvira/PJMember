@@ -151,6 +151,9 @@ public class ProjectContent extends BaseLinearLayout implements BaseQuickAdapter
                     } else {
                         adapter.setNewData(projectLists);
                     }
+                }else{
+                    projectLists.clear();
+                    adapter.setNewData(projectLists);
                 }
 
 

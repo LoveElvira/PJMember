@@ -32,6 +32,12 @@ import okhttp3.Request;
 
 public class ProjectFileDetailsActivity extends BaseActivity {
 
+    //展开 --- 隐藏
+    private LinearLayout topOpenLayout;
+    //头部的文字描述
+    private TextView topText;
+    //头部展示内容
+    private LinearLayout topLayout;
 
     //项目名称
     private TextView projectName;
@@ -85,22 +91,30 @@ public class ProjectFileDetailsActivity extends BaseActivity {
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
+        topText = findViewById(R.id.activity_project_details__top_text);
+        topOpenLayout = findViewById(R.id.activity_project_details__top_open_layout);
+        topText.setText("项目文件详情");
+        topOpenLayout.setVisibility(View.GONE);
+
+        topLayout = findViewById(R.id.item_project_file_top__parent);
+        topLayout.setVisibility(View.VISIBLE);
+
         projectName = findViewById(R.id.item_project_file_top__name);
         projectType = findViewById(R.id.item_project_file_top__type);
         person = findViewById(R.id.item_project_file_top__person);
         time = findViewById(R.id.item_project_file_top__time);
         url = findViewById(R.id.item_project_file_top__address);
 
-        openMiddleLayout = findViewById(R.id.activity_project_file_details__middle_open_layout);
-        middleParentLayout = findViewById(R.id.activity_project_file_details__middle_parent);
-        openMiddleText = findViewById(R.id.activity_project_file_details__middle_open_text);
-        openMiddleImage = findViewById(R.id.activity_project_file_details__middle_open_image);
-        ideaNum = findViewById(R.id.activity_project_file_details__middle_num);
+        openMiddleLayout = findViewById(R.id.activity_project_details__middle_open_layout);
+        middleParentLayout = findViewById(R.id.activity_project_details__middle_parent);
+        openMiddleText = findViewById(R.id.activity_project_details__middle_open_text);
+        openMiddleImage = findViewById(R.id.activity_project_details__middle_open_image);
+        ideaNum = findViewById(R.id.activity_project_details__middle_num);
 
-        mySuggestion = findViewById(R.id.activity_project_file_details__suggestion);
+        mySuggestion = findViewById(R.id.activity_project_details__suggestion);
 
-        agreeBtn = findViewById(R.id.activity_project_file_details__agree);
-        rejectBtn = findViewById(R.id.activity_project_file_details__reject);
+        agreeBtn = findViewById(R.id.activity_project_details__agree);
+        rejectBtn = findViewById(R.id.activity_project_details__reject);
 
         middleParentLayout.setVisibility(View.GONE);
 

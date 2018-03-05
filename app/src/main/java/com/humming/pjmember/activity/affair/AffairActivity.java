@@ -3,7 +3,6 @@ package com.humming.pjmember.activity.affair;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -14,7 +13,6 @@ import com.humming.pjmember.base.BaseActivity;
 import com.humming.pjmember.base.Constant;
 import com.humming.pjmember.content.affair.ContractExpenditureContent;
 import com.humming.pjmember.content.affair.ContractIncomeContent;
-import com.humming.pjmember.content.affair.DispatchContent;
 import com.humming.pjmember.content.affair.ProjectContent;
 import com.humming.pjmember.content.affair.ProjectFileContent;
 import com.humming.pjmember.viewutils.BaseViewPager;
@@ -148,6 +146,7 @@ public class AffairActivity extends BaseActivity {
         moreLayout.setOnClickListener(this);
         viewPager.setCurrentItem(0);
         contractIncomeContent.isInitFirst();
+        contractLine.setVisibility(View.VISIBLE);
     }
 
     private void initLine(int position) {
@@ -218,9 +217,6 @@ public class AffairActivity extends BaseActivity {
                 }
                 break;
             case R.id.top_button__more_layout:
-//                if (viewPager.getCurrentItem() != 4) {
-//                    viewPager.setCurrentItem(4);
-//                }
                 startActivity(MoreAffairActivity.class);
                 break;
         }

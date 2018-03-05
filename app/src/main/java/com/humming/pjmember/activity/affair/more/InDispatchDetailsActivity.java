@@ -19,19 +19,17 @@ import com.humming.pjmember.requestdate.RequestParameter;
 import com.humming.pjmember.responsedate.SuccessResponse;
 import com.humming.pjmember.service.Error;
 import com.humming.pjmember.service.OkHttpClientManager;
-import com.humming.pjmember.utils.StringUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.contract.FloNodeExeRecordBean;
-import com.pjqs.dto.flow.EquipmentApplyBean;
+import com.pjqs.dto.flow.RecFileBean;
 
 import okhttp3.Request;
 
 /**
- * Created by Elvira on 2018/2/23.
- * 设备详情
+ * Created by Elvira on 2018/2/26.
  */
 
-public class EquipmentDetailsActivity extends BaseActivity {
+public class InDispatchDetailsActivity extends BaseActivity {
 
     //展开项目详情
     private LinearLayout openDetailsLayout;
@@ -45,33 +43,22 @@ public class EquipmentDetailsActivity extends BaseActivity {
     //头部展示内容
     private LinearLayout topLayout;
 
-    //申请编号
-    private TextView applyNo;
-    //申请人
-    private TextView applyUser;
-    //申请部门
-    private TextView applyDepartment;
-    //计划编号
-    private TextView planNo;
-    //申报部门
-    private TextView department;
-    //设备名称
-    private TextView equipmentName;
-    //规格型号
-    private TextView equipmentSpecial;
-    //单价
-    private TextView price;
-    //总数量
-    private TextView count;
-    //合计
-    private TextView totalPrice;
-    //购置类别
-    private TextView type;
-    //购置原因
-    private TextView reason;
-    //采购方式
-    private TextView way;
-
+    //收文文号
+    private TextView num;
+    //文件名称
+    private TextView fileName;
+    //来文机关
+    private TextView recOrgName;
+    //办公室批办
+    private TextView officeApprove;
+    //领导批示
+    private TextView leaderApprove;
+    //拟办
+    private TextView deviseHanding;
+    //收文日期
+    private TextView time;
+    //正文 -- 内容
+    private TextView content;
 
     //展开相关审批意见
     private LinearLayout openMiddleLayout;
@@ -95,7 +82,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
 
     private LinearLayout visibleLayout;
     private int position;
-    private EquipmentApplyBean projectDetailBean;
+    private RecFileBean projectDetailBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +99,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         position = getIntent().getIntExtra("position", -1);
 
         title = findViewById(R.id.base_toolbar__title);
-        title.setText("设备详情");
+        title.setText("收文详情");
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
@@ -121,22 +108,17 @@ public class EquipmentDetailsActivity extends BaseActivity {
         openDetailsText = findViewById(R.id.activity_project_details__top_open_text);
         openDetailsImage = findViewById(R.id.activity_project_details__top_open_image);
 
-        topLayout = findViewById(R.id.item_equipment_top__parent);
+        topLayout = findViewById(R.id.item_dispatch_in_top__parent);
         topLayout.setVisibility(View.VISIBLE);
 
-        applyNo = findViewById(R.id.item_equipment_top__apply_num);
-        applyUser = findViewById(R.id.item_equipment_top__apply_user);
-        applyDepartment = findViewById(R.id.item_equipment_top__apply_department);
-        planNo = findViewById(R.id.item_equipment_top__plan_num);
-        department = findViewById(R.id.item_equipment_top__department);
-        equipmentName = findViewById(R.id.item_equipment_top__name);
-        equipmentSpecial = findViewById(R.id.item_equipment_top__special);
-        price = findViewById(R.id.item_equipment_top__price);
-        count = findViewById(R.id.item_equipment_top__count);
-        totalPrice = findViewById(R.id.item_equipment_top__total_price);
-        type = findViewById(R.id.item_equipment_top__type);
-        reason = findViewById(R.id.item_equipment_top__reason);
-        way = findViewById(R.id.item_equipment_top__way);
+        num = findViewById(R.id.item_dispatch_in_top__num);
+        fileName = findViewById(R.id.item_dispatch_in_top__name);
+        recOrgName = findViewById(R.id.item_dispatch_in_top__rec_org_name);
+        officeApprove = findViewById(R.id.item_dispatch_in_top__office);
+        leaderApprove = findViewById(R.id.item_dispatch_in_top__leader);
+        deviseHanding = findViewById(R.id.item_dispatch_in_top__devise);
+        time = findViewById(R.id.item_dispatch_in_top__time);
+        content = findViewById(R.id.item_dispatch_in_top__content);
 
         openMiddleLayout = findViewById(R.id.activity_project_details__middle_open_layout);
         middleParentLayout = findViewById(R.id.activity_project_details__middle_parent);
@@ -149,7 +131,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         agreeBtn = findViewById(R.id.activity_project_details__agree);
         rejectBtn = findViewById(R.id.activity_project_details__reject);
 
-        visibleLayout = findViewById(R.id.item_equipment__top_visible_layout);
+        visibleLayout = findViewById(R.id.item_dispatch_in__top_visible_layout);
         visibleLayout.setVisibility(View.GONE);
 
         middleParentLayout.setVisibility(View.GONE);
@@ -160,7 +142,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         agreeBtn.setOnClickListener(this);
         rejectBtn.setOnClickListener(this);
 
-        getEquipmentDetail();
+        getInDispatchDetails();
     }
 
     //相关审批意见 条目
@@ -185,9 +167,9 @@ public class EquipmentDetailsActivity extends BaseActivity {
         return view;
     }
 
-    private void getEquipmentDetail() {
+    private void getInDispatchDetails() {
 
-        progressHUD = ProgressHUD.show(EquipmentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+        progressHUD = ProgressHUD.show(InDispatchDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -195,9 +177,9 @@ public class EquipmentDetailsActivity extends BaseActivity {
         });
 
         RequestParameter parameter = new RequestParameter();
-        parameter.setApplyId(id);
+        parameter.setRecFileId(id);
 
-        OkHttpClientManager.postAsyn(Config.GET_PROJECT_EQUIPMENT_DETAILS, new OkHttpClientManager.ResultCallback<EquipmentApplyBean>() {
+        OkHttpClientManager.postAsyn(Config.GET_PROJECT_IN_DISPATCH_DETAILS, new OkHttpClientManager.ResultCallback<RecFileBean>() {
             @Override
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
@@ -206,24 +188,19 @@ public class EquipmentDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(EquipmentApplyBean response) {
+            public void onResponse(RecFileBean response) {
                 progressHUD.dismiss();
                 projectDetailBean = response;
                 if (response != null) {
 
-                    applyNo.setText(projectDetailBean.getApplyNo());
-                    applyUser.setText(projectDetailBean.getApplyUser());
-                    applyDepartment.setText(projectDetailBean.getApplyDepartment());
-                    planNo.setText(projectDetailBean.getPlanNo());
-                    department.setText(projectDetailBean.getReportDepartment());
-                    equipmentName.setText(projectDetailBean.getEquipmentName());
-                    equipmentSpecial.setText(projectDetailBean.getSpecification());
-                    price.setText(StringUtils.saveTwoDecimal(projectDetailBean.getPrice()));
-                    count.setText(projectDetailBean.getCount().toString());
-                    totalPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getTotal()));
-                    type.setText(projectDetailBean.getSourcingType());
-                    reason.setText(initHtml("购置原因", projectDetailBean.getSourcingReason()));
-                    way.setText(projectDetailBean.getSourcingWay());
+                    num.setText(projectDetailBean.getRecPrefix() + projectDetailBean.getRecTypenumber());
+                    fileName.setText(projectDetailBean.getFileName());
+                    recOrgName.setText(projectDetailBean.getRecOrgName());
+                    officeApprove.setText(projectDetailBean.getOfficeApprove());
+                    leaderApprove.setText(projectDetailBean.getLeaderApprove());
+                    deviseHanding.setText(projectDetailBean.getDeviseHanding());
+                    time.setText(projectDetailBean.getRecTime());
+                    content.setText(initHtml("收文内容", projectDetailBean.getContent()));
 
                     if (projectDetailBean.getFlos() != null && projectDetailBean.getFlos().size() > 0) {
                         middleParentLayout.removeAllViews();
@@ -247,7 +224,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, EquipmentApplyBean.class, EquipmentDetailsActivity.class);
+        }, parameter, RecFileBean.class, InDispatchDetailsActivity.class);
 
     }
 
@@ -255,7 +232,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
     //审核 status 审核类型 1：同意 2：退回
     private void checkContract(String status, String opinion) {
 
-        progressHUD = ProgressHUD.show(EquipmentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+        progressHUD = ProgressHUD.show(InDispatchDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -265,7 +242,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         RequestParameter parameter = new RequestParameter();
         parameter.setId(id);
         parameter.setStatus(status);
-        parameter.setNature("10");
+        parameter.setNature("13");
         if (!TextUtils.isEmpty(opinion)) {
             parameter.setOpinion(opinion);
         }
@@ -286,7 +263,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                     if (response.getCode() == 1) {
                         setResult(Constant.CODE_RESULT, new Intent()
                                 .putExtra("position", position));
-                        EquipmentDetailsActivity.this.finish();
+                        InDispatchDetailsActivity.this.finish();
                     }
                 }
 
@@ -297,7 +274,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, SuccessResponse.class, EquipmentDetailsActivity.class);
+        }, parameter, SuccessResponse.class, InDispatchDetailsActivity.class);
 
     }
 
@@ -306,7 +283,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
-                EquipmentDetailsActivity.this.finish();
+                InDispatchDetailsActivity.this.finish();
                 break;
             case R.id.activity_project_details__top_open_layout://合同详情  展开 及  关闭
                 if (visibleLayout.getVisibility() == View.GONE) {

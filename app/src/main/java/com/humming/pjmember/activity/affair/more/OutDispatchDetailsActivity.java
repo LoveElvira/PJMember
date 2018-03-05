@@ -22,16 +22,15 @@ import com.humming.pjmember.service.OkHttpClientManager;
 import com.humming.pjmember.utils.StringUtils;
 import com.humming.pjmember.viewutils.ProgressHUD;
 import com.pjqs.dto.contract.FloNodeExeRecordBean;
-import com.pjqs.dto.flow.EquipmentApplyBean;
+import com.pjqs.dto.flow.DisFileBean;
 
 import okhttp3.Request;
 
 /**
- * Created by Elvira on 2018/2/23.
- * 设备详情
+ * Created by Elvira on 2018/2/26.
  */
 
-public class EquipmentDetailsActivity extends BaseActivity {
+public class OutDispatchDetailsActivity extends BaseActivity {
 
     //展开项目详情
     private LinearLayout openDetailsLayout;
@@ -45,33 +44,44 @@ public class EquipmentDetailsActivity extends BaseActivity {
     //头部展示内容
     private LinearLayout topLayout;
 
-    //申请编号
-    private TextView applyNo;
-    //申请人
-    private TextView applyUser;
-    //申请部门
-    private TextView applyDepartment;
-    //计划编号
-    private TextView planNo;
-    //申报部门
-    private TextView department;
-    //设备名称
-    private TextView equipmentName;
-    //规格型号
-    private TextView equipmentSpecial;
-    //单价
-    private TextView price;
-    //总数量
-    private TextView count;
-    //合计
-    private TextView totalPrice;
-    //购置类别
-    private TextView type;
-    //购置原因
-    private TextView reason;
-    //采购方式
-    private TextView way;
-
+    //发文编号
+    private TextView code;
+    //发文文号
+    private TextView num;
+    //发文主题
+    private TextView outTitle;
+    //签发
+    private TextView signer;
+    //密级
+    private TextView confidential;
+    //核稿
+    private TextView nuclearDraft;
+    //主送
+    private TextView mainSending;
+    //抄送
+    private TextView copySending;
+    //内发
+    private TextView innerDeliver;
+    //会签
+    private TextView countersignOrg;
+    //主题词
+    private TextView subjectTerm;
+    //拟办部门
+    private TextView imitateOrgName;
+    //拟办人
+    private TextView imitateUserName;
+    //负责人
+    private TextView principalUserName;
+    //打字
+    private TextView typeWriting;
+    //校对
+    private TextView proofread;
+    //监印
+    private TextView inspectSeal;
+    //封发日期
+    private TextView time;
+    //内容
+    private TextView content;
 
     //展开相关审批意见
     private LinearLayout openMiddleLayout;
@@ -95,7 +105,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
 
     private LinearLayout visibleLayout;
     private int position;
-    private EquipmentApplyBean projectDetailBean;
+    private DisFileBean projectDetailBean;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +122,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         position = getIntent().getIntExtra("position", -1);
 
         title = findViewById(R.id.base_toolbar__title);
-        title.setText("设备详情");
+        title.setText("发文详情");
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
 
@@ -121,22 +131,28 @@ public class EquipmentDetailsActivity extends BaseActivity {
         openDetailsText = findViewById(R.id.activity_project_details__top_open_text);
         openDetailsImage = findViewById(R.id.activity_project_details__top_open_image);
 
-        topLayout = findViewById(R.id.item_equipment_top__parent);
+        topLayout = findViewById(R.id.item_dispatch_out_top__parent);
         topLayout.setVisibility(View.VISIBLE);
 
-        applyNo = findViewById(R.id.item_equipment_top__apply_num);
-        applyUser = findViewById(R.id.item_equipment_top__apply_user);
-        applyDepartment = findViewById(R.id.item_equipment_top__apply_department);
-        planNo = findViewById(R.id.item_equipment_top__plan_num);
-        department = findViewById(R.id.item_equipment_top__department);
-        equipmentName = findViewById(R.id.item_equipment_top__name);
-        equipmentSpecial = findViewById(R.id.item_equipment_top__special);
-        price = findViewById(R.id.item_equipment_top__price);
-        count = findViewById(R.id.item_equipment_top__count);
-        totalPrice = findViewById(R.id.item_equipment_top__total_price);
-        type = findViewById(R.id.item_equipment_top__type);
-        reason = findViewById(R.id.item_equipment_top__reason);
-        way = findViewById(R.id.item_equipment_top__way);
+        code = findViewById(R.id.item_dispatch_out_top__code);
+        num = findViewById(R.id.item_dispatch_out_top__num);
+        outTitle = findViewById(R.id.item_dispatch_out_top__title);
+        signer = findViewById(R.id.item_dispatch_out_top__signer);
+        confidential = findViewById(R.id.item_dispatch_out_top__confidential);
+        nuclearDraft = findViewById(R.id.item_dispatch_out_top__nuclear_draft);
+        mainSending = findViewById(R.id.item_dispatch_out_top__main_send);
+        copySending = findViewById(R.id.item_dispatch_out_top__copy_send);
+        innerDeliver = findViewById(R.id.item_dispatch_out_top__inner_deliver);
+        countersignOrg = findViewById(R.id.item_dispatch_out_top__counter_sign);
+        subjectTerm = findViewById(R.id.item_dispatch_out_top__subject_term);
+        imitateOrgName = findViewById(R.id.item_dispatch_out_top__imitate_org_name);
+        imitateUserName = findViewById(R.id.item_dispatch_out_top__imitate_user_name);
+        principalUserName = findViewById(R.id.item_dispatch_out_top__principal_name);
+        typeWriting = findViewById(R.id.item_dispatch_out_top__typewriting);
+        proofread = findViewById(R.id.item_dispatch_out_top__proofread);
+        inspectSeal = findViewById(R.id.item_dispatch_out_top__inspect_seal);
+        time = findViewById(R.id.item_dispatch_out_top__time);
+        content = findViewById(R.id.item_dispatch_out_top__content);
 
         openMiddleLayout = findViewById(R.id.activity_project_details__middle_open_layout);
         middleParentLayout = findViewById(R.id.activity_project_details__middle_parent);
@@ -149,7 +165,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         agreeBtn = findViewById(R.id.activity_project_details__agree);
         rejectBtn = findViewById(R.id.activity_project_details__reject);
 
-        visibleLayout = findViewById(R.id.item_equipment__top_visible_layout);
+        visibleLayout = findViewById(R.id.item_dispatch_out__top_visible_layout);
         visibleLayout.setVisibility(View.GONE);
 
         middleParentLayout.setVisibility(View.GONE);
@@ -160,7 +176,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         agreeBtn.setOnClickListener(this);
         rejectBtn.setOnClickListener(this);
 
-        getEquipmentDetail();
+        getOutDispatchDetails();
     }
 
     //相关审批意见 条目
@@ -185,9 +201,9 @@ public class EquipmentDetailsActivity extends BaseActivity {
         return view;
     }
 
-    private void getEquipmentDetail() {
+    private void getOutDispatchDetails() {
 
-        progressHUD = ProgressHUD.show(EquipmentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+        progressHUD = ProgressHUD.show(OutDispatchDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -195,9 +211,9 @@ public class EquipmentDetailsActivity extends BaseActivity {
         });
 
         RequestParameter parameter = new RequestParameter();
-        parameter.setApplyId(id);
+        parameter.setDisFileId(id);
 
-        OkHttpClientManager.postAsyn(Config.GET_PROJECT_EQUIPMENT_DETAILS, new OkHttpClientManager.ResultCallback<EquipmentApplyBean>() {
+        OkHttpClientManager.postAsyn(Config.GET_PROJECT_OUT_DISPATCH_DETAILS, new OkHttpClientManager.ResultCallback<DisFileBean>() {
             @Override
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
@@ -206,24 +222,30 @@ public class EquipmentDetailsActivity extends BaseActivity {
             }
 
             @Override
-            public void onResponse(EquipmentApplyBean response) {
+            public void onResponse(DisFileBean response) {
                 progressHUD.dismiss();
                 projectDetailBean = response;
                 if (response != null) {
 
-                    applyNo.setText(projectDetailBean.getApplyNo());
-                    applyUser.setText(projectDetailBean.getApplyUser());
-                    applyDepartment.setText(projectDetailBean.getApplyDepartment());
-                    planNo.setText(projectDetailBean.getPlanNo());
-                    department.setText(projectDetailBean.getReportDepartment());
-                    equipmentName.setText(projectDetailBean.getEquipmentName());
-                    equipmentSpecial.setText(projectDetailBean.getSpecification());
-                    price.setText(StringUtils.saveTwoDecimal(projectDetailBean.getPrice()));
-                    count.setText(projectDetailBean.getCount().toString());
-                    totalPrice.setText(StringUtils.saveTwoDecimal(projectDetailBean.getTotal()));
-                    type.setText(projectDetailBean.getSourcingType());
-                    reason.setText(initHtml("购置原因", projectDetailBean.getSourcingReason()));
-                    way.setText(projectDetailBean.getSourcingWay());
+                    code.setText(projectDetailBean.getNumberCode().toString());
+                    num.setText(projectDetailBean.getPrefix() + projectDetailBean.getTypenumber());
+                    outTitle.setText(projectDetailBean.getTitle());
+                    signer.setText(projectDetailBean.getSigner());
+                    confidential.setText(projectDetailBean.getConfidential());
+                    nuclearDraft.setText(projectDetailBean.getNuclearDraft());
+                    mainSending.setText(projectDetailBean.getMainSending());
+                    copySending.setText(projectDetailBean.getCopySending());
+                    innerDeliver.setText(projectDetailBean.getInnerDeliver());
+                    countersignOrg.setText(projectDetailBean.getCountersignOrgId());
+                    subjectTerm.setText(projectDetailBean.getSubjectTerm());
+                    imitateOrgName.setText(projectDetailBean.getImitateOrgName());
+                    imitateUserName.setText(projectDetailBean.getImitateUserName());
+                    principalUserName.setText(projectDetailBean.getPrincipalUserName());
+                    typeWriting.setText(projectDetailBean.getTypewriting());
+                    proofread.setText(projectDetailBean.getProofread());
+                    inspectSeal.setText(projectDetailBean.getInspectSeal());
+                    time.setText(projectDetailBean.getDispatchDate());
+                    content.setText(initHtml("发文内容", projectDetailBean.getConfidential()));
 
                     if (projectDetailBean.getFlos() != null && projectDetailBean.getFlos().size() > 0) {
                         middleParentLayout.removeAllViews();
@@ -247,7 +269,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, EquipmentApplyBean.class, EquipmentDetailsActivity.class);
+        }, parameter, DisFileBean.class, OutDispatchDetailsActivity.class);
 
     }
 
@@ -255,7 +277,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
     //审核 status 审核类型 1：同意 2：退回
     private void checkContract(String status, String opinion) {
 
-        progressHUD = ProgressHUD.show(EquipmentDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
+        progressHUD = ProgressHUD.show(OutDispatchDetailsActivity.this, getResources().getString(R.string.loading), false, new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
                 progressHUD.dismiss();
@@ -265,7 +287,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         RequestParameter parameter = new RequestParameter();
         parameter.setId(id);
         parameter.setStatus(status);
-        parameter.setNature("10");
+        parameter.setNature("14");
         if (!TextUtils.isEmpty(opinion)) {
             parameter.setOpinion(opinion);
         }
@@ -286,7 +308,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                     if (response.getCode() == 1) {
                         setResult(Constant.CODE_RESULT, new Intent()
                                 .putExtra("position", position));
-                        EquipmentDetailsActivity.this.finish();
+                        OutDispatchDetailsActivity.this.finish();
                     }
                 }
 
@@ -297,7 +319,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
                 Log.e("onError", exception.toString());
                 progressHUD.dismiss();
             }
-        }, parameter, SuccessResponse.class, EquipmentDetailsActivity.class);
+        }, parameter, SuccessResponse.class, OutDispatchDetailsActivity.class);
 
     }
 
@@ -306,7 +328,7 @@ public class EquipmentDetailsActivity extends BaseActivity {
         super.onClick(v);
         switch (v.getId()) {
             case R.id.base_toolbar__left_image:
-                EquipmentDetailsActivity.this.finish();
+                OutDispatchDetailsActivity.this.finish();
                 break;
             case R.id.activity_project_details__top_open_layout://合同详情  展开 及  关闭
                 if (visibleLayout.getVisibility() == View.GONE) {

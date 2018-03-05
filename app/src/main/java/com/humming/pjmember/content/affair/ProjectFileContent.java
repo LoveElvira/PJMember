@@ -151,6 +151,9 @@ public class ProjectFileContent extends BaseLinearLayout implements BaseQuickAda
                     } else {
                         adapter.setNewData(projectLists);
                     }
+                }else{
+                    projectLists.clear();
+                    adapter.setNewData(projectLists);
                 }
 
 

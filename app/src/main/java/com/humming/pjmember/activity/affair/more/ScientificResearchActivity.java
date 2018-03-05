@@ -3,6 +3,7 @@ package com.humming.pjmember.activity.affair.more;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ import okhttp3.Request;
  * 科研
  */
 
-public class ScientificResearchActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class ScientificResearchActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ScientificResearchAdapter adapter;
 
@@ -42,7 +43,7 @@ public class ScientificResearchActivity extends BaseActivity implements BaseQuic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview);
+        setContentView(R.layout.activity_notify);
         initView();
     }
 
@@ -53,6 +54,10 @@ public class ScientificResearchActivity extends BaseActivity implements BaseQuic
         title.setText("科研");
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
+
+        refresh = findViewById(R.id.common_refresh);
+        refresh.setColorSchemeColors(getResources().getColor(R.color.blue));
+        refresh.setOnRefreshListener(this);
 
         listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -121,6 +126,9 @@ public class ScientificResearchActivity extends BaseActivity implements BaseQuic
                     } else {
                         adapter.setNewData(projectLists);
                     }
+                } else {
+                    projectLists.clear();
+                    adapter.setNewData(projectLists);
                 }
 
             }
@@ -154,6 +162,7 @@ public class ScientificResearchActivity extends BaseActivity implements BaseQuic
             case R.id.item_affair__parent:
                 startActivityForResult(new Intent(ScientificResearchActivity.this, ScientificResearchDetailsActivity.class)
                         .putExtra("id", projectLists.get(position).getScienceGradeId())
+                        .putExtra("projectId", projectLists.get(position).getProjectId())
                         .putExtra("position", position), Constant.CODE_REQUEST_ONE);
                 break;
         }
@@ -171,6 +180,21 @@ public class ScientificResearchActivity extends BaseActivity implements BaseQuic
                 getProject(pageable);
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        adapter.setEnableLoadMore(false);
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                pageable = "";
+                getProject(pageable);
+                refresh.setRefreshing(false);
+                adapter.loadMoreEnd(true);
+                adapter.setEnableLoadMore(true);
+            }
+        });
     }
 
     @Override

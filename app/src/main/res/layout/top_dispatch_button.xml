@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/top_button__in_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bottom_button__in_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingLeft="@dimen/size_10"
+            android:paddingRight="@dimen/size_15"
+            android:paddingTop="@dimen/size_5"
+            android:text="收入文"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_12" />
+
+        <View
+            android:id="@+id/bottom_button__in_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_2"
+            android:layout_marginLeft="@dimen/size_2"
+            android:layout_marginRight="@dimen/size_2"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/top_button__out_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/bottom_button__out_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/size_5"
+            android:paddingLeft="@dimen/size_15"
+            android:paddingRight="@dimen/size_10"
+            android:paddingTop="@dimen/size_5"
+            android:text="发出文"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_12" />
+
+        <View
+            android:id="@+id/bottom_button__out_line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_2"
+            android:layout_marginLeft="@dimen/size_2"
+            android:layout_marginRight="@dimen/size_2"
+            android:background="@color/white"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</LinearLayout>

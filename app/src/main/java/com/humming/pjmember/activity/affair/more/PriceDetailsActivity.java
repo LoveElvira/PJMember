@@ -42,6 +42,9 @@ public class PriceDetailsActivity extends BaseActivity {
     //展开项目详情 图片
     private ImageView openDetailsImage;
 
+    //头部展示内容
+    private LinearLayout topLayout;
+
     //费用编号
     private TextView num;
     //申报单位
@@ -108,7 +111,7 @@ public class PriceDetailsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_price_details);
+        setContentView(R.layout.activity_project_details);
         initView();
     }
 
@@ -128,6 +131,9 @@ public class PriceDetailsActivity extends BaseActivity {
         detailsParentLayout = findViewById(R.id.activity_project_details__top_parent);
         openDetailsText = findViewById(R.id.activity_project_details__top_open_text);
         openDetailsImage = findViewById(R.id.activity_project_details__top_open_image);
+
+        topLayout = findViewById(R.id.item_price_top__parent);
+        topLayout.setVisibility(View.VISIBLE);
 
         num = findViewById(R.id.item_price_top__num);
         department = findViewById(R.id.item_price_top__department);
@@ -206,7 +212,7 @@ public class PriceDetailsActivity extends BaseActivity {
         });
 
         RequestParameter parameter = new RequestParameter();
-        parameter.setProjectId(id);
+        parameter.setCostDetailId(id);
 
         OkHttpClientManager.postAsyn(Config.GET_PROJECT_PRICE_DETAILS, new OkHttpClientManager.ResultCallback<CostDetailBean>() {
             @Override
@@ -282,7 +288,7 @@ public class PriceDetailsActivity extends BaseActivity {
         RequestParameter parameter = new RequestParameter();
         parameter.setId(id);
         parameter.setStatus(status);
-        parameter.setNature("4");
+        parameter.setNature("5");
         if (!TextUtils.isEmpty(opinion)) {
             parameter.setOpinion(opinion);
         }

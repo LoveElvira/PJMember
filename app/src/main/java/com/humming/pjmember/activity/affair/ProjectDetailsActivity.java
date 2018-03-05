@@ -34,6 +34,7 @@ import okhttp3.Request;
 
 public class ProjectDetailsActivity extends BaseActivity {
 
+
     //展开项目详情
     private LinearLayout openDetailsLayout;
     //项目详情条目
@@ -42,6 +43,9 @@ public class ProjectDetailsActivity extends BaseActivity {
     private TextView openDetailsText;
     //展开项目详情 图片
     private ImageView openDetailsImage;
+
+    //详情内容
+    private LinearLayout topLayout;
 
     //项目编号
     private TextView projectNum;
@@ -121,7 +125,7 @@ public class ProjectDetailsActivity extends BaseActivity {
         super.initView();
 
         id = getIntent().getStringExtra("id");
-        position = getIntent().getIntExtra("position",-1);
+        position = getIntent().getIntExtra("position", -1);
 
         title = (TextView) findViewById(R.id.base_toolbar__title);
         title.setText("项目详情");
@@ -132,6 +136,9 @@ public class ProjectDetailsActivity extends BaseActivity {
         detailsParentLayout = (LinearLayout) findViewById(R.id.activity_project_details__top_parent);
         openDetailsText = (TextView) findViewById(R.id.activity_project_details__top_open_text);
         openDetailsImage = (ImageView) findViewById(R.id.activity_project_details__top_open_image);
+
+        topLayout = findViewById(R.id.item_project_top__parent);
+        topLayout.setVisibility(View.VISIBLE);
 
         projectNum = (TextView) findViewById(R.id.item_project_top__num);
         projectName = (TextView) findViewById(R.id.item_project_top__name);

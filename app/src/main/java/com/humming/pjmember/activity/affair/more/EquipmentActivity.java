@@ -3,6 +3,7 @@ package com.humming.pjmember.activity.affair.more;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +31,7 @@ import okhttp3.Request;
  * 设备采购列表
  */
 
-public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener {
+public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener, BaseQuickAdapter.RequestLoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
     private AffairEquipmentAdapter adapter;
 
@@ -40,7 +41,7 @@ public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listview);
+        setContentView(R.layout.activity_notify);
         initView();
     }
 
@@ -51,6 +52,10 @@ public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.
         title.setText("设备");
         leftArrow = findViewById(R.id.base_toolbar__left_image);
         leftArrow.setImageResource(R.mipmap.left_arrow);
+
+        refresh = findViewById(R.id.common_refresh);
+        refresh.setColorSchemeColors(getResources().getColor(R.color.blue));
+        refresh.setOnRefreshListener(this);
 
         listView = findViewById(R.id.common_listview__list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -83,12 +88,12 @@ public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.
             public void onError(Request request, Error info) {
                 Log.e("onError", info.getInfo().toString());
                 showShortToast(info.getInfo().toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
 
             @Override
             public void onResponse(EquipmentApplyResp response) {
-                closeProgress();
+                progressHUD.dismiss();
                 if (response != null) {
                     projectLists.clear();
                     projectList = response.getEquipmentAppleInfoBeen();
@@ -119,6 +124,9 @@ public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.
                     } else {
                         adapter.setNewData(projectLists);
                     }
+                } else {
+                    projectLists.clear();
+                    adapter.setNewData(projectLists);
                 }
 
             }
@@ -126,7 +134,7 @@ public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.
             @Override
             public void onOtherError(Request request, Exception exception) {
                 Log.e("onError", exception.toString());
-                closeProgress();
+                progressHUD.dismiss();
             }
         }, parameter, EquipmentApplyResp.class, EquipmentActivity.class);
 
@@ -169,6 +177,21 @@ public class EquipmentActivity extends BaseActivity implements BaseQuickAdapter.
                 getProject(pageable);
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        adapter.setEnableLoadMore(false);
+        listView.post(new Runnable() {
+            @Override
+            public void run() {
+                pageable = "";
+                getProject(pageable);
+                refresh.setRefreshing(false);
+                adapter.loadMoreEnd(true);
+                adapter.setEnableLoadMore(true);
+            }
+        });
     }
 
     @Override

@@ -52,6 +52,7 @@
                                 android:src="@mipmap/affair_project_small" />
 
                             <TextView
+                                android:id="@+id/activity_project_details__top_text"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -92,6 +93,16 @@
                             android:orientation="vertical">
 
                             <include layout="@layout/item_project_top" />
+
+                            <include layout="@layout/item_project_file_top" />
+
+                            <include layout="@layout/item_equipment_top" />
+
+                            <include layout="@layout/item_price_top" />
+
+                            <include layout="@layout/item_dispatch_in_top" />
+
+                            <include layout="@layout/item_dispatch_out_top" />
 
                         </LinearLayout>
 
@@ -210,9 +221,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/size_80"
                             android:layout_marginTop="@dimen/size_10"
-                            android:padding="@dimen/size_5"
                             android:background="@drawable/border_gray_radius_3"
                             android:gravity="top|left"
+                            android:padding="@dimen/size_5"
                             android:textColor="@color/gray_888888"
                             android:textColorHint="@color/gray_ADADAD"
                             android:textSize="@dimen/text_13" />
